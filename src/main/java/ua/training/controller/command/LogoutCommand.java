@@ -18,7 +18,7 @@ public class LogoutCommand extends Command {
         }
         List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
         for (int i = 0; i < loggedUsers.size(); i++) {
-            if (loggedUsers.get(i).getLogin().equals(httpSession.getAttribute("username"))) {
+            if (loggedUsers.get(i).getUsername().equals(httpSession.getAttribute("username"))) {
                 loggedUsers.remove(i);
                 i--;
             }

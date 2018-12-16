@@ -34,7 +34,7 @@ public class UserMySqlDao implements UserDao {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 user.setId(rs.getInt(1));
-                user.setLogin(rs.getString(2));
+                user.setUsername(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setRole(User.Role.valueOf(rs.getString(4)));
                 user.setMoney(rs.getInt(5));
@@ -51,7 +51,7 @@ public class UserMySqlDao implements UserDao {
     public void createUser(User user) throws SQLException {
         Connection connection = ConnectionPool.getDataSource().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
-            statement.setString(1, user.getLogin());
+            statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole().name());
             statement.setLong(4, user.getMoney());
@@ -60,7 +60,7 @@ public class UserMySqlDao implements UserDao {
             statement.execute();
         }
         try (PreparedStatement statement = connection.prepareStatement(GET_LAST_ID)) {
-            statement.setString(1, user.getLogin());
+            statement.setString(1, user.getUsername());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 user.setId(rs.getInt(1));

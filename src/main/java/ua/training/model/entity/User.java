@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-@Getter
-@Setter
 public @Data class User {
     public enum Role {UNKNOWN, ADMIN, USER}
     private int id;
-    private String login;
+    private String username;
     private String password;
     private Role role;
     private long money;

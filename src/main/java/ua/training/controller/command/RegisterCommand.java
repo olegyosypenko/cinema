@@ -23,7 +23,7 @@ public class RegisterCommand extends Command {
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setLogin(username);
+        user.setUsername(username);
         user.setPassword(password);
         user.setRole(User.Role.USER);
         user.setMoney(0);

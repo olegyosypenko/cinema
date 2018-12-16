@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-@WebServlet(name = "MainServlet", urlPatterns = ("/servlet/*"))
+@WebServlet(name = "MainServlet", urlPatterns = {"/servlet/*", "/"})
 public class MainServlet extends HttpServlet {
 
     Map<String, Command> map = new HashMap<>();
@@ -53,7 +53,7 @@ public class MainServlet extends HttpServlet {
 
     private Command getCommand(HttpServletRequest request) {
         System.out.println(request.getRequestURI());
-        String commandName = request.getRequestURI().replace("/servlet/", "");
+        String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
         System.out.println();
         System.out.println();
         System.out.println(commandName);

@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Cinema</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style.css">
+    <link rel="stylesheet" href="/resources/style.css">
 </head>
 <body>
 <header>
@@ -23,6 +23,6 @@
     </nav>
 </header>
 Welcome, ${username}!
-<script src="${pageContext.request.contextPath}/resources/script.js"></script>
+<script src="/resources/script.js"></script>
 </body>
 </html>
