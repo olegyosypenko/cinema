@@ -21,6 +21,7 @@
 <header>
     <a href="${pageContext.request.contextPath}/servlet/home" class="logo">Cinema</a>
     <nav class="main-menu right">
+        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/create-film-page"><fmt:message key="menu.create" bundle="${language}"/></a>
         <a class="menu-item" href="${pageContext.request.contextPath}/servlet/schedule"><fmt:message key="menu.schedule" bundle="${language}"/></a>
         <a class="menu-item" href="${pageContext.request.contextPath}/servlet/films"><fmt:message key="menu.all.films" bundle="${language}"/></a>
         <a class="menu-item" href="${pageContext.request.contextPath}/servlet/register-page"><fmt:message key="menu.signin.label" bundle="${language}"/></a>

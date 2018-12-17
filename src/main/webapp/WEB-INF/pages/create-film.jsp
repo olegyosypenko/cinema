@@ -8,7 +8,7 @@
 
 <%@include file="../parts/header.jsp"%>
 <div class="form">
-    <form class="login-form" method="post" id="film" action="${pageContext.request.contextPath}/servlet/login">
+    <form class="login-form" method="post" id="film" action="${pageContext.request.contextPath}/servlet/create-film">
         <input name="name" type="text" placeholder="<fmt:message key="film.name.query" bundle="${language}"/>"/>
         <input name="nameEN" type="text" placeholder="<fmt:message key="film.nameEN.query" bundle="${language}"/>"/>
         <input name="genre" type="text" placeholder="<fmt:message key="film.genre.query" bundle="${language}"/>"/>

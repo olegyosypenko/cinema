@@ -1,4 +1,5 @@
 ua\training\controller\listeners\SessionListener.class
+ua\training\model\service\FilmService.class
 ua\training\model\entity\Seance.class
 ua\training\model\dao\FilmDao.class
 ua\training\model\dao\mysql\UserMySqlDao.class
@@ -7,6 +8,7 @@ ua\training\controller\MainServlet.class
 ua\training\controller\command\LoginCommand.class
 ua\training\controller\command\WelcomeCommand.class
 ua\training\model\dao\mysql\SeanceMySqlDao.class
+ua\training\controller\command\CreateFilmCommand.class
 ua\training\controller\filter\AccessFilter.class
 ua\training\model\dao\mysql\TicketMySqlDao.class
 ua\training\model\dao\SeanceDao.class
@@ -15,6 +17,7 @@ ua\training\Main.class
 ua\training\model\dao\mysql\FilmMySqlDao.class
 ua\training\model\entity\Film.class
 ua\training\model\dao\DaoFactory.class
+ua\training\controller\command\CreateFilmPageCommand.class
 ua\training\model\entity\User.class
 ua\training\model\service\UserService.class
 ua\training\model\dao\mysql\MySqlDaoFactory.class

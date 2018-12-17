@@ -30,6 +30,8 @@ public class MainServlet extends HttpServlet {
         map.put("logout", new LogoutCommand());
         map.put("goodbye", new GoodbyeCommand());
         map.put("lang", new ChangeLanguageCommand());
+        map.put("create-film-page", new CreateFilmPageCommand());
+        map.put("create-film", new CreateFilmCommand());
 
     }
 
