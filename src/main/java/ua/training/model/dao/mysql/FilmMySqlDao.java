@@ -11,7 +11,7 @@ import java.util.List;
 public class FilmMySqlDao implements FilmDao {
     private Connection connection = ConnectionPool.getConnection();
     public static final String CREATE_FILM = "INSERT INTO films(name, name_en, genre, genre_en, director, " +
-            "director_en, rate, description, description_en";
+            "director_en, rate, description, description_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String GET_LAST_ID = "SELECT id FROM films WHERE name=?;";
     public static final String GET_ALL_FILMS = "SELECT * FROM films;";
 
@@ -27,19 +27,19 @@ public class FilmMySqlDao implements FilmDao {
             ResultSet resultSet = statement.executeQuery(GET_ALL_FILMS);
             while (resultSet.next()) {
                 Film film = new Film();
-                film.setName(resultSet.getString(1));
-                film.setNameEN(resultSet.getString(2));;
-                film.setGenre(resultSet.getString(3));
-                film.setGenreEN(resultSet.getString(4));
-                film.setDirector(resultSet.getString(5));
-                film.setDirectorEN(resultSet.getString(6));
-                film.setRate(resultSet.getFloat(7));
-                film.setDescription(resultSet.getString(8));
-                film.setDescriptionEN(resultSet.getString(9));
+                film.setName(resultSet.getString(2));
+                film.setNameEN(resultSet.getString(3));
+                film.setGenre(resultSet.getString(4));
+                film.setGenreEN(resultSet.getString(5));
+                film.setDirector(resultSet.getString(6));
+                film.setDirectorEN(resultSet.getString(7));
+                film.setRate(resultSet.getFloat(8));
+                film.setDescription(resultSet.getString(9));
+                film.setDescriptionEN(resultSet.getString(10));
                 films.add(film);
             }
         } catch (SQLException e) {
-
+            System.out.println("OOpsie");
         }
         return films;
     }

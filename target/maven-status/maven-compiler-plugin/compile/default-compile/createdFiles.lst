@@ -28,6 +28,7 @@ ua\training\model\entity\Ticket.class
 ua\training\controller\command\LoginPageCommand.class
 ua\training\controller\command\LogoutCommand.class
 ua\training\model\service\Paginator$1.class
+ua\training\controller\command\DisplayAllFilmsCommand.class
 ua\training\controller\command\RegisterCommand.class
 ua\training\controller\command\RegisterPageCommand.class
 ua\training\model\dao\mysql\ConnectionPool.class

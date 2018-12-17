@@ -32,6 +32,7 @@ public class MainServlet extends HttpServlet {
         map.put("lang", new ChangeLanguageCommand());
         map.put("create-film-page", new CreateFilmPageCommand());
         map.put("create-film", new CreateFilmCommand());
+        map.put("films", new DisplayAllFilmsCommand());
 
     }
 

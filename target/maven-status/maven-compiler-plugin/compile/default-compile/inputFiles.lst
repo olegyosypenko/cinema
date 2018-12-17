@@ -23,6 +23,7 @@ C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\co
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\WelcomeCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\CreateFilmPageCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\Command.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\DisplayAllFilmsCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\filter\EncodingFilter.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\util\Link.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\RegisterCommand.java
