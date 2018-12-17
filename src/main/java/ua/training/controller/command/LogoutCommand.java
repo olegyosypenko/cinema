@@ -11,11 +11,7 @@ import java.util.List;
 public class LogoutCommand extends Command {
 
     @Override
-    public void process() throws ServletException, IOException {
-        if (!isAccessAllowed()) {
-            sendRedirect("home");
-            return;
-        }
+    public void process() throws IOException {
         List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
         for (int i = 0; i < loggedUsers.size(); i++) {
             if (loggedUsers.get(i).getUsername().equals(httpSession.getAttribute("username"))) {
@@ -29,8 +25,8 @@ public class LogoutCommand extends Command {
 
     @Override
     public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role") != null && (httpSession.getAttribute("role").equals("ADMIN") ||
-                httpSession.getAttribute("role").equals("USER"));
+        return httpSession.getAttribute("role").equals(User.Role.USER)
+                || httpSession.getAttribute("role").equals(User.Role.ADMIN);
     }
 
 }

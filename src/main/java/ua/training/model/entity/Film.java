@@ -7,10 +7,13 @@ import java.util.List;
 public @Data class Film {
     private int id;
     private String name;
+    private String nameEN;
     private String genre;
+    private String genreEN;
     private String director;
-    private double rate;
+    private String directorEN;
+    private float rate;
     private String description;
-    private String shortDescription;
+    private String descriptionEN;
     private List<String> seances;
 }

@@ -1,21 +1,20 @@
 package ua.training.controller.command;
 
+import ua.training.model.entity.User;
+
 import javax.servlet.ServletException;
 import java.io.IOException;
 
 public class WelcomeCommand extends Command {
     @Override
     public void process() throws ServletException, IOException {
-        if (!isAccessAllowed()) {
-            sendRedirect("home");
-        }
-        forward("welcome.jsp");
+        forward("/WEB-INF/pages/welcome.jsp");
     }
 
     @Override
     public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role") != null && (httpSession.getAttribute("role").equals("ADMIN") ||
-                httpSession.getAttribute("role").equals("USER"));
+        return httpSession.getAttribute("role").equals(User.Role.USER)
+                || httpSession.getAttribute("role").equals(User.Role.ADMIN);
     }
 
 }

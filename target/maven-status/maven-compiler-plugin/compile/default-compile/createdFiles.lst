@@ -1,3 +1,4 @@
+ua\training\controller\listeners\SessionListener.class
 ua\training\model\entity\Seance.class
 ua\training\model\dao\FilmDao.class
 ua\training\model\dao\mysql\UserMySqlDao.class
@@ -18,6 +19,8 @@ ua\training\model\entity\User.class
 ua\training\model\service\UserService.class
 ua\training\model\dao\mysql\MySqlDaoFactory.class
 ua\training\controller\command\GoodbyeCommand.class
+ua\training\model\dao\mysql\UsernameIsTakenException.class
+ua\training\controller\command\ChangeLanguageCommand.class
 ua\training\model\entity\Ticket.class
 ua\training\controller\command\LoginPageCommand.class
 ua\training\controller\command\LogoutCommand.class

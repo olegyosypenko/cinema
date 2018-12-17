@@ -2,6 +2,7 @@ C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\Tic
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\TicketMySqlDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\DaoFactory.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\SeanceDao.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\ChangeLanguageCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\LoginPageCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\FilmDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\HomeCommand.java
@@ -26,8 +27,10 @@ C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\entity\
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\RegisterPageCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\SeanceMySqlDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\command\LoginCommand.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\listeners\SessionListener.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\filter\AccessFilter.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\MainServlet.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\UsernameIsTakenException.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\Main.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\UserDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\entity\Ticket.java

@@ -3,11 +3,11 @@ package ua.training.controller.command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-public class HomeCommand extends Command {
-
+public class ChangeLanguageCommand extends Command {
     @Override
     public void process() throws ServletException, IOException {
-        forward("/index.jsp");
+        httpSession.setAttribute("lang", request.getParameter("lang"));
+        sendRedirect("home");
     }
 
     @Override

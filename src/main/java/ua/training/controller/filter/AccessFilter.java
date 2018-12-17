@@ -20,6 +20,7 @@ public class AccessFilter implements Filter {
         if (session.getAttribute("role") == null) {
             servletRequest.setAttribute("role", User.Role.UNKNOWN);
         }
+        filterChain.doFilter(servletRequest,servletResponse);
     }
 
     @Override

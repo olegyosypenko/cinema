@@ -1,5 +1,7 @@
 package ua.training.controller.command;
 
+import org.apache.log4j.Logger;
+import ua.training.controller.listeners.SessionListener;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
@@ -10,42 +12,30 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class LoginCommand extends Command {
+    private static final Logger logger = Logger.getLogger(LoginCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
-        if (!isAccessAllowed()) {
-            sendRedirect("home");
-            return;
-        }
         UserService userService = new UserService();
-        User user = null;
-        System.out.println("check1");
+        User user;
         try {
             user = userService.getUserByUsernameAndPassword(request.getParameter("username"), request.getParameter("password"));
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("check2");
-        if (user == null) {
-            sendRedirect("login");
+            logger.error("Incorrect password or username", e);
+            sendRedirect("login-page");
             return;
         }
         List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
         loggedUsers.add(user);
-        System.out.println("check3");
-        for (int i = 0; i < loggedUsers.size(); i++) {
-            System.out.println(loggedUsers.get(i));
-        }
-        System.out.println("check4");
         HttpSession session = request.getSession();
-        session.setAttribute("role", user.getRole().name());
+        session.setAttribute("role", user.getRole());
         session.setAttribute("username", request.getParameter("username"));
         sendRedirect("welcome");
     }
 
     @Override
     public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role") == null || httpSession.getAttribute("role").equals("UNKNOWN");
+        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
     }
 
 }
