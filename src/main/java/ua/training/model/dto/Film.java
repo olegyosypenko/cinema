@@ -2,8 +2,6 @@ package ua.training.model.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 public @Data class Film {
     private String name;
     private String nameEN;
