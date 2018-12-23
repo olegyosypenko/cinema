@@ -1,21 +1,18 @@
-package ua.training.controller.command;
+package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.listeners.SessionListener;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class LoginCommand extends Command {
     private static final Logger logger = Logger.getLogger(LoginCommand.class);
 
     @Override
-    public void process() throws ServletException, IOException {
+    public void process() throws IOException {
         UserService userService = new UserService();
         User user;
         try {
@@ -25,14 +22,26 @@ public class LoginCommand extends Command {
             sendRedirect("login-page");
             return;
         }
-        List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
-        loggedUsers.add(user);
+        if (isLoggedIn(user)) {
+            logger.info("Film is already logged in");
+            sendRedirect("login-page");
+            return;
+        }
         HttpSession session = request.getSession();
         session.setAttribute("role", user.getRole());
         session.setAttribute("username", request.getParameter("username"));
         sendRedirect("welcome");
     }
 
+    private boolean isLoggedIn(final User newUser) {
+        @SuppressWarnings("unchecked")
+        List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
+        if (loggedUsers.stream().anyMatch(user -> user.equals(newUser))) {
+            return true;
+        }
+        loggedUsers.add(newUser);
+        return false;
+    }
     @Override
     public boolean isAccessAllowed() {
         return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);

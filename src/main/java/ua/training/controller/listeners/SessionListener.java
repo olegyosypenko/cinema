@@ -3,6 +3,7 @@ package ua.training.controller.listeners;
 import org.apache.log4j.Logger;
 import ua.training.model.entity.User;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;

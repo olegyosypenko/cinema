@@ -1,8 +1,7 @@
 package ua.training.controller;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.command.*;
-import ua.training.model.entity.User;
+import ua.training.controller.commands.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +17,7 @@ public class MainServlet extends HttpServlet {
     Map<String, Command> map = new HashMap<>();
 
     @Override
-    public void init() throws ServletException {
-        List<User> loggedUsers = new ArrayList<>();
-        getServletContext().setAttribute("logged-users", loggedUsers);
+    public void init() {
         map.put("home", new HomeCommand());
         map.put("welcome", new WelcomeCommand());
         map.put("login-page", new LoginPageCommand());
@@ -55,7 +52,7 @@ public class MainServlet extends HttpServlet {
         logger.info("request URI: " + request.getRequestURI());
         String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
         if (commandName.equals("/cinema/")) commandName = "home";
-        logger.info("command name: " + commandName);
+        logger.info("commands name: " + commandName);
         Command result = map.get(commandName);
         return result;
     }

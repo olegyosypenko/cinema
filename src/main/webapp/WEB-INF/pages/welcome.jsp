@@ -8,6 +8,6 @@
 
 <%@include file="../parts/header.jsp"%>
 Welcome, ${username}!
-<script src="/resources/script.js"></script>
+<script src="${pageContext.request.contextPath}/resources/script.js"></script>
 </body>
 </html>

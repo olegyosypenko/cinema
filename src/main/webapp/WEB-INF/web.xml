@@ -6,4 +6,24 @@
     <listener>
         <listener-class>ua.training.controller.listeners.SessionListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>ua.training.controller.listeners.ContextListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>ua.training.controller.filters.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <display-name>AuthFilter</display-name>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>ua.training.controller.filters.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

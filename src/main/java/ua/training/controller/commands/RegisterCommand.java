@@ -1,4 +1,4 @@
-package ua.training.controller.command;
+package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
 import ua.training.controller.MainServlet;
@@ -7,7 +7,6 @@ import ua.training.model.service.UserService;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class RegisterCommand extends Command {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(MainServlet.class);

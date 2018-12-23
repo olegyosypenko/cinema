@@ -1,10 +1,7 @@
-package ua.training.controller.command;
+package ua.training.controller.commands;
 
 import ua.training.model.entity.User;
-import ua.training.model.service.UserService;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 

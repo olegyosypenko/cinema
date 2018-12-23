@@ -2,7 +2,6 @@ package ua.training.model.dao.mysql;
 
 import ua.training.model.dao.FilmDao;
 import ua.training.model.entity.Film;
-import ua.training.model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;

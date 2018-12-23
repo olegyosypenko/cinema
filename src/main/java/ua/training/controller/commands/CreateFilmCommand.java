@@ -1,16 +1,15 @@
-package ua.training.controller.command;
+package ua.training.controller.commands;
 
 import ua.training.model.entity.Film;
 import ua.training.model.entity.User;
 import ua.training.model.service.FilmService;
 
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class CreateFilmCommand extends Command {
     @Override
-    public void process() throws ServletException, IOException {
+    public void process() throws IOException {
         String name = request.getParameter("name");
         String nameEN = request.getParameter("nameEN");
         String genre = request.getParameter("genre");
@@ -36,6 +35,7 @@ public class CreateFilmCommand extends Command {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sendRedirect("home");
     }
 
     @Override
