@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@include file="../parts/header.jsp"%>
+<%@include file="../parts/header.jspf"%>
     <div class="form">
         <form class="login-form" method="post" action="${pageContext.request.contextPath}/servlet/login">
             <input name="username" type="text" placeholder="<fmt:message key="user.username.query" bundle="${language}"/>" required pattern=".{4,}" title="Four or more characters"/>

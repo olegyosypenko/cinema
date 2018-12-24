@@ -5,7 +5,7 @@
   Time: 23:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@include file="../parts/header.jsp"%>
+<%@include file="../parts/header.jspf"%>
 Goodbye!
 <script src="${pageContext.request.contextPath}/resources/script.js"></script>
 </body>

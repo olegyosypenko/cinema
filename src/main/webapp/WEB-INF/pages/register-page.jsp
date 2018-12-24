@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@include file="../parts/header.jsp"%>
+<%@include file="../parts/header.jspf"%>
 <div class="form">
     <form class="register-form" method="post" action="${pageContext.request.contextPath}/servlet/register">
         <input name="first-name" type="text" placeholder="<fmt:message key="user.firstname.query" bundle="${language}"/>"/>
