@@ -1,0 +1,15 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: oleg7
+  Date: 24.12.2018
+  Time: 22:59
+  To change this template use File | Settings | File Templates.
+--%>
+<header>
+    <a href="${pageContext.request.contextPath}/servlet/home" class="logo">Cinema</a>
+    <nav class="main-menu right">
+        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/schedule"><fmt:message key="menu.schedule" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/films"><fmt:message key="menu.all.films" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/logout"><fmt:message key="menu.logout.label" bundle="${language}"/></a>
+    </nav>
+</header>

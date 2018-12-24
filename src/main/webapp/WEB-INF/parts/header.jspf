@@ -18,14 +18,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style.css">
 </head>
 <body>
-<header>
-    <a href="${pageContext.request.contextPath}/servlet/home" class="logo">Cinema</a>
-    <nav class="main-menu right">
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/create-film-page"><fmt:message key="menu.create" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/schedule"><fmt:message key="menu.schedule" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/films"><fmt:message key="menu.all.films" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/register-page"><fmt:message key="menu.signin.label" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/login-page"><fmt:message key="menu.login.label" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/logout"><fmt:message key="menu.logout.label" bundle="${language}"/></a>
-    </nav>
-</header>
+<c:choose>
+    <c:when test="${role=='UNKNOWN'}">
+        <%@include file="../parts/guest-navbar.jspf"%>
+    </c:when>
+    <c:when test="${role=='USER'}">
+        <%@include file="../parts/user-navbar.jspf"%>
+    </c:when>
+    <c:otherwise>
+        <%@include file="../parts/admin-navbar.jspf"%>
+    </c:otherwise>
+</c:choose>
