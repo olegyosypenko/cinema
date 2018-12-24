@@ -2,6 +2,7 @@
 *.ipr
 *.iws
 */target/*
+target/*
 .idea/*
 */out/*
 
