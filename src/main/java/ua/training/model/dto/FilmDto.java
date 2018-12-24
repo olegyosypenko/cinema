@@ -2,7 +2,7 @@ package ua.training.model.dto;
 
 import lombok.Data;
 
-public @Data class Film {
+public @Data class FilmDto {
     private String name;
     private String nameEN;
     private String genre;

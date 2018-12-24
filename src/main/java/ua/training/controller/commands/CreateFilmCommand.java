@@ -1,6 +1,6 @@
 package ua.training.controller.commands;
 
-import ua.training.model.entity.Film;
+import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.User;
 import ua.training.model.service.FilmService;
 
@@ -19,7 +19,9 @@ public class CreateFilmCommand extends Command {
         float rate = Float.parseFloat(request.getParameter("rate"));
         String description = request.getParameter("description");
         String descriptionEN = request.getParameter("descriptionEN");
-        Film film = new Film();
+        String imageLink = request.getParameter("image-link");
+        String imageLinkEN = request.getParameter("image-linkEN");
+        FilmDto film = new FilmDto();
         film.setName(name);
         film.setNameEN(nameEN);
         film.setGenre(genre);
@@ -29,6 +31,8 @@ public class CreateFilmCommand extends Command {
         film.setRate(rate);
         film.setDescription(description);
         film.setDescriptionEN(descriptionEN);
+        film.setImageLink(imageLink);
+        film.setImageLinkEN(imageLinkEN);
         FilmService filmService = new FilmService();
         try {
             filmService.createFilm(film);

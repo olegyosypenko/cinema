@@ -23,7 +23,7 @@ public class LoginCommand extends Command {
             return;
         }
         if (isLoggedIn(user)) {
-            logger.info("Film is already logged in");
+            logger.info("UserDto is already logged in");
             sendRedirect("login-page");
             return;
         }

@@ -1,10 +1,7 @@
 package ua.training.model.dto;
 
 import lombok.Data;
-import ua.training.model.entity.Film;
-
-import java.util.List;
-public @Data class User {
+public @Data class UserDto {
     private String username;
     private String password;
     private String firstName;
