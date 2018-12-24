@@ -50,6 +50,7 @@ public class MainServlet extends HttpServlet {
 
     private Command getCommand(HttpServletRequest request) {
         logger.info("request URI: " + request.getRequestURI());
+        logger.info("Thread name in servlet: " + Thread.currentThread().getName());
         String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
         if (commandName.equals("/cinema/")) commandName = "home";
         logger.info("commands name: " + commandName);

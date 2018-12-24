@@ -6,14 +6,17 @@ C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\Dao
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\SeanceDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\FilmDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\service\FilmService.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dto\FilmDto.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\commands\RegisterPageCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\UserMySqlDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\entity\User.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\service\UserService.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\BundlePool.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\service\Paginator.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\MySqlDaoFactory.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\FilmMySqlDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\commands\WelcomeCommand.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\filters\LocalizationFilter.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\IncorrectUsernameOrPasswordException.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\commands\LoginCommand.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\commands\RegisterCommand.java
@@ -33,6 +36,7 @@ C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\co
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\SeanceMySqlDao.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\listeners\SessionListener.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\filters\AuthFilter.java
+C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dto\UserDto.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\listeners\ContextListener.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\controller\MainServlet.java
 C:\Users\oleg7\IdeaProjects\lastv\cinema\src\main\java\ua\training\model\dao\mysql\UsernameIsTakenException.java
