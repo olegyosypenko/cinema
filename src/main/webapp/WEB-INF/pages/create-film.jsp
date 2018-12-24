@@ -15,6 +15,8 @@
         <input name="genreEN" type="text" placeholder="<fmt:message key="film.genreEN.query" bundle="${language}"/>"/>
         <input name="director" type="text" placeholder="<fmt:message key="film.director.query" bundle="${language}"/>"/>
         <input name="directorEN" type="text" placeholder="<fmt:message key="film.directorEN.query" bundle="${language}"/>"/>
+        <input name="image-link" type="text" placeholder="<fmt:message key="film.imagelink.query" bundle="${language}"/>"/>
+        <input name="image-linkEN" type="text" placeholder="<fmt:message key="film.imagelinkEN.query" bundle="${language}"/>"/>
         <input name="rate" type="number" step="0.01" placeholder="<fmt:message key="film.rate.query" bundle="${language}"/>"/>
         <textarea rows="4" cols="50" name="description"><fmt:message key="film.description.query" bundle="${language}"/></textarea>
         <textarea rows="4" cols="50" name="descriptionEN"><fmt:message key="film.descriptionEN.query" bundle="${language}"/></textarea>
