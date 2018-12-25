@@ -41,9 +41,4 @@ public class CreateFilmCommand extends Command {
         }
         sendRedirect("home");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.ADMIN);
-    }
 }

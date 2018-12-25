@@ -19,11 +19,4 @@ public class LogoutCommand extends Command {
         httpSession.invalidate();
         sendRedirect("goodbye");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.USER)
-                || httpSession.getAttribute("role").equals(User.Role.ADMIN);
-    }
-
 }

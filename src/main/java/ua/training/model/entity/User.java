@@ -1,12 +1,9 @@
 package ua.training.model.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 public @Data class User {
-    public enum Role {UNKNOWN, ADMIN, USER}
     private int id;
     private String username;
     private String password;

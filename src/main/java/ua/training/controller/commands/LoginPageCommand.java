@@ -10,9 +10,4 @@ public class LoginPageCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/WEB-INF/pages/login-page.jsp");
     }
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
-    }
-
 }

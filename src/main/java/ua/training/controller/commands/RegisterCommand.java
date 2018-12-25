@@ -37,8 +37,4 @@ public class RegisterCommand extends Command {
         }
         forward("/servlet/login");
     }
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
-    }
 }

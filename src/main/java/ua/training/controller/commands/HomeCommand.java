@@ -9,9 +9,4 @@ public class HomeCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/index.jsp");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return true;
-    }
 }

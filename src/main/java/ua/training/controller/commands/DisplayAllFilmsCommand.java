@@ -17,9 +17,4 @@ public class DisplayAllFilmsCommand extends Command {
         }
         forward("/WEB-INF/pages/display-all-films.jsp");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return true;
-    }
 }

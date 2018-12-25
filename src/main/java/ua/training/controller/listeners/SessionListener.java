@@ -1,9 +1,8 @@
 package ua.training.controller.listeners;
 
 import org.apache.log4j.Logger;
-import ua.training.model.entity.User;
+import ua.training.model.entity.Role;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -15,7 +14,7 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = httpSessionEvent.getSession();
         logger.info("Session created: " + session.getId());
         session.setAttribute("lang", "ua");
-        session.setAttribute("role", User.Role.UNKNOWN);
+        session.setAttribute("role", Role.UNKNOWN);
     }
 
     @Override

@@ -30,7 +30,6 @@ public class MainServlet extends HttpServlet {
         map.put("create-film-page", new CreateFilmPageCommand());
         map.put("create-film", new CreateFilmCommand());
         map.put("films", new DisplayAllFilmsCommand());
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,19 +41,10 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
-        Command command = getCommand(request);
+        String commandName = (String) request.getAttribute("command");
+        Command command = map.get(commandName);
         command.init(request.getServletContext(), request, response);
-        command.defaultProcess();
+        command.process();
 
-    }
-
-    private Command getCommand(HttpServletRequest request) {
-        logger.info("request URI: " + request.getRequestURI());
-        logger.info("Thread name in servlet: " + Thread.currentThread().getName());
-        String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
-        if (commandName.equals("/cinema/")) commandName = "home";
-        logger.info("commands name: " + commandName);
-        Command result = map.get(commandName);
-        return result;
     }
 }

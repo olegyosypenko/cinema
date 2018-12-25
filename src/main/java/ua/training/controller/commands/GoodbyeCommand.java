@@ -10,9 +10,4 @@ public class GoodbyeCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/WEB-INF/pages/goodbye.jsp");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
-    }
 }

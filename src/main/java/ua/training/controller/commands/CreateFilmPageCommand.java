@@ -9,9 +9,4 @@ public class CreateFilmPageCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/WEB-INF/pages/create-film.jsp");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.ADMIN);
-    }
 }

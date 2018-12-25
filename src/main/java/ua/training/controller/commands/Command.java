@@ -22,13 +22,6 @@ public abstract class Command {
         this.response = servletResponse;
         this.httpSession = servletRequest.getSession();
     }
-    public void defaultProcess() throws ServletException, IOException {
-        if (!isAccessAllowed()) {
-            sendRedirect("home");
-            return;
-        }
-        process();
-    }
     public abstract void process() throws ServletException, IOException;
 
     protected void forward(String target) throws ServletException, IOException {
@@ -40,5 +33,4 @@ public abstract class Command {
         response.sendRedirect(context.getContextPath() + "/servlet/" + target);
     }
 
-    public abstract boolean isAccessAllowed();
 }

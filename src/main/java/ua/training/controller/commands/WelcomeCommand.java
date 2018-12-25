@@ -10,11 +10,4 @@ public class WelcomeCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/WEB-INF/pages/welcome.jsp");
     }
-
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.USER)
-                || httpSession.getAttribute("role").equals(User.Role.ADMIN);
-    }
-
 }

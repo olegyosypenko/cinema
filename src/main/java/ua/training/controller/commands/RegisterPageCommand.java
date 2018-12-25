@@ -11,8 +11,4 @@ public class RegisterPageCommand extends Command {
     public void process() throws ServletException, IOException {
         forward("/WEB-INF/pages/register-page.jsp");
     }
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
-    }
 }

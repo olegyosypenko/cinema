@@ -42,9 +42,5 @@ public class LoginCommand extends Command {
         loggedUsers.add(newUser);
         return false;
     }
-    @Override
-    public boolean isAccessAllowed() {
-        return httpSession.getAttribute("role").equals(User.Role.UNKNOWN);
-    }
 
 }

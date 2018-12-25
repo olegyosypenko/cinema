@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dto.UserDto;
+import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
 import javax.crypto.SecretKey;
@@ -47,7 +48,7 @@ public class UserMySqlDao implements UserDao {
                 user.setId(rs.getInt(1));
                 user.setUsername(rs.getString(2));
                 user.setPassword(rs.getString(3));
-                user.setRole(User.Role.valueOf(rs.getString(4)));
+                user.setRole(Role.valueOf(rs.getString(4)));
                 user.setMoney(rs.getInt(5));
                 user.setFirstName(rs.getString(6));
                 user.setLastName(rs.getString(7));
@@ -66,7 +67,7 @@ public class UserMySqlDao implements UserDao {
             try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
                 statement.setString(1, user.getUsername());
                 statement.setString(2, hashedPassword);
-                statement.setString(3, User.Role.USER.name());
+                statement.setString(3, Role.USER.name());
                 statement.setLong(4, 0);
                 statement.setString(5, user.getFirstName());
                 statement.setString(6, user.getFirstNameEN());
