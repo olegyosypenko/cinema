@@ -10,14 +10,14 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 public class RegisterCommand extends Command {
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(MainServlet.class);
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(RegisterCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
-        String firstNameEN = request.getParameter("first-nameEN");
-        String lastNameEN = request.getParameter("last-nameEN");
+        String firstNameEN = request.getParameter("first-name-en");
+        String lastNameEN = request.getParameter("last-name-en");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UserDto user = new UserDto();
