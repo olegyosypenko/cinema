@@ -20,7 +20,7 @@
         <input name="rate" type="number" step="0.01" placeholder="<fmt:message key="film.rate.query" bundle="${language}"/>"/>
         <textarea rows="4" cols="50" name="description"><fmt:message key="film.description.query" bundle="${language}"/></textarea>
         <textarea rows="4" cols="50" name="descriptionEN"><fmt:message key="film.descriptionEN.query" bundle="${language}"/></textarea>
-        <button><fmt:message key="menu.create" bundle="${language}"/></button>
+        <button><fmt:message key="menu.create.film" bundle="${language}"/></button>
     </form>
 </div>
 </body>

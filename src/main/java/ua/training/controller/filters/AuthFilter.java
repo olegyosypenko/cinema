@@ -27,6 +27,8 @@ public class AuthFilter implements Filter {
         map.put("lang", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
         map.put("create-film-page", Collections.singletonList(Role.ADMIN));
         map.put("create-film", Collections.singletonList(Role.ADMIN));
+        map.put("create-seance-page", Collections.singletonList(Role.ADMIN));
+        map.put("create-seance", Collections.singletonList(Role.ADMIN));
         map.put("films", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
     }
     @Override
