@@ -16,5 +16,4 @@
         <button><fmt:message key="menu.create.seance" bundle="${language}"/></button>
     </form>
 </div>
-</body>
-</html>
+<%@include file="../parts/footer.jspf"%>

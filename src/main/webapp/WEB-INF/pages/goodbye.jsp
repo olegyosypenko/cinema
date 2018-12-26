@@ -8,5 +8,4 @@
 <%@include file="../parts/header.jspf"%>
 Goodbye!
 <script src="${pageContext.request.contextPath}/resources/script.js"></script>
-</body>
-</html>
+<%@include file="../parts/footer.jspf"%>

@@ -9,5 +9,4 @@
 <%@include file="../parts/header.jspf"%>
 Welcome, ${username}!
 <script src="${pageContext.request.contextPath}/resources/script.js"></script>
-</body>
-</html>
+<%@include file="../parts/footer.jspf"%>

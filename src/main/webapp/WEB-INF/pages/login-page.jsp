@@ -15,5 +15,4 @@
             <p class="message"><fmt:message key="not.registered.question" bundle="${language}"/> <a href="${pageContext.request.contextPath}/servlet/register-page"><fmt:message key="create.account.label" bundle="${language}"/></a></p>
         </form>
     </div>
-</body>
-</html>
+<%@include file="../parts/footer.jspf"%>

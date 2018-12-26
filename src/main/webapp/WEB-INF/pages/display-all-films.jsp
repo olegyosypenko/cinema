@@ -19,5 +19,4 @@
         </div>
     </c:forEach>
 </div>
-</body>
-</html>
+<%@include file="../parts/footer.jspf"%>
