@@ -29,3 +29,5 @@
         <%@include file="../parts/admin-navbar.jspf"%>
     </c:otherwise>
 </c:choose>
+
+<div class="main-content">
