@@ -2,14 +2,15 @@ package ua.training.model.entity;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 public @Data class Seance {
     private int id;
     private Date startTime;
-    private int rows;
-    private int columns;
+    private Date endTime;
+    private Hall hall;
     private Film film;
-    private long price;
-    private long moneyCollected;
+    private int price;
+    private int moneyCollected;
 }
