@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="../parts/header.jspf"%>
-Goodbye!
-<script src="${pageContext.request.contextPath}/resources/script.js"></script>
+
+<div class="goodbye">
+    Goodbye!
+</div>
 <%@include file="../parts/footer.jspf"%>

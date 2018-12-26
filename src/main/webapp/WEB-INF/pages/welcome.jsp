@@ -7,6 +7,7 @@
 --%>
 
 <%@include file="../parts/header.jspf"%>
-Welcome, ${username}!
-<script src="${pageContext.request.contextPath}/resources/script.js"></script>
+<div class="welcome">
+    Welcome, ${username}!
+</div>
 <%@include file="../parts/footer.jspf"%>

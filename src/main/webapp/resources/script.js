@@ -1,5 +1,7 @@
 (function (global) {
-
+    if (document.getElementsByClassName("welcome").length === 0 && document.getElementsByClassName("goodbye").length === 0) {
+        return;
+    }
     if(typeof (global) === "undefined") {
         throw new Error("window is undefined");
     }
