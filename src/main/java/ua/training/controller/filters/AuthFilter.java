@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class AuthFilter implements Filter {
-    private static final Logger logger = Logger.getLogger(MainServlet.class);
+    private static final Logger logger = Logger.getLogger(AuthFilter.class);
     private Map<String, List<Role>> map = new HashMap<>();
     {
         map.put("home", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
@@ -24,7 +24,6 @@ public class AuthFilter implements Filter {
         map.put("register", Collections.singletonList(Role.UNKNOWN));
         map.put("logout", Arrays.asList(Role.ADMIN, Role.USER));
         map.put("goodbye", Collections.singletonList(Role.UNKNOWN));
-        map.put("lang", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
         map.put("create-film-page", Collections.singletonList(Role.ADMIN));
         map.put("create-film", Collections.singletonList(Role.ADMIN));
         map.put("create-seance-page", Collections.singletonList(Role.ADMIN));

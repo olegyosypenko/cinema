@@ -26,9 +26,10 @@ public class MainServlet extends HttpServlet {
         map.put("register", new RegisterCommand());
         map.put("logout", new LogoutCommand());
         map.put("goodbye", new GoodbyeCommand());
-        map.put("lang", new ChangeLanguageCommand());
         map.put("create-film-page", new CreateFilmPageCommand());
         map.put("create-film", new CreateFilmCommand());
+        map.put("create-seance-page", new CreateSeancePageCommand());
+        map.put("create-seance", new CreateSeanceCommand());
         map.put("films", new DisplayAllFilmsCommand());
     }
 
@@ -45,6 +46,5 @@ public class MainServlet extends HttpServlet {
         Command command = map.get(commandName);
         command.init(request.getServletContext(), request, response);
         command.process();
-
     }
 }

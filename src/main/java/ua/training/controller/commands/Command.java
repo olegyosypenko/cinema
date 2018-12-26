@@ -9,10 +9,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public abstract class Command {
-    protected ServletContext context;
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
-    protected HttpSession httpSession;
+    ServletContext context;
+    HttpServletRequest request;
+    private HttpServletResponse response;
+    HttpSession httpSession;
     public void init(
             ServletContext servletContext,
             HttpServletRequest servletRequest,
