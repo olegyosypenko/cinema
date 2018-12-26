@@ -12,7 +12,7 @@ import java.util.List;
 public class FilmMySqlDao implements FilmDao {
     private Connection connection = ConnectionPool.getConnection();
     public static final String CREATE_FILM = "INSERT INTO films(name, name_en, genre, genre_en, director, " +
-            "director_en, rate, description, description_en, image_link, image_link_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            "director_en, rate, description, description_en, image_link, image_link_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String GET_LAST_ID = "SELECT id FROM films WHERE name=?;";
     public static final String GET_ALL_FILMS = "SELECT * FROM films;";
 

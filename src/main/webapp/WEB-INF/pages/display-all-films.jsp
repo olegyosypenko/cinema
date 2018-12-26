@@ -8,6 +8,7 @@
 --%>
 
 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../parts/header.jspf"%>
 <div class="films">
     <c:forEach items="${films}" var="film">

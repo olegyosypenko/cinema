@@ -7,6 +7,7 @@ import ua.training.model.service.SeanceService;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,11 @@ public class CreateSeanceCommand extends Command {
         film.setId(filmId);
         Seance seance = new Seance();
         seance.setFilm(film);
+        System.out.println(startTimeString);
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
         try {
-            Date startTime = new Date(formatter.parse(startTimeString).getTime());
-            Date endTime = new Date(formatter.parse(endTimeString).getTime());
+            Timestamp startTime = new Timestamp(formatter.parse(startTimeString).getTime());
             seance.setStartTime(startTime);
-            seance.setEndTime(endTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }

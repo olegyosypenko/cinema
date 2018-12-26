@@ -12,9 +12,6 @@ import java.util.List;
 public class Paginator {
     private DaoFactory daoFactory = new MySqlDaoFactory();
 
-
-
-
     public List<Film> getFilmsPart(int i) {
         List<Film> films = new FilmDao() {
             @Override

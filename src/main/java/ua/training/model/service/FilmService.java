@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FilmService {
 
-    FilmDao filmDao = new FilmMySqlDao();
+    private FilmDao filmDao = new FilmMySqlDao();
     public List<Film> getAllFilms() throws SQLException {
         return filmDao.getAllFilms();
     }

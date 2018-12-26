@@ -31,6 +31,7 @@ public class MainServlet extends HttpServlet {
         map.put("create-seance-page", new CreateSeancePageCommand());
         map.put("create-seance", new CreateSeanceCommand());
         map.put("films", new DisplayAllFilmsCommand());
+        map.put("schedule", new ScheduleCommand());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

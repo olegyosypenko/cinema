@@ -29,6 +29,7 @@ public class AuthFilter implements Filter {
         map.put("create-seance-page", Collections.singletonList(Role.ADMIN));
         map.put("create-seance", Collections.singletonList(Role.ADMIN));
         map.put("films", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
+        map.put("schedule", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
     }
     @Override
     public void init(FilterConfig filterConfig) {
@@ -41,7 +42,8 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
         Role role = ((Role) request.getSession().getAttribute("role"));
-        if (map.get(commandName).contains(role)) {
+
+        if (map.get(commandName) != null && map.get(commandName).contains(role)) {
             request.setAttribute("command", commandName);
             filterChain.doFilter(servletRequest,servletResponse);
         } else {

@@ -3,7 +3,7 @@ package ua.training.model.service;
 import ua.training.model.dao.DaoFactory;
 import ua.training.model.dao.SeanceDao;
 import ua.training.model.dao.mysql.MySqlDaoFactory;
-import ua.training.model.dao.mysql.SeanceMySqlDao;
+import ua.training.model.dto.SeanceDto;
 import ua.training.model.entity.Seance;
 
 import java.sql.Date;
@@ -16,7 +16,7 @@ public class SeanceService {
     public void createSeance(Seance seance) {
         seanceDao.createSeance(seance);
     }
-    public List<Seance> getSeancesByDate(Date date) {
+    public List<SeanceDto> getSeancesByDate(Date date) {
         return seanceDao.getSeancesByDate(date);
     }
     public List<Seance> getSeancesByFilmId(int id) {
