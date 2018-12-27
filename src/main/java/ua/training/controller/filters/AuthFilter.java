@@ -41,6 +41,8 @@ public class AuthFilter implements Filter {
         logger.info("AuthFilter");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
+        commandName = commandName.split("/")[0];
+
         Role role = ((Role) request.getSession().getAttribute("role"));
 
         if (map.get(commandName) != null && map.get(commandName).contains(role)) {

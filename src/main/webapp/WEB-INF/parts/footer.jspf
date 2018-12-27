@@ -11,7 +11,7 @@
     © 2018 Cinema. <fmt:message key="footer.rights.message" bundle="${language}"/>
 
     <c:choose>
-        <c:when test="${lang=='ua'}">
+        <c:when test="${lang=='uk'}">
             <div>
                 <strong>Українська</strong> -
                 <a href="?lang=en">English</a>
@@ -19,7 +19,7 @@
         </c:when>
         <c:otherwise>
             <div>
-                <a href="?lang=ua">Українська</a> -
+                <a href="?lang=uk">Українська</a> -
                 <strong>English</strong>
             </div>
         </c:otherwise>

@@ -13,13 +13,13 @@ public class SessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         HttpSession session = httpSessionEvent.getSession();
         logger.info("Session created: " + session.getId());
-        session.setAttribute("lang", "ua");
+        session.setAttribute("lang", "uk");
         session.setAttribute("role", Role.UNKNOWN);
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         HttpSession session = httpSessionEvent.getSession();
-        logger.info("Session created: " + session.getId());
+        logger.info("Session destroyed: " + session.getId());
     }
 }
