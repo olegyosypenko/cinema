@@ -1,5 +1,6 @@
 package ua.training.model.dao.mysql;
 
+import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.FilmDao;
 import ua.training.model.dto.FilmDto;
@@ -14,13 +15,31 @@ public class FilmMySqlDao implements FilmDao {
             "director_en, rate, description, description_en, image_link, image_link_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     private final Connection connection;
+    private final Logger logger = Logger.getLogger(FilmMySqlDao.class);
 
     public FilmMySqlDao(Connection connection) {
         this.connection = connection;
     }
     @Override
     public Film getFilmById(int id) {
-        return null;
+        String query = BundlePool.getBundle().getString("select.film.by.id");
+        Film film = new Film();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                film.setId(resultSet.getInt(1));
+                film.setName(resultSet.getString(2));
+                film.setGenre(resultSet.getString(3));
+                film.setDirector(resultSet.getString(4));
+                film.setRate(resultSet.getFloat(5));
+                film.setDescription(resultSet.getString(6));
+                film.setImageLink(resultSet.getString(7));
+            }
+        } catch (SQLException e) {
+            logger.error("SQLException", e);
+        }
+        return film;
     }
 
     @Override

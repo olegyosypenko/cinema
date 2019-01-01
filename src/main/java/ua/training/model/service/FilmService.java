@@ -23,4 +23,10 @@ public class FilmService {
             filmDao.createFilm(film);
         }
     }
+
+    public Film getFilmById(int filmId) {
+        try (FilmDao filmDao = daoFactory.createFilmDao()) {
+            return filmDao.getFilmById(filmId);
+        }
+    }
 }
