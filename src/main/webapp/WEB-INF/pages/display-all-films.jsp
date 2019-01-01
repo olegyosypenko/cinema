@@ -17,6 +17,7 @@
             <div><fmt:message key="film.genre.label" bundle="${language}"/> : ${film.genre}</div>
             <div><fmt:message key="film.director.label" bundle="${language}"/> : ${film.director}</div>
             <div><fmt:message key="film.rate.label" bundle="${language}"/> : ${film.rate}</div>
+            <a href="${pageContext.request.contextPath}/servlet/film/${film.id}">show more(refactor)</a>
         </div>
     </c:forEach>
 </div>
