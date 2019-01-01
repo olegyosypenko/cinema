@@ -28,8 +28,7 @@ public class LoginCommand extends Command {
             return;
         }
         HttpSession session = request.getSession();
-        session.setAttribute("role", user.getRole());
-        session.setAttribute("username", request.getParameter("username"));
+        session.setAttribute("user", user);
         sendRedirect("welcome");
     }
 

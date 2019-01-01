@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmMySqlDao implements FilmDao {
-    private Connection connection = ConnectionPool.getConnection();
     public static final String CREATE_FILM = "INSERT INTO films(name, name_en, genre, genre_en, director, " +
             "director_en, rate, description, description_en, image_link, image_link_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    public static final String GET_LAST_ID = "SELECT id FROM films WHERE name=?;";
-    public static final String GET_ALL_FILMS = "SELECT * FROM films;";
 
+    private final Connection connection;
+
+    public FilmMySqlDao(Connection connection) {
+        this.connection = connection;
+    }
     @Override
     public Film getFilmById(int id) {
         return null;
@@ -23,8 +25,7 @@ public class FilmMySqlDao implements FilmDao {
 
     @Override
     public List<Film> getAllFilms() {
-        String getAllFilms = BundlePool.instance.getBundleByThreadName(Thread.currentThread().getName())
-                .getString("select.all-users.query");
+        String getAllFilms = BundlePool.getBundle().getString("select.all-users.query");
         List<Film> films = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(getAllFilms);
@@ -46,7 +47,7 @@ public class FilmMySqlDao implements FilmDao {
     }
 
     @Override
-    public void createFilm(FilmDto film) throws SQLException {
+    public void createFilm(FilmDto film) {
         try (PreparedStatement statement = connection.prepareStatement(CREATE_FILM)) {
             statement.setString(1, film.getName());
             statement.setString(2, film.getNameEN());
@@ -60,6 +61,17 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(10, film.getImageLink());
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

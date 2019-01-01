@@ -14,4 +14,3 @@ public class ScheduleCommand extends Command {
         forward("/WEB-INF/pages/schedule.jsp");
     }
 }
-

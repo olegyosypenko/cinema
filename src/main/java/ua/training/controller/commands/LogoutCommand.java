@@ -10,12 +10,14 @@ public class LogoutCommand extends Command {
     @Override
     public void process() throws IOException {
         List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
+        User user = (User) httpSession.getAttribute("user");
         for (int i = 0; i < loggedUsers.size(); i++) {
-            if (loggedUsers.get(i).getUsername().equals(httpSession.getAttribute("username"))) {
+            if (loggedUsers.get(i).getUsername().equals(user.getUsername())) {
                 loggedUsers.remove(i);
                 i--;
             }
         }
+        context.setAttribute("logged-users", loggedUsers);
         httpSession.invalidate();
         sendRedirect("goodbye");
     }

@@ -5,16 +5,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class BundlePool {
-    public static BundlePool instance = new BundlePool();
-    Map<String, ResourceBundle> bundles;
-    private BundlePool() {
-        bundles = new HashMap<>();
-    }
-    public ResourceBundle getBundleByThreadName(String name) {
-        return bundles.get(name);
-    }
-    public void putBundle(String name, ResourceBundle bundle) {
-        bundles.put(name, bundle);
-    }
+    private static Map<String, ResourceBundle> bundles = new HashMap<>();
+    private BundlePool() {}
+    public static ResourceBundle getBundle() {
 
+        return bundles.get(Thread.currentThread().getName());
+    }
+    public static void putBundle(ResourceBundle bundle) {
+        bundles.put(Thread.currentThread().getName(), bundle);
+    }
 }

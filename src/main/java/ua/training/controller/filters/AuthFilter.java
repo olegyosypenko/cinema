@@ -1,8 +1,9 @@
 package ua.training.controller.filters;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.MainServlet;
-import ua.training.controller.commands.*;
+import ua.training.controller.commands.BuyTicketsCommand;
+import ua.training.controller.commands.BuyTicketsPageCommand;
+import ua.training.controller.commands.ShowTicketsByUserCommand;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
@@ -30,6 +31,11 @@ public class AuthFilter implements Filter {
         map.put("create-seance", Collections.singletonList(Role.ADMIN));
         map.put("films", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
         map.put("schedule", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
+        map.put("profile", Collections.singletonList(Role.USER));
+        map.put("add-money", Collections.singletonList(Role.USER));
+        map.put("buy-tickets-page", Collections.singletonList(Role.USER));
+        map.put("buy-tickets", Collections.singletonList(Role.USER));
+        map.put("your-tickets", Collections.singletonList(Role.USER));
     }
     @Override
     public void init(FilterConfig filterConfig) {
@@ -38,13 +44,13 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("AuthFilter");
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String commandName = request.getRequestURI().replace(request.getContextPath() + "/servlet/", "");
-        commandName = commandName.split("/")[0];
-
-        Role role = ((Role) request.getSession().getAttribute("role"));
-
+        String uriWithoutContextPath = request.getRequestURI().replace(request.getContextPath(), "");
+        String commandName = uriWithoutContextPath.split("/")[2];
+        logger.info("Command name: " + commandName);
+        User user = ((User) request.getSession().getAttribute("user"));
+        Role role = user.getRole();
         if (map.get(commandName) != null && map.get(commandName).contains(role)) {
             request.setAttribute("command", commandName);
             filterChain.doFilter(servletRequest,servletResponse);

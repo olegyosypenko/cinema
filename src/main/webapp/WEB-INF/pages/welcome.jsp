@@ -8,6 +8,6 @@
 
 <%@include file="../parts/header.jspf"%>
 <div class="welcome">
-    Welcome, ${username}!
+    Welcome, ${user.username}!
 </div>
 <%@include file="../parts/footer.jspf"%>

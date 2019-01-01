@@ -13,12 +13,8 @@ public class CreateSeancePageCommand extends Command {
     @Override
     public void process() throws ServletException, IOException {
         FilmService filmService = new FilmService();
-        List<Film> films = new ArrayList<>();
-        try {
-            films = filmService.getAllFilms();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        List<Film> films = filmService.getAllFilms();
+
         request.setAttribute("films", films);
         forward("/WEB-INF/pages/create-seance.jsp");
     }

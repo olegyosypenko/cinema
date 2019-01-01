@@ -10,11 +10,8 @@ public class DisplayAllFilmsCommand extends Command {
     @Override
     public void process() throws ServletException, IOException {
         FilmService filmService = new FilmService();
-        try {
-            request.setAttribute("films", filmService.getAllFilms());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        request.setAttribute("films", filmService.getAllFilms());
+
         forward("/WEB-INF/pages/display-all-films.jsp");
     }
 }

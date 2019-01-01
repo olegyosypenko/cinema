@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetSeancesByDateCommand  extends Command {
-    private static final Logger logger = Logger.getLogger(LoginCommand.class);
+public class ShowSeancesByDateCommand extends Command {
+    private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
     @Override
-    public void process() throws ServletException, IOException {
+    public void process() {
         SeanceService seanceService = new SeanceService();
         Date date;
         String[] requestParts = request.getRequestURI().split("/");
@@ -22,10 +22,9 @@ public class GetSeancesByDateCommand  extends Command {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             date = new Date(formatter.parse(dateString).getTime());
-
         } catch (Exception e) {
             date = new Date(System.currentTimeMillis());
-            logger.error("Parse error: " + dateString, e);
+            logger.error("Incorrect input error: " + dateString, e);
         }
         request.setAttribute("days", getAvailableDays());
         request.setAttribute("seances", seanceService.getSeancesByDate(date));

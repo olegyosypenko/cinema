@@ -31,7 +31,12 @@ public class MainServlet extends HttpServlet {
         map.put("create-seance-page", new CreateSeancePageCommand());
         map.put("create-seance", new CreateSeanceCommand());
         map.put("films", new DisplayAllFilmsCommand());
-        map.put("schedule", new GetSeancesByDateCommand());
+        map.put("schedule", new ShowSeancesByDateCommand());
+        map.put("profile", new ProfileCommand());
+        map.put("add-money", new AddMoneyCommand());
+        map.put("buy-tickets-page", new BuyTicketsPageCommand());
+        map.put("buy-tickets", new BuyTicketsCommand());
+        map.put("your-tickets", new ShowTicketsByUserCommand());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

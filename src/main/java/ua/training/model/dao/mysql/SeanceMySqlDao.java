@@ -3,7 +3,6 @@ package ua.training.model.dao.mysql;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.SeanceDao;
 import ua.training.model.dto.SeanceDto;
-import ua.training.model.entity.Film;
 import ua.training.model.entity.Seance;
 
 import java.sql.*;
@@ -13,7 +12,12 @@ import java.util.List;
 public class SeanceMySqlDao implements SeanceDao {
     private static final String CREATE_SEANCE_QUERY = "INSERT INTO seances(start_time, duration, price, money_collected, " +
             "film_id, hall_id) VALUES (?, ?, ?, ?, ?, ?);";
-    private Connection connection = ConnectionPool.getConnection();
+    private final Connection connection;
+
+    public SeanceMySqlDao(Connection connection) {
+        this.connection = connection;
+    }
+
     @Override
     public void createSeance(Seance seance) {
         try (PreparedStatement statement = connection.prepareStatement(CREATE_SEANCE_QUERY)) {
@@ -36,8 +40,7 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public List<SeanceDto> getSeancesByDate(Date date) {
-        String getSeancesByDate = BundlePool.instance.getBundleByThreadName(Thread.currentThread().getName())
-                .getString("select.seances.by.date.query");
+        String getSeancesByDate = BundlePool.getBundle().getString("select.seances.by.date.query");
         System.out.println(getSeancesByDate);
         List<SeanceDto> seances = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
@@ -61,8 +64,46 @@ public class SeanceMySqlDao implements SeanceDao {
         return seances;
     }
 
-    @Override
-    public void deleteSeanceById(int id) {
 
+    @Override
+    public SeanceDto getSeanceById(int seanceId) {
+        String getSeancesByDate = BundlePool.getBundle().getString("select.seance.by.id.query");
+        SeanceDto seanceDto = new SeanceDto();
+        try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
+            statement.setInt(1, seanceId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                seanceDto.setId(resultSet.getInt(1));
+                seanceDto.setStartTime(resultSet.getTimestamp(2));
+                seanceDto.setDuration(resultSet.getInt(3));
+                seanceDto.setPrice(resultSet.getInt(4));
+                seanceDto.setName(resultSet.getString(5));
+                seanceDto.setColumns(resultSet.getInt(6));
+                seanceDto.setRows(resultSet.getInt(7));
+            } else {
+                throw new RuntimeException();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return seanceDto;
+    }
+    @Override
+    public void getSeanceParametersById(int seanceId) {
+
+    }
+    @Override
+    public void deleteSeanceById(int seanceId) {
+
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

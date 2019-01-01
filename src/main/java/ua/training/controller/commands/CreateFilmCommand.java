@@ -33,11 +33,7 @@ public class CreateFilmCommand extends Command {
         film.setImageLink(imageLink);
         film.setImageLinkEN(imageLinkEN);
         FilmService filmService = new FilmService();
-        try {
-            filmService.createFilm(film);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        filmService.createFilm(film);
         sendRedirect("home");
     }
 }

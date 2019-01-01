@@ -8,7 +8,7 @@ public @Data class User {
     private String username;
     private String password;
     private Role role;
-    private long money;
+    private int money;
     private String firstName;
     private String lastName;
     private List<Film> films;

@@ -27,7 +27,7 @@ public class LocalizationFilter implements Filter {
         }
         Locale locale = new Locale((String) session.getAttribute("lang"));
         ResourceBundle resourceBundle = ResourceBundle.getBundle("mysql_localized", locale);
-        BundlePool.instance.putBundle(Thread.currentThread().getName(), resourceBundle);
+        BundlePool.putBundle(resourceBundle);
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

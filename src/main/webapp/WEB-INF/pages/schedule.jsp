@@ -19,10 +19,10 @@
     <c:forEach items="${seances}" var="seance">
         <div class="film">
             <div><fmt:message key="film.name.label" bundle="${language}"/> : ${seance.name}</div>
-            <div><fmt:message key="film.genre.label" bundle="${language}"/> : ${seance.price}</div>
-            <div><fmt:message key="film.director.label" bundle="${language}"/> : ${seance.duration}</div>
-            <div><fmt:message key="film.rate.label" bundle="${language}"/> : ${seance.columns}</div>
-            <div><fmt:message key="film.rate.label" bundle="${language}"/> : <fmt:formatDate value="${seance.startTime}"  pattern="HH:mm"/></div>
+            <div><fmt:message key="seance.start.label" bundle="${language}"/> : <fmt:formatDate value="${seance.startTime}"  pattern="HH:mm"/></div>
+            <div><fmt:message key="seance.duration.label" bundle="${language}"/> : ${seance.duration}</div>
+            <div><fmt:message key="seance.price.label" bundle="${language}"/> : ${seance.price}</div>
+            <a href="${pageContext.request.contextPath}/servlet/buy-tickets-page/${seance.id}"><fmt:message key="buy.tickets.label" bundle="${language}"/></a>
         </div>
     </c:forEach>
 </div>

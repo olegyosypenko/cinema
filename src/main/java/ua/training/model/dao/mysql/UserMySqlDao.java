@@ -19,8 +19,14 @@ public class UserMySqlDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserMySqlDao.class);
     private static final String CREATE_USER = "INSERT INTO users(username, password, role, money, first_name, first_name_en, second_name, second_name_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE username=? AND password=?;";
+    private static final String UPDATE_MONEY = "UPDATE users " +
+            "SET money = (SELECT money WHERE username = ?) + ?  " +
+            "WHERE username = ?;";
+    private final Connection connection;
 
-    private Connection connection = ConnectionPool.getConnection();
+    public UserMySqlDao(Connection connection) {
+        this.connection = connection;
+    }
     @Override
     public User getUserById(int id) {
         return null;
@@ -32,8 +38,17 @@ public class UserMySqlDao implements UserDao {
     }
 
     @Override
-    public void addMoneyToUser(long amount, int id) {
-
+    public void addMoneyToUser(String username, int money) {
+        try {
+            try (PreparedStatement statement = connection.prepareStatement(UPDATE_MONEY)) {
+                statement.setString(1, username);
+                statement.setInt(2, money);
+                statement.setString(3, username);
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            logger.error("SQL exception", e);
+        }
     }
 
     public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
@@ -47,7 +62,6 @@ public class UserMySqlDao implements UserDao {
             if (rs.next()) {
                 user.setId(rs.getInt(1));
                 user.setUsername(rs.getString(2));
-                user.setPassword(rs.getString(3));
                 user.setRole(Role.valueOf(rs.getString(4)));
                 user.setMoney(rs.getInt(5));
                 user.setFirstName(rs.getString(6));
@@ -55,6 +69,7 @@ public class UserMySqlDao implements UserDao {
             } else {
                 throw new IncorrectUsernameOrPasswordException();
             }
+            rs.close();
         }
 
         return user;
@@ -82,10 +97,6 @@ public class UserMySqlDao implements UserDao {
             logger.error("SQL exception", e);
         }
     }
-    //TODO delete
-    public static void main(String[] args) {
-        System.out.println(new UserMySqlDao().hashPassword("admin"));
-    }
 
     private String hashPassword(String password) {
         String salt = "1234";
@@ -101,6 +112,16 @@ public class UserMySqlDao implements UserDao {
             return Hex.encodeHexString(res);
         } catch ( NoSuchAlgorithmException | InvalidKeySpecException e ) {
             logger.error("Hash algorithm does not work");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
