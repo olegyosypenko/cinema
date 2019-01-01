@@ -36,6 +36,7 @@ public class AuthFilter implements Filter {
         map.put("buy-tickets-page", Collections.singletonList(Role.USER));
         map.put("buy-tickets", Collections.singletonList(Role.USER));
         map.put("your-tickets", Collections.singletonList(Role.USER));
+        map.put("film", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
     }
     @Override
     public void init(FilterConfig filterConfig) {

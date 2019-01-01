@@ -37,6 +37,7 @@ public class MainServlet extends HttpServlet {
         map.put("buy-tickets-page", new BuyTicketsPageCommand());
         map.put("buy-tickets", new BuyTicketsCommand());
         map.put("your-tickets", new ShowTicketsByUserCommand());
+        map.put("film", new ShowFilmCommand());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
