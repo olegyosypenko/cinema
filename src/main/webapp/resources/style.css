@@ -217,3 +217,9 @@ a {
     transition: all 0.3s ease;
     cursor: pointer;
 }
+
+.film {
+    font-size: 20px;
+}
+
+.film-image

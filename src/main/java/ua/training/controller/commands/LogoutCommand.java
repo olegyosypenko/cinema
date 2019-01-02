@@ -1,24 +1,16 @@
 package ua.training.controller.commands;
 
-import ua.training.model.entity.User;
-
-import java.io.IOException;
-import java.util.List;
+import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class LogoutCommand extends Command {
-
+    Logger logger = Logger.getLogger(LogoutCommand.class);
     @Override
-    public void process() throws IOException {
-        List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
-        User user = (User) httpSession.getAttribute("user");
-        for (int i = 0; i < loggedUsers.size(); i++) {
-            if (loggedUsers.get(i).getUsername().equals(user.getUsername())) {
-                loggedUsers.remove(i);
-                i--;
-            }
-        }
-        context.setAttribute("logged-users", loggedUsers);
+    public void process(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
         httpSession.invalidate();
-        sendRedirect("goodbye");
+        logger.info("Invalidate session invoked!");
+        sendRedirect("guest/goodbye");
     }
 }

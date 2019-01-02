@@ -2,6 +2,7 @@ package ua.training.controller;
 
 import org.apache.log4j.Logger;
 import ua.training.controller.commands.*;
+import ua.training.controller.util.UriParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,26 +19,27 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        map.put("home", new HomeCommand());
-        map.put("welcome", new WelcomeCommand());
-        map.put("login-page", new LoginPageCommand());
-        map.put("register-page", new RegisterPageCommand());
-        map.put("login", new LoginCommand());
-        map.put("register", new RegisterCommand());
-        map.put("logout", new LogoutCommand());
-        map.put("goodbye", new GoodbyeCommand());
-        map.put("create-film-page", new CreateFilmPageCommand());
-        map.put("create-film", new CreateFilmCommand());
-        map.put("create-seance-page", new CreateSeancePageCommand());
-        map.put("create-seance", new CreateSeanceCommand());
-        map.put("films", new DisplayAllFilmsCommand());
-        map.put("schedule", new ShowSeancesByDateCommand());
-        map.put("profile", new ProfileCommand());
-        map.put("add-money", new AddMoneyCommand());
-        map.put("buy-tickets-page", new BuyTicketsPageCommand());
-        map.put("buy-tickets", new BuyTicketsCommand());
-        map.put("your-tickets", new ShowTicketsByUserCommand());
-        map.put("film", new ShowFilmCommand());
+        map.put("free/home", new HomeCommand());
+        map.put("logged/welcome", new WelcomeCommand());
+        map.put("guest/login-page", new LoginPageCommand());
+        map.put("guest/register-page", new RegisterPageCommand());
+        map.put("guest/login", new LoginCommand());
+        map.put("guest/register", new RegisterCommand());
+        map.put("logged/logout", new LogoutCommand());
+        map.put("guest/goodbye", new GoodbyeCommand());
+        map.put("admin/create-film-page", new CreateFilmPageCommand());
+        map.put("admin/create-film", new CreateFilmCommand());
+        map.put("admin/create-seance-page", new CreateSeancePageCommand());
+        map.put("admin/create-seance", new CreateSeanceCommand());
+        map.put("free/films", new DisplayAllFilmsCommand());
+        map.put("free/schedule", new ShowSeancesByDateCommand());
+        map.put("logged/profile", new ProfileCommand());
+        map.put("user/add-money", new AddMoneyCommand());
+        map.put("free/buy-tickets-page", new BuyTicketsPageCommand());
+        map.put("user/buy-tickets", new BuyTicketsCommand());
+        map.put("user/your-tickets", new ShowTicketsByUserCommand());
+        map.put("free/film", new ShowFilmCommand());
+        map.put("admin/delete-seance", new DeleteSeanceCommand());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,10 +50,11 @@ public class MainServlet extends HttpServlet {
         process(request, response);
     }
 
-    protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
-        String commandName = (String) request.getAttribute("command");
+    protected void process(HttpServletRequest request, HttpServletResponse response) {
+        String commandName = UriParser.getCommandNameFromUri(request.getRequestURI());
+        logger.info("Command name: " + commandName);
         Command command = map.get(commandName);
         command.init(request.getServletContext(), request, response);
-        command.process();
+        command.process(request);
     }
 }

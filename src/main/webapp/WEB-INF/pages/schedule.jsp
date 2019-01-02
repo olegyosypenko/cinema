@@ -10,7 +10,7 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <div class="links">
     <c:forEach items="${days}" var="day">
-        <a href="${pageContext.request.contextPath}/servlet/schedule/<fmt:formatDate value="${day}"  pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${day}"  pattern="EEE"/></a>
+        <a href="${pageContext.request.contextPath}/servlet/free/schedule/<fmt:formatDate value="${day}"  pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${day}"  pattern="EEE"/></a>
     </c:forEach>
 
 </div>
@@ -22,7 +22,8 @@
             <div><fmt:message key="seance.start.label" bundle="${language}"/> : <fmt:formatDate value="${seance.startTime}"  pattern="HH:mm"/></div>
             <div><fmt:message key="seance.duration.label" bundle="${language}"/> : ${seance.duration}</div>
             <div><fmt:message key="seance.price.label" bundle="${language}"/> : ${seance.price}</div>
-            <a href="${pageContext.request.contextPath}/servlet/buy-tickets-page/${seance.id}"><fmt:message key="buy.tickets.label" bundle="${language}"/></a>
+            <a href="${pageContext.request.contextPath}/servlet/free/buy-tickets-page/${seance.id}"><fmt:message key="buy.tickets.label" bundle="${language}"/></a>
+            <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="buy.tickets.label" bundle="${language}"/></a>
         </div>
     </c:forEach>
 </div>

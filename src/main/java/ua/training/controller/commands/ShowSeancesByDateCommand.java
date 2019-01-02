@@ -3,8 +3,7 @@ package ua.training.controller.commands;
 import org.apache.log4j.Logger;
 import ua.training.model.service.SeanceService;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,8 +13,7 @@ import java.util.List;
 public class ShowSeancesByDateCommand extends Command {
     private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
     @Override
-    public void process() {
-        SeanceService seanceService = new SeanceService();
+    public void process(HttpServletRequest request) {
         Date date;
         String[] requestParts = request.getRequestURI().split("/");
         String dateString = requestParts[requestParts.length - 1];
@@ -27,8 +25,10 @@ public class ShowSeancesByDateCommand extends Command {
             logger.error("Incorrect input error: " + dateString, e);
         }
         request.setAttribute("days", getAvailableDays());
-        request.setAttribute("seances", seanceService.getSeancesByDate(date));
-        forward("/WEB-INF/pages/schedule.jsp");
+        try (SeanceService seanceService = new SeanceService()) {
+            request.setAttribute("seances", seanceService.getSeancesByDate(date));
+            forward("/WEB-INF/pages/schedule.jsp");
+        }
     }
 
     public List<Date> getAvailableDays() {

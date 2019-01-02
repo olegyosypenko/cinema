@@ -96,14 +96,12 @@ public class SeanceMySqlDao implements SeanceDao {
     @Override
     public void deleteSeanceById(int seanceId) {
 
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
+        String query = BundlePool.getBundle().getString("delete.seance.by.id.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, seanceId);
+            statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

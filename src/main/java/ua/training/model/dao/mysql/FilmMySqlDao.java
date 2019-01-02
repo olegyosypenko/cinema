@@ -84,13 +84,4 @@ public class FilmMySqlDao implements FilmDao {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

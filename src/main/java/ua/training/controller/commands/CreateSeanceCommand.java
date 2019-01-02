@@ -4,17 +4,15 @@ import ua.training.model.entity.Film;
 import ua.training.model.entity.Seance;
 import ua.training.model.service.SeanceService;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class CreateSeanceCommand extends Command {
     @Override
-    public void process() throws IOException {
+    public void process(HttpServletRequest request) {
         String startTimeString = request.getParameter("start-time");
         int price = Integer.parseInt(request.getParameter("price"));
         int filmId = Integer.parseInt(request.getParameter("film-id"));
@@ -30,8 +28,9 @@ public class CreateSeanceCommand extends Command {
             e.printStackTrace();
         }
         seance.setPrice(price);
-        SeanceService seanceService = new SeanceService();
-        seanceService.createSeance(seance);
-        sendRedirect("home");
+        try (SeanceService seanceService = new SeanceService()) {
+            seanceService.createSeance(seance);
+        }
+        sendRedirect("admin/create-seance-page");
     }
 }

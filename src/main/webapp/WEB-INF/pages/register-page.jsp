@@ -7,8 +7,9 @@
 --%>
 
 <%@include file="../parts/header.jspf"%>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <div class="form">
-    <form class="register-form" method="post" action="${pageContext.request.contextPath}/servlet/register">
+    <form class="register-form" method="post" action="${pageContext.request.contextPath}/servlet/guest/register">
         <input name="first-name" type="text" placeholder="<fmt:message key="user.firstname.query" bundle="${language}"/>"/>
         <input name="first-name-en" type="text" placeholder="<fmt:message key="user.firstnameEN.query" bundle="${language}"/>"/>
         <input name="last-name" type="text" placeholder="<fmt:message key="user.lastname.query" bundle="${language}"/>"/>

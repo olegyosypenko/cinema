@@ -1,19 +1,18 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.MainServlet;
 import ua.training.model.dto.UserDto;
-import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class RegisterCommand extends Command {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(RegisterCommand.class);
 
     @Override
-    public void process() throws ServletException, IOException {
+    public void process(HttpServletRequest request) {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
         String firstNameEN = request.getParameter("first-name-en");
@@ -27,8 +26,7 @@ public class RegisterCommand extends Command {
         user.setLastNameEN(lastNameEN);
         user.setUsername(username);
         user.setPassword(password);
-        UserService userService = new UserService();
-        try {
+        try (UserService userService = new UserService()){
             userService.createUser(user);
         } catch (Exception e) {
             logger.error("Username is taken exception", e);

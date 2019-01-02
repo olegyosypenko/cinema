@@ -9,24 +9,25 @@ import ua.training.model.entity.Film;
 import java.sql.SQLException;
 import java.util.List;
 
-public class FilmService {
+public class FilmService implements AutoCloseable {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
     public List<Film> getAllFilms() {
-        try (FilmDao filmDao = daoFactory.createFilmDao()) {
-            return filmDao.getAllFilms();
-        }
+        FilmDao filmDao = daoFactory.createFilmDao();
+        return filmDao.getAllFilms();
 
     }
     public void createFilm(FilmDto film) {
-        try (FilmDao filmDao = daoFactory.createFilmDao()) {
-            filmDao.createFilm(film);
-        }
+        FilmDao filmDao = daoFactory.createFilmDao();
+        filmDao.createFilm(film);
     }
 
     public Film getFilmById(int filmId) {
-        try (FilmDao filmDao = daoFactory.createFilmDao()) {
-            return filmDao.getFilmById(filmId);
-        }
+        FilmDao filmDao = daoFactory.createFilmDao();
+        return filmDao.getFilmById(filmId);
+    }
+
+    public void close() {
+        daoFactory.getTransaction().close();
     }
 }

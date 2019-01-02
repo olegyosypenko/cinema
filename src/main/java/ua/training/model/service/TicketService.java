@@ -6,22 +6,22 @@ import ua.training.model.entity.Ticket;
 
 import java.util.List;
 
-public class TicketService {
+public class TicketService implements AutoCloseable {
     private DaoFactory daoFactory = DaoFactory.getInstance();
     public List<Ticket> getTicketsBySeanceId(int id) {
-        try (TicketDao ticketDao = daoFactory.createTicketDao()) {
-            return ticketDao.getTicketsBySeanceId(id);
-        }
+        TicketDao ticketDao = daoFactory.createTicketDao();
+        return ticketDao.getTicketsBySeanceId(id);
     }
     public List<Ticket> getTicketsByUserId(int id) {
-        try (TicketDao ticketDao = daoFactory.createTicketDao()) {
-            return ticketDao.getTicketsByUserId(id);
-        }
+        TicketDao ticketDao = daoFactory.createTicketDao();
+        return ticketDao.getTicketsByUserId(id);
     }
 
     public void createTickets(List<Ticket> tickets) {
-        try (TicketDao ticketDao = daoFactory.createTicketDao()) {
-            ticketDao.createTickets(tickets);
-        }
+        TicketDao ticketDao = daoFactory.createTicketDao();
+        ticketDao.createTickets(tickets);
+    }
+    public void close() {
+        daoFactory.getTransaction().close();
     }
 }

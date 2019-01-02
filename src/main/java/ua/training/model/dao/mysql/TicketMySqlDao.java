@@ -3,20 +3,16 @@ package ua.training.model.dao.mysql;
 import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.TicketDao;
-import ua.training.model.entity.Film;
-import ua.training.model.entity.Hall;
-import ua.training.model.entity.Seance;
-import ua.training.model.entity.Ticket;
+import ua.training.model.entity.*;
 
 import java.sql.*;
 import java.util.*;
 
 public class TicketMySqlDao implements TicketDao {
-    private static final String GET_TICKETS_BY_SEANCE_ID = "SELECT tickets.row, tickets.seat FROM tickets WHERE seance_id = ?;";
     private static final String INSERT_TICKETS = "INSERT INTO tickets(user_id, seance_id, tickets.row, seat) VALUES (?, ?, ?, ?)";
     private final Connection connection;
     private Logger logger = Logger.getLogger(TicketMySqlDao.class);
-    public TicketMySqlDao(Connection connection) {
+    TicketMySqlDao(Connection connection) {
         this.connection = connection;
     }
 
@@ -28,19 +24,34 @@ public class TicketMySqlDao implements TicketDao {
 
     @Override
     public void deleteTicketsBySeanceId(int id) {
-
+        String query = BundlePool.getBundle().getString("delete.tickets.by.seance.id.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public List<Ticket> getTicketsBySeanceId(int id) {
-        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
-        try (PreparedStatement statement = connection.prepareStatement(GET_TICKETS_BY_SEANCE_ID)) {
+        String query = BundlePool.getBundle().getString("select.tickets.by.seance.id.query");
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Ticket ticket = new Ticket();
-                ticket.setRow(resultSet.getInt(1));
-                ticket.setSeat(resultSet.getInt(2));
+                Seance seance = new Seance();
+                User user = new User();
+                seance.setId(id);
+                seance.setPrice(resultSet.getInt(1));
+                ticket.setRow(resultSet.getInt(2));
+                ticket.setSeat(resultSet.getInt(3));
+                user.setId(resultSet.getInt(4));
+                ticket.setSeance(seance);
+                ticket.setUser(user);
                 tickets.add(ticket);
+
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -52,7 +63,7 @@ public class TicketMySqlDao implements TicketDao {
     @Override
     public List<Ticket> getTicketsByUserId(int userId) {
         List<Ticket> tickets = new ArrayList<>();
-        String query = BundlePool.getBundle().getString("select.tickets.by.id.query");
+        String query = BundlePool.getBundle().getString("select.tickets.by.user.id.query");
         Map<Integer, Seance> seances = new HashMap<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userId);
@@ -90,7 +101,7 @@ public class TicketMySqlDao implements TicketDao {
     }
 
     @Override
-    public void createTickets(List<Ticket> tickets) {
+    public void createTickets(List<Ticket> tickets) { // ToDo refactor method into serveral DAO methods all the logic put in service
         try {
 
             connection.setAutoCommit(false);
@@ -143,10 +154,8 @@ public class TicketMySqlDao implements TicketDao {
             e.printStackTrace();
         }
         try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET money = money - ? WHERE id = ?")) {
-
             statement.setInt(1, tickets.size() * tickets.get(0).getSeance().getPrice());
             statement.setInt(2, tickets.get(0).getUser().getId());
-
             statement.execute();
             connection.commit();
         } catch (SQLException e) {
@@ -158,15 +167,4 @@ public class TicketMySqlDao implements TicketDao {
             }
         }
     }
-
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

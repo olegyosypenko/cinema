@@ -17,6 +17,7 @@ public class HallMySqlDao implements HallDao {
     @Override
     public Hall getHallById(int id) {
         String query = BundlePool.getBundle().getString("get.hall.query");
+
         Hall hall = new Hall();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -31,14 +32,5 @@ public class HallMySqlDao implements HallDao {
 
         }
         return hall;
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

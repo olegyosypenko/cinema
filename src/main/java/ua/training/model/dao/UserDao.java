@@ -6,11 +6,11 @@ import ua.training.model.entity.User;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface UserDao extends AutoCloseable {
+public interface UserDao {
     User getUserById(int id);
     List<User> getUsersBySeanceId(int id);
-    void addMoneyToUser(String username, int money);
+    void addMoneyToUser(int id, int money);
     void createUser(UserDto user) throws SQLException;
     User getUserByUsernameAndPassword(String username, String password) throws SQLException;
-    void close();
+    void addMoneyToUsers(List<User> users, List<Integer> money);
 }

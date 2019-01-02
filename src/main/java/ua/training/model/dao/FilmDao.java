@@ -6,9 +6,8 @@ import ua.training.model.entity.Film;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface FilmDao extends AutoCloseable {
+public interface FilmDao {
     Film getFilmById(int id);
     List<Film> getAllFilms();
     void createFilm(FilmDto film);
-    void close();
 }

@@ -3,12 +3,11 @@ package ua.training.controller.commands;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.service.FilmService;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 
 public class CreateFilmCommand extends Command {
     @Override
-    public void process() throws IOException {
+    public void process(HttpServletRequest request) {
         String name = request.getParameter("name");
         String nameEN = request.getParameter("name-en");
         String genre = request.getParameter("genre");
@@ -32,8 +31,9 @@ public class CreateFilmCommand extends Command {
         film.setDescriptionEN(descriptionEN);
         film.setImageLink(imageLink);
         film.setImageLinkEN(imageLinkEN);
-        FilmService filmService = new FilmService();
-        filmService.createFilm(film);
-        sendRedirect("home");
+        try (FilmService filmService = new FilmService()) {
+            filmService.createFilm(film);
+            sendRedirect("admin/create-film-page");
+        }
     }
 }

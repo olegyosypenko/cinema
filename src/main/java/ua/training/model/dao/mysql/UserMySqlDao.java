@@ -2,6 +2,7 @@ package ua.training.model.dao.mysql;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
+import ua.training.model.BundlePool;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
@@ -19,9 +20,7 @@ public class UserMySqlDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserMySqlDao.class);
     private static final String CREATE_USER = "INSERT INTO users(username, password, role, money, first_name, first_name_en, second_name, second_name_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE username=? AND password=?;";
-    private static final String UPDATE_MONEY = "UPDATE users " +
-            "SET money = (SELECT money WHERE username = ?) + ?  " +
-            "WHERE username = ?;";
+
     private final Connection connection;
 
     public UserMySqlDao(Connection connection) {
@@ -38,12 +37,12 @@ public class UserMySqlDao implements UserDao {
     }
 
     @Override
-    public void addMoneyToUser(String username, int money) {
+    public void addMoneyToUser(int id, int money) {
+        String query = BundlePool.getBundle().getString("update.money.query");
         try {
-            try (PreparedStatement statement = connection.prepareStatement(UPDATE_MONEY)) {
-                statement.setString(1, username);
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, id);
                 statement.setInt(2, money);
-                statement.setString(3, username);
                 statement.execute();
             }
         } catch (SQLException e) {
@@ -69,14 +68,33 @@ public class UserMySqlDao implements UserDao {
             } else {
                 throw new IncorrectUsernameOrPasswordException();
             }
-            rs.close();
         }
-
         return user;
     }
 
     @Override
+    public void addMoneyToUsers(List<User> users, List<Integer> money) {
+        logger.debug("Number of users: " + users.size());
+        logger.debug("Number of money items: " + money.size());
+        String query = BundlePool.getBundle().getString("update.money.query");
+        try {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                for (int i = 0; i < users.size() && i < money.size(); i++) {
+                    statement.setInt(1, money.get(i));
+                    statement.setInt(2, users.get(i).getId());
+                    statement.addBatch();
+                    statement.clearParameters();
+                }
+                statement.executeBatch();
+            }
+        } catch (SQLException e) {
+            logger.error("SQL exception", e);
+        }
+    }
+
+    @Override
     public void createUser(UserDto user) {
+
         String hashedPassword = hashPassword(user.getPassword());
         try {
             try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
@@ -112,16 +130,6 @@ public class UserMySqlDao implements UserDao {
             return Hex.encodeHexString(res);
         } catch ( NoSuchAlgorithmException | InvalidKeySpecException e ) {
             logger.error("Hash algorithm does not work");
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

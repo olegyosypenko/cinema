@@ -1,9 +1,7 @@
 package ua.training.controller.filters;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.commands.BuyTicketsCommand;
-import ua.training.controller.commands.BuyTicketsPageCommand;
-import ua.training.controller.commands.ShowTicketsByUserCommand;
+import ua.training.controller.util.UriParser;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
@@ -14,51 +12,38 @@ import java.io.IOException;
 import java.util.*;
 
 public class AuthFilter implements Filter {
-    private static final Logger logger = Logger.getLogger(AuthFilter.class);
-    private Map<String, List<Role>> map = new HashMap<>();
-    {
-        map.put("home", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
-        map.put("welcome", Arrays.asList(Role.ADMIN, Role.USER));
-        map.put("login-page", Collections.singletonList(Role.UNKNOWN));
-        map.put("register-page", Collections.singletonList(Role.UNKNOWN));
-        map.put("login", Collections.singletonList(Role.UNKNOWN));
-        map.put("register", Collections.singletonList(Role.UNKNOWN));
-        map.put("logout", Arrays.asList(Role.ADMIN, Role.USER));
-        map.put("goodbye", Collections.singletonList(Role.UNKNOWN));
-        map.put("create-film-page", Collections.singletonList(Role.ADMIN));
-        map.put("create-film", Collections.singletonList(Role.ADMIN));
-        map.put("create-seance-page", Collections.singletonList(Role.ADMIN));
-        map.put("create-seance", Collections.singletonList(Role.ADMIN));
-        map.put("films", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
-        map.put("schedule", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
-        map.put("profile", Collections.singletonList(Role.USER));
-        map.put("add-money", Collections.singletonList(Role.USER));
-        map.put("buy-tickets-page", Collections.singletonList(Role.USER));
-        map.put("buy-tickets", Collections.singletonList(Role.USER));
-        map.put("your-tickets", Collections.singletonList(Role.USER));
-        map.put("film", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
-    }
+    private final Logger logger = Logger.getLogger(AuthFilter.class);
+    private Map<String, List<Role>> map;
+
     @Override
     public void init(FilterConfig filterConfig) {
-
+        map = new HashMap<>();
+        map.put("user", Collections.singletonList(Role.USER));
+        map.put("admin", Collections.singletonList(Role.ADMIN));
+        map.put("guest", Collections.singletonList(Role.UNKNOWN));
+        map.put("logged", Arrays.asList(Role.ADMIN, Role.USER));
+        map.put("free", Arrays.asList(Role.ADMIN, Role.USER, Role.UNKNOWN));
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String uriWithoutContextPath = request.getRequestURI().replace(request.getContextPath(), "");
-        String commandName = uriWithoutContextPath.split("/")[2];
-        logger.info("Command name: " + commandName);
-        User user = ((User) request.getSession().getAttribute("user"));
-        Role role = user.getRole();
-        if (map.get(commandName) != null && map.get(commandName).contains(role)) {
-            request.setAttribute("command", commandName);
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        User user = (User) request.getSession().getAttribute("user");
+        String uri = request.getRequestURI();
+        String accessLabel = UriParser.getAccessLabel(uri);
+
+        if (map.getOrDefault(accessLabel, Collections.emptyList()).contains(user.getRole())) {
             filterChain.doFilter(servletRequest,servletResponse);
         } else {
-            ((HttpServletResponse) servletResponse).sendRedirect(request.getContextPath() + "/servlet/home");
+            logger.info("URI: " + uri);
+            logger.info("accessLabel: " + accessLabel);
+            logger.info("user role: " + user.getRole());
+            response.sendError(403, "Access forbidden");
         }
     }
+
+
 
     @Override
     public void destroy() {

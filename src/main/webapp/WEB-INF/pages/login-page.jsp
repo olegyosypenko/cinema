@@ -8,7 +8,7 @@
 
 <%@include file="../parts/header.jspf"%>
     <div class="form">
-        <form class="login-form" method="post" action="${pageContext.request.contextPath}/servlet/login">
+        <form class="login-form" method="post" action="${pageContext.request.contextPath}/servlet/guest/login">
             <input name="username" type="text" placeholder="<fmt:message key="user.username.query" bundle="${language}"/>" required pattern=".{4,}" title="Four or more characters"/>
             <input name="password" type="password" placeholder="<fmt:message key="user.password.query" bundle="${language}"/>" required pattern=".{4,}" title="Four or more characters"/>
             <button><fmt:message key="login.label" bundle="${language}"/></button>

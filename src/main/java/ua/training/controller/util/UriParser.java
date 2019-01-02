@@ -11,4 +11,16 @@ public class UriParser {
         logger.info("index: " + indexPart);
         return Integer.parseInt(indexPart);
     }
+
+    public static String getCommandNameFromUri(String uri) {
+        String result = uri.replaceFirst(".*/servlet/", "");
+        result = result.replaceFirst("/[0-9-]+", "");
+        return result;
+    }
+
+    public static String getAccessLabel(String uri) {
+        String result = uri.replaceFirst(".*/servlet/", "");
+        result = result.replaceAll("/.*", "");
+        return result;
+    }
 }

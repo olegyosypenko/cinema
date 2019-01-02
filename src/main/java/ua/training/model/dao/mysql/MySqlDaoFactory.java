@@ -7,33 +7,43 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class MySqlDaoFactory extends DaoFactory {
-    DataSource dataSource = ConnectionPool.getDataSource();
+    private DataSource dataSource = ConnectionPool.getDataSource();
+    private Connection connection = getConnection();
 
     public MySqlDaoFactory() {}
 
     @Override
     public FilmDao createFilmDao() {
-        return new FilmMySqlDao(getConnection());
+        return new FilmMySqlDao(connection);
     }
 
     @Override
     public SeanceDao createSeanceDao() {
-        return new SeanceMySqlDao(getConnection());
+        return new SeanceMySqlDao(connection);
     }
 
 
     @Override
     public UserDao createUserDao() {
-        return new UserMySqlDao(getConnection());
+        return new UserMySqlDao(connection);
     }
+
+    @Override
+    public Transaction getTransaction() {
+        return new TransactionMySql(connection);
+    }
+
     @Override
     public TicketDao createTicketDao() {
-        return new TicketMySqlDao(getConnection());
+        return new TicketMySqlDao(connection);
     }
     @Override
     public HallDao createHallDao() {
-        return new HallMySqlDao(getConnection());
+        return new HallMySqlDao(connection);
     }
+
+
+
 
     private Connection getConnection() {
         try {

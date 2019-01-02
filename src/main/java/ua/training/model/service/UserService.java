@@ -7,22 +7,23 @@ import ua.training.model.entity.User;
 
 import java.sql.SQLException;
 
-public class UserService {
+public class UserService implements AutoCloseable {
     private DaoFactory daoFactory = DaoFactory.getInstance();
     public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
-        try (UserDao userDao = daoFactory.createUserDao()) {
-            return userDao.getUserByUsernameAndPassword(username, password);
-        }
+        UserDao userDao = daoFactory.createUserDao();
+        return userDao.getUserByUsernameAndPassword(username, password);
     }
     public void createUser(UserDto user) throws SQLException {
-        try (UserDao userDao = daoFactory.createUserDao()) {
-            userDao.createUser(user);
-        }
+        UserDao userDao = daoFactory.createUserDao();
+        userDao.createUser(user);
     }
 
-    public void addMoneyByUsername(String username, int money) {
-        try (UserDao userDao = daoFactory.createUserDao()) {
-            userDao.addMoneyToUser(username, money);
-        }
+    public void addMoneyByUsername(int id, int money) {
+        UserDao userDao = daoFactory.createUserDao();
+        userDao.addMoneyToUser(id, money);
+    }
+
+    public void close() {
+        daoFactory.getTransaction().close();
     }
 }

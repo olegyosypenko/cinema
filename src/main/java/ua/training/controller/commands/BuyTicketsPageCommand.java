@@ -3,30 +3,35 @@ package ua.training.controller.commands;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import ua.training.controller.util.UriParser;
 import ua.training.model.dto.SeanceParametersDto;
 import ua.training.model.entity.Hall;
 import ua.training.model.entity.Ticket;
 import ua.training.model.service.HallService;
 import ua.training.model.service.SeanceService;
 import ua.training.model.service.TicketService;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class BuyTicketsPageCommand extends Command {
     private Logger logger = Logger.getLogger(BuyTicketsPageCommand.class);
     @Override
-    public void process() {
-        SeanceService seanceService = new SeanceService();
-        TicketService ticketService = new TicketService();
-        HallService hallService = new HallService();
-        String[] requestParts = request.getRequestURI().split("/");
-        int seanceId = Integer.parseInt(requestParts[requestParts.length - 1]);
-        List<Ticket> tickets = ticketService.getTicketsBySeanceId(seanceId);
-        Hall hall = hallService.getHall(1);
-        SeanceParametersDto parameters = createParameters(hall, tickets);
-        String jsonParameters = objectToJson(parameters);
-        request.setAttribute("seance", seanceService.getSeanceDtoById(seanceId));
-        request.setAttribute("parameters", jsonParameters);
-        forward("/WEB-INF/pages/buy-tickets.jsp");
+    public void process(HttpServletRequest request) {
+        try (SeanceService seanceService = new SeanceService();
+             TicketService ticketService = new TicketService();
+             HallService hallService = new HallService()) {
+
+            int seanceId = UriParser.getIndexFromUri(request.getRequestURI());
+            List<Ticket> tickets = ticketService.getTicketsBySeanceId(seanceId);
+            Hall hall = hallService.getHall(1);
+            SeanceParametersDto parameters = createParameters(hall, tickets);
+            String jsonParameters = objectToJson(parameters);
+            request.setAttribute("seance", seanceService.getSeanceDtoById(seanceId));
+            request.setAttribute("parameters", jsonParameters);
+            forward("/WEB-INF/pages/buy-tickets.jsp");
+        }
+
     }
 
     private String objectToJson(SeanceParametersDto seanceParameters) {
