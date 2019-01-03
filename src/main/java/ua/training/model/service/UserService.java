@@ -18,7 +18,7 @@ public class UserService implements AutoCloseable {
         userDao.createUser(user);
     }
 
-    public void addMoneyByUsername(int id, int money) {
+    public void addMoneyByUserId(int id, int money) {
         UserDao userDao = daoFactory.createUserDao();
         userDao.addMoneyToUser(id, money);
     }
