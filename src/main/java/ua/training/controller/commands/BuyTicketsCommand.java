@@ -1,5 +1,6 @@
 package ua.training.controller.commands;
 
+import org.apache.log4j.Logger;
 import ua.training.model.entity.Seance;
 import ua.training.model.entity.Ticket;
 import ua.training.model.entity.User;
@@ -12,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuyTicketsCommand extends Command {
+    private Logger logger = Logger.getLogger(BuyTicketsCommand.class);
     @Override
     public void process(HttpServletRequest request) {
+        logger.trace("process start");
         HttpSession httpSession = request.getSession();
         try (SeanceService seanceService = new SeanceService(); TicketService ticketService = new TicketService()) {
             List<Ticket> tickets = new ArrayList<>();
@@ -35,9 +38,9 @@ public class BuyTicketsCommand extends Command {
                 ticket.setSeance(seance);
                 ticket.setUser(user);
                 tickets.add(ticket);
-                ticketService.createTickets(tickets);
-                sendRedirect("free/buy-tickets-page/" + seanceId);
             }
+            ticketService.createTickets(tickets);
+            sendRedirect("free/buy-tickets-page/" + seanceId);
         }
     }
 }

@@ -132,7 +132,9 @@ public class TicketMySqlDao implements TicketDao {
             }
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
+            logger.debug("Query to check if place is taken: " + query);
             if (resultSet.next()) {
+                logger.debug("Place is taken");
                 throw new RuntimeException("The place is taken");
             }
             statement.close();
