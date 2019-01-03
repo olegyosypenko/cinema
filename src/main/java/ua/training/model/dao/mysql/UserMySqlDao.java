@@ -19,8 +19,6 @@ import java.util.List;
 public class UserMySqlDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserMySqlDao.class);
     private static final String CREATE_USER = "INSERT INTO users(username, password, role, money, first_name, first_name_en, second_name, second_name_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String GET_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE username=? AND password=?;";
-
     private final Connection connection;
 
     public UserMySqlDao(Connection connection) {
@@ -52,9 +50,10 @@ public class UserMySqlDao implements UserDao {
 
     public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
         logger.info("Thread name in UserDAO" + Thread.currentThread().getName());
+        String query = BundlePool.getBundle().getString("select.user.by.username.password.query");
         String hashedPassword = hashPassword(password);
         User user = new User();
-        try (PreparedStatement statement = connection.prepareStatement(GET_BY_USERNAME_PASSWORD)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, hashedPassword);
             ResultSet rs = statement.executeQuery();
