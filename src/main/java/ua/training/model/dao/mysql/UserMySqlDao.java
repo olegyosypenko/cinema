@@ -41,8 +41,8 @@ public class UserMySqlDao implements UserDao {
         String query = BundlePool.getBundle().getString("update.money.query");
         try {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, id);
-                statement.setInt(2, money);
+                statement.setInt(1, money);
+                statement.setInt(2, id);
                 statement.execute();
             }
         } catch (SQLException e) {

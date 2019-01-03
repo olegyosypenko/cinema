@@ -12,14 +12,14 @@ public class AddMoneyCommand extends Command {
     @Override
     public void process(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
-        logger.info("Parameter money: " + request.getParameter("money"));
+        logger.trace("Parameter money: " + request.getParameter("money"));
         try (UserService userService = new UserService()){
             User user = (User) httpSession.getAttribute("user");
             int money = Integer.parseInt(request.getParameter("money"));
-            userService.addMoneyByUsername(user.getId(), money);
+            userService.addMoneyByUserId(user.getId(), money);
             sendRedirect("free/home");
         } catch (NumberFormatException e) {
-            logger.info("Not a number: " + Integer.parseInt(request.getParameter("money")), e);
+            logger.debug("Not a number: " + Integer.parseInt(request.getParameter("money")), e);
             sendRedirect("free/home");
         }
     }
