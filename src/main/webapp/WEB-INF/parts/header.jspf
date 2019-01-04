@@ -17,7 +17,7 @@
     <fmt:requestEncoding value="UTF-8" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style.css">
 </head>
-<body onload='init(${parameters}, "${sessionScope.lang}", ${seance.price})'>
+<body>
 <c:choose>
     <c:when test="${user.role=='UNKNOWN'}">
         <%@include file="../parts/guest-navbar.jspf"%>
