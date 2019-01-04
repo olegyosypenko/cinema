@@ -22,7 +22,7 @@ public abstract class Command {
         this.context = servletContext;
         this.response = servletResponse;
     }
-    public abstract void process(HttpServletRequest request);
+    public abstract void process(HttpServletRequest request, HttpServletResponse response);
 
     void forward(String target) {
         RequestDispatcher dispatcher = context.getRequestDispatcher(target);

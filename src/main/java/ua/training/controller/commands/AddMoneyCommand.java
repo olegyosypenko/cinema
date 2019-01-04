@@ -5,12 +5,13 @@ import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class AddMoneyCommand extends Command {
     private static final Logger logger = Logger.getLogger(AddMoneyCommand.class);
     @Override
-    public void process(HttpServletRequest request) {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession httpSession = request.getSession();
         logger.trace("Parameter money: " + request.getParameter("money"));
         try (UserService userService = new UserService()){

@@ -8,6 +8,7 @@ import ua.training.model.service.SeanceService;
 import ua.training.model.service.TicketService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class BuyTicketsCommand extends Command {
     private Logger logger = Logger.getLogger(BuyTicketsCommand.class);
     @Override
-    public void process(HttpServletRequest request) {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         logger.trace("process start");
         HttpSession httpSession = request.getSession();
         try (SeanceService seanceService = new SeanceService(); TicketService ticketService = new TicketService()) {
@@ -39,6 +40,7 @@ public class BuyTicketsCommand extends Command {
                 ticket.setUser(user);
                 tickets.add(ticket);
             }
+
             ticketService.createTickets(tickets);
             sendRedirect("free/buy-tickets-page/" + seanceId);
         }

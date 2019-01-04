@@ -4,15 +4,14 @@ import org.apache.log4j.Logger;
 import ua.training.model.dto.UserDto;
 import ua.training.model.service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 
 public class RegisterCommand extends Command {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(RegisterCommand.class);
 
     @Override
-    public void process(HttpServletRequest request) {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
         String firstNameEN = request.getParameter("first-name-en");

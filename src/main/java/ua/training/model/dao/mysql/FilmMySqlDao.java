@@ -2,7 +2,9 @@ package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
+import ua.training.model.dao.DaoFactory;
 import ua.training.model.dao.FilmDao;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.Film;
 
@@ -82,6 +84,17 @@ public class FilmMySqlDao implements FilmDao {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteFilmById(int id) {
+        String query = BundlePool.getBundle().getString("delete.film.query");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DaoException("Cannot execute query", e);
         }
     }
 }

@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.UserDao;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
@@ -65,7 +66,7 @@ public class UserMySqlDao implements UserDao {
                 user.setFirstName(rs.getString(5));
                 user.setLastName(rs.getString(6));
             } else {
-                throw new IncorrectUsernameOrPasswordException();
+                throw new DaoException("User not found");
             }
         }
         return user;
@@ -109,7 +110,7 @@ public class UserMySqlDao implements UserDao {
             }
         } catch (SQLIntegrityConstraintViolationException e) {
             logger.error("Not unique value", e);
-            throw new UsernameIsTakenException();
+            throw new DaoException("Username is taken", e);
         } catch (SQLException e) {
             logger.error("SQL exception", e);
         }

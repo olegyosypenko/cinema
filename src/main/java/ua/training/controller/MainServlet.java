@@ -31,7 +31,7 @@ public class MainServlet extends HttpServlet {
         map.put("admin/create-film", new CreateFilmCommand());
         map.put("admin/create-seance-page", new CreateSeancePageCommand());
         map.put("admin/create-seance", new CreateSeanceCommand());
-        map.put("free/films", new DisplayFilmsCommand());
+        map.put("free/films", new ShowFilmsCommand());
         map.put("free/schedule", new ShowSeancesByDateCommand());
         map.put("logged/profile", new ProfileCommand());
         map.put("user/add-money", new AddMoneyCommand());
@@ -40,6 +40,7 @@ public class MainServlet extends HttpServlet {
         map.put("user/your-tickets", new ShowTicketsByUserCommand());
         map.put("free/film", new ShowFilmCommand());
         map.put("admin/delete-seance", new DeleteSeanceCommand());
+        map.put("admin/delete-film", new DeleteFilmCommand());
         map.put("user/add-money-page", new AddMoneyPageCommand());
     }
 
@@ -51,11 +52,15 @@ public class MainServlet extends HttpServlet {
         process(request, response);
     }
 
-    protected void process(HttpServletRequest request, HttpServletResponse response) {
+    protected void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String commandName = UriParser.getCommandNameFromUri(request.getRequestURI());
         logger.info("Command name: " + commandName);
         Command command = map.get(commandName);
-        command.init(request.getServletContext(), request, response);
-        command.process(request);
-    }
+        if (command == null) {
+            response.sendError(404, "Page not found");
+        } else {
+            command.init(request.getServletContext(), request, response);
+            command.process(request, response);
+        }
+}
 }

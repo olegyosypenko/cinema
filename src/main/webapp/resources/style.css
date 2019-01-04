@@ -218,13 +218,19 @@ a {
     cursor: pointer;
 }
 
-.film {
+.item {
     font-size: 20px;
+    margin-bottom: 20px;
 }
 
-.film img {
-    width: 400px;
+.item img {
+    margin: 20px 0;
+    width: 300px;
     height: auto;
+}
+.item span {
+    font-weight: bold;
+    display: inline-block;
 }
 
 .pagination {
@@ -256,4 +262,8 @@ a {
     color: gray;
     border-color: gray;
     cursor: pointer;
+}
+
+.error-message {
+    font-size: 60px;
 }

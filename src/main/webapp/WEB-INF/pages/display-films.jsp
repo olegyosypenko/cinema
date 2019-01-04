@@ -12,11 +12,11 @@
 <%@include file="../parts/header.jspf"%>
 <div class="films">
     <c:forEach items="${films}" var="film">
-        <div class="film">
-            <div><fmt:message key="film.name.label" bundle="${language}"/> : ${film.name}</div>
-            <div><fmt:message key="film.genre.label" bundle="${language}"/> : ${film.genre}</div>
-            <div><fmt:message key="film.director.label" bundle="${language}"/> : ${film.director}</div>
-            <div><fmt:message key="film.rate.label" bundle="${language}"/> : ${film.rate}</div>
+        <div class="item">
+            <div><span><fmt:message key="film.name.label" bundle="${language}"/></span> : ${film.name}</div>
+            <div><span><fmt:message key="film.genre.label" bundle="${language}"/></span> : ${film.genre}</div>
+            <div><span><fmt:message key="film.director.label" bundle="${language}"/></span> : ${film.director}</div>
+            <div><span><fmt:message key="film.rate.label" bundle="${language}"/></span> : ${film.rate}</div>
             <a href="${pageContext.request.contextPath}/servlet/free/film/${film.id}"><fmt:message key="show.more.label" bundle="${language}"/></a>
         </div>
     </c:forEach>

@@ -7,12 +7,13 @@ import ua.training.model.service.FilmService;
 import ua.training.model.service.Paginator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class DisplayFilmsCommand extends Command {
-    private Logger logger = Logger.getLogger(DisplayFilmsCommand.class);
+public class ShowFilmsCommand extends Command {
+    private Logger logger = Logger.getLogger(ShowFilmsCommand.class);
     @Override
-    public void process(HttpServletRequest request) {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         try (FilmService filmService = new FilmService()) {
             List<Film> films = filmService.getAllFilms();
             int numberOfItems = 5;

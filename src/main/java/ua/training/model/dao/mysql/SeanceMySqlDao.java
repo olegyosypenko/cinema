@@ -2,6 +2,7 @@ package ua.training.model.dao.mysql;
 
 import ua.training.model.BundlePool;
 import ua.training.model.dao.SeanceDao;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.SeanceDto;
 import ua.training.model.entity.Seance;
 
@@ -35,7 +36,23 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public List<Seance> getSeancesByFilmId(int id) {
-        return null;
+        String query = BundlePool.getBundle().getString("select.seances.by.film.id.query");
+        List<Seance> list = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Seance seance = new Seance();
+                seance.setId(resultSet.getInt(1));
+                seance.setStartTime(resultSet.getTimestamp(2));
+                seance.setDuration(resultSet.getInt(3));
+                seance.setPrice(resultSet.getInt(4));
+                list.add(seance);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot find seances");
+        }
+        return list;
     }
 
     @Override

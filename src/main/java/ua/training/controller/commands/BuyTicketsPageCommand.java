@@ -10,16 +10,16 @@ import ua.training.model.service.SeanceService;
 import ua.training.model.service.TicketService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class BuyTicketsPageCommand extends Command {
     private Logger logger = Logger.getLogger(BuyTicketsPageCommand.class);
     @Override
-    public void process(HttpServletRequest request) {
+    public void process(HttpServletRequest request, HttpServletResponse response) {
         try (SeanceService seanceService = new SeanceService();
              TicketService ticketService = new TicketService();
              HallService hallService = new HallService()) {
-
             int seanceId = UriParser.getIndexFromUri(request.getRequestURI());
             List<Ticket> tickets = ticketService.getTicketsBySeanceId(seanceId);
             Hall hall = hallService.getHall(1);

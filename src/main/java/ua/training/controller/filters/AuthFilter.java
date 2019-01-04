@@ -32,14 +32,16 @@ public class AuthFilter implements Filter {
         User user = (User) request.getSession().getAttribute("user");
         String uri = request.getRequestURI();
         String accessLabel = UriParser.getAccessLabel(uri);
-
-        if (map.getOrDefault(accessLabel, Collections.emptyList()).contains(user.getRole())) {
+        List<Role> roles = map.get(accessLabel);
+        logger.info("URI: " + uri);
+        logger.info("accessLabel: " + accessLabel);
+        logger.info("user role: " + user.getRole());
+        if (roles == null) {
+            response.sendError(404, "Page not found");
+        } else if (roles.contains(user.getRole())) {
             filterChain.doFilter(servletRequest,servletResponse);
         } else {
-            logger.info("URI: " + uri);
-            logger.info("accessLabel: " + accessLabel);
-            logger.info("user role: " + user.getRole());
-            response.sendError(403, "Access forbidden");
+            response.sendError(403, "access.forbidden.label");
         }
     }
 

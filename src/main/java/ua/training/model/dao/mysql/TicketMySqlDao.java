@@ -3,6 +3,7 @@ package ua.training.model.dao.mysql;
 import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.TicketDao;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.*;
 
 import java.sql.*;
@@ -135,7 +136,7 @@ public class TicketMySqlDao implements TicketDao {
             logger.debug("Query to check if place is taken: " + query);
             if (resultSet.next()) {
                 logger.debug("Place is taken");
-                throw new RuntimeException("The place is taken");
+                throw new DaoException("The place is taken");
             }
             statement.close();
         } catch (SQLException e) {
