@@ -2,9 +2,10 @@ package ua.training.controller.commands;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class GoodbyeCommand extends Command {
+public class AddMoneyPageCommand extends Command {
+
     @Override
     public void process(HttpServletRequest request) {
-        forward("/WEB-INF/pages/goodbye.jsp");
+        forward("/WEB-INF/pages/add-money-page.jsp");
     }
 }

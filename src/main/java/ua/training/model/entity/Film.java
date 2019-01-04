@@ -12,5 +12,5 @@ public @Data class Film {
     private float rate;
     private String description;
     private String imageLink;
-    private List<String> seances;
+    private List<Seance> seances;
 }

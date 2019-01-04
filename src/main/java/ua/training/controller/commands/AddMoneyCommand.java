@@ -17,10 +17,12 @@ public class AddMoneyCommand extends Command {
             User user = (User) httpSession.getAttribute("user");
             int money = Integer.parseInt(request.getParameter("money"));
             userService.addMoneyByUserId(user.getId(), money);
-            sendRedirect("free/home");
+            user.setMoney(user.getMoney() + money);
+            sendRedirect("logged/profile");
         } catch (NumberFormatException e) {
-            logger.debug("Not a number: " + Integer.parseInt(request.getParameter("money")), e);
-            sendRedirect("free/home");
+            logger.debug("Not a number: " + request.getParameter("money"), e);
+            request.setAttribute("error", "incorrect.input");
+            forward("/WEB-INF/pages/add-money-page.jsp");
         }
     }
 }

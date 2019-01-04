@@ -60,10 +60,10 @@ public class UserMySqlDao implements UserDao {
             if (rs.next()) {
                 user.setId(rs.getInt(1));
                 user.setUsername(rs.getString(2));
-                user.setRole(Role.valueOf(rs.getString(4)));
-                user.setMoney(rs.getInt(5));
-                user.setFirstName(rs.getString(6));
-                user.setLastName(rs.getString(7));
+                user.setRole(Role.valueOf(rs.getString(3)));
+                user.setMoney(rs.getInt(4));
+                user.setFirstName(rs.getString(5));
+                user.setLastName(rs.getString(6));
             } else {
                 throw new IncorrectUsernameOrPasswordException();
             }

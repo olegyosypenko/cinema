@@ -38,31 +38,8 @@
 
 })(window);
 
-function init(parameters, lang, price) {
-    if (parameters === undefined) return;
-    var hall = document.getElementById("hall");
-    for (var i = 0; i < parameters.taken.length; i++) {
-        var html = "<div>";
-        for (var j = 0; j < parameters.taken[i].length; j++) {
-            if (lang === "uk") {
-                if (parameters.taken[i][j] === 1) {
-                    html += "<div class='taken seat hint hint--top' data-hint='Занято'></div>"
-                } else {
-                    html += "<div class='free seat hint hint--top' data-hint='Ряд: " + (i + 1) + " Місце: " + (j + 1) + " Ціна: " + price + " грн.' data-seat='" + (j + 1) + "' data-row='" + (i + 1) + "' data-price=" + price + "></div>"
-                }
-            } else {
-                if (parameters.taken[i][j] === 1) {
-                    html += "<div class='taken seat hint hint--top' data-hint='Taken'></div>"
-                } else {
-                    html += "<div class='free seat hint hint--top' data-hint='Row: " + (i + 1) + " Seat: " + (j + 1) + " Price: " + price + " uah.' data-seat='" + (j + 1) + "' data-row='" + (i + 1) + "' data-price=" + price + "></div>"
-                }
-            }
-        }
-        html += "</div>";
-        hall.innerHTML += html;
-    }
-    addListeners();
-}
+
+addListeners();
 
 function addListeners() {
     var seats = document.getElementsByClassName("free");

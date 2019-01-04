@@ -10,7 +10,7 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 
 <c:forEach items="${tickets}" var="ticket">
-    <div class="ticket">
+    <div class="item">
         <div><fmt:message key="film.name.label" bundle="${language}"/> : ${ticket.seance.film.name}</div>
         <div><fmt:message key="row.label" bundle="${language}"/> : ${ticket.row}</div>
         <div><fmt:message key="seat.label" bundle="${language}"/> : ${ticket.seat}</div>

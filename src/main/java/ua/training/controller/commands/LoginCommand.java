@@ -6,6 +6,7 @@ import ua.training.model.service.UserService;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -27,7 +28,7 @@ public class LoginCommand extends Command {
         @SuppressWarnings("unchecked")
         List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
         if (loggedUsers.contains(user)) {
-            logger.info("UserDto is already logged in");
+            logger.info("User is already logged in");
             sendRedirect("guest/login-page");
             return;
         }

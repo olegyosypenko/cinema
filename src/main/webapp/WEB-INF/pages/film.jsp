@@ -15,4 +15,8 @@
     <div><fmt:message key="film.rate.label" bundle="${language}"/> : ${film.description}</div>
     <img src="${film.imageLink}" alt="">
 </div>
+<fmt:message key="seances.label" bundle="${language}"/>
+<c:forEach items="${seances}" var="seance">
+    <div><a href="${pageContext.request.contextPath}/servlet/free/buy-tickets-page/${seance.id}">${seance.start-time}</a></div>
+</c:forEach>
 <%@include file="../parts/footer.jspf"%>

@@ -7,10 +7,16 @@
 --%>
 
 <%@include file="../parts/header.jspf"%>
-<div class="form">
-    <form method="post" action="${pageContext.request.contextPath}/servlet/add-money">
-        <input name="money" type="number" placeholder="<fmt:message key="profile.money.query" bundle="${language}"/>"/>
-        <button><fmt:message key="add.money" bundle="${language}"/></button>
-    </form>
+<div class="user">
+    <div><fmt:message key="user.firstname.label" bundle="${language}"/> : ${user.firstName}</div>
+    <div><fmt:message key="user.lastname.label" bundle="${language}"/> : ${user.lastName}</div>
+    <div><fmt:message key="user.role.label" bundle="${language}"/> : ${user.role}</div>
+    <div><fmt:message key="user.username.label" bundle="${language}"/> : ${user.username}</div>
+    <c:choose>
+        <c:when test="${user.role=='USER'}">
+            <div><fmt:message key="user.money.label" bundle="${language}"/> : ${user.money} <fmt:message key="currency.label" bundle="${language}"/></div>
+            <a href="${pageContext.request.contextPath}/servlet/user/add-money-page"><fmt:message key="add.money" bundle="${language}"/></a>
+        </c:when>
+    </c:choose>
 </div>
 <%@include file="../parts/footer.jspf"%>
