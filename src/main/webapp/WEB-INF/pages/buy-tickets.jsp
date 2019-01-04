@@ -20,6 +20,23 @@
 </h3>
 <div id="hall">
 
+    <c:forEach items="${parameters.taken}" var="row" varStatus="outerLoop">
+        <div>
+            <c:forEach items="${row}" var="seat" varStatus="innerLoop">
+                <c:choose>
+
+                    <c:when test="${seat == 0}">
+                        <div class='free seat hint hint--top'
+                             data-hint='<fmt:message key="row.label" bundle="${language}"/>: ${outerLoop.index + 1} <fmt:message key="seat.label" bundle="${language}"/>: ${outerLoop.index + 1} <fmt:message key="seance.price.label" bundle="${language}"/>: ${seance.price} <fmt:message key="currency.label" bundle="${language}"/>'
+                             data-seat='${innerLoop.index + 1}' data-row='${outerLoop.index + 1}' data-price='${seance.price}'></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class='taken seat hint hint--top' data-hint='<fmt:message key="taken.label" bundle="${language}"/>'></div>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </div>
+    </c:forEach>
 </div>
 <h3>
     <fmt:message key="whole.price.label" bundle="${language}"/> <span id="whole-price">0</span> <fmt:message key="currency.label" bundle="${language}"/>
