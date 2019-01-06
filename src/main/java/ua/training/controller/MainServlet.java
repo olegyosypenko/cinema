@@ -20,13 +20,11 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init() {
         map.put("free/home", new HomeCommand());
-        map.put("logged/welcome", new WelcomeCommand());
         map.put("guest/login-page", new LoginPageCommand());
         map.put("guest/register-page", new RegisterPageCommand());
         map.put("guest/login", new LoginCommand());
         map.put("guest/register", new RegisterCommand());
         map.put("logged/logout", new LogoutCommand());
-        map.put("guest/goodbye", new GoodbyeCommand());
         map.put("admin/create-film-page", new CreateFilmPageCommand());
         map.put("admin/create-film", new CreateFilmCommand());
         map.put("admin/create-seance-page", new CreateSeancePageCommand());

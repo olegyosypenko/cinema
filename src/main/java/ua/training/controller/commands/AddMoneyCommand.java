@@ -10,20 +10,21 @@ import javax.servlet.http.HttpSession;
 
 public class AddMoneyCommand extends Command {
     private static final Logger logger = Logger.getLogger(AddMoneyCommand.class);
+    private UserService userService = new UserService();
+
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession httpSession = request.getSession();
         logger.trace("Parameter money: " + request.getParameter("money"));
-        try (UserService userService = new UserService()){
+        try {
             User user = (User) httpSession.getAttribute("user");
             int money = Integer.parseInt(request.getParameter("money"));
             userService.addMoneyByUserId(user.getId(), money);
             user.setMoney(user.getMoney() + money);
-            sendRedirect("logged/profile");
+            sendRedirect("logged/profile?success=money-added");
         } catch (NumberFormatException e) {
             logger.debug("Not a number: " + request.getParameter("money"), e);
-            request.setAttribute("error", "incorrect.input");
-            forward("/WEB-INF/pages/add-money-page.jsp");
+            sendRedirect("user/add-money-page?error=incorrect-input");
         }
     }
 }

@@ -1,3 +1,5 @@
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
 html {
     padding: 0;
     margin: 0;
@@ -5,6 +7,7 @@ html {
     position: relative;
     min-height: 100%;
     color: #333333;
+    font-size: 18px;
     line-height: 1.4;
 }
 body {
@@ -221,6 +224,7 @@ a {
 .item {
     font-size: 20px;
     margin-bottom: 20px;
+    width: 50%;
 }
 
 .item img {
@@ -266,4 +270,26 @@ a {
 
 .error-message {
     font-size: 60px;
+}
+
+button.disabled {
+    background: grey!important;
+}
+button.disabled:hover {
+     background: grey!important;
+}
+.success-msg,
+.warning-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    width: max-content;
+}
+.success-msg {
+    color: #270;
+    background-color: #DFF2BF;
+}
+.warning-msg {
+    color: #9F6000;
+    background-color: #FEEFB3;
 }

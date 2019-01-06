@@ -13,32 +13,38 @@ import java.util.List;
 
 public class LoginCommand extends Command {
     private static final Logger logger = Logger.getLogger(LoginCommand.class);
+    private UserService userService = new UserService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         ServletContext context = request.getServletContext();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if (username == null || password == null || username.length() < 4 || password.length() < 4 ||
+                username.length() > 14 || password.length() > 14) {
+
+            sendRedirect("guest/login-page?error=incorrect-login-input");
+            return;
+        }
 
         User user;
-        try (UserService userService = new UserService()) {
+        try {
             user = userService.getUserByUsernameAndPassword(request.getParameter("username"), request.getParameter("password"));
         } catch (Exception e) {
             logger.error("Incorrect password or username", e);
-            sendRedirect("guest/login-page");
+            sendRedirect("guest/login-page?error=incorrect-username-password");
             return;
         }
         @SuppressWarnings("unchecked")
-        List<User> loggedUsers = (List<User>) context.getAttribute("logged-users");
-        if (loggedUsers.contains(user)) {
+        List<String> loggedUsers = (List<String>) context.getAttribute("logged-users");
+        logger.debug("Logged users: " + loggedUsers);
+        if (loggedUsers.contains(user.getUsername())) {
             logger.info("User is already logged in");
-            sendRedirect("guest/login-page");
+            sendRedirect("guest/login-page?error=user-already-logged");
             return;
         }
-        loggedUsers.add(user);
+        loggedUsers.add(user.getUsername());
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-
-        Cookie userCookie = new Cookie("new-user", "1");
-        userCookie.setMaxAge(60); //Store cookie for 1 year
-        response.addCookie(userCookie);
-        sendRedirect("free/home");
+        sendRedirect("free/home?login=true");
     }
 }

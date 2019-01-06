@@ -1,19 +1,21 @@
 package ua.training.model.dao.mysql;
 
+import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.SeanceDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.SeanceDto;
 import ua.training.model.entity.Seance;
+import ua.training.model.entity.Ticket;
+import ua.training.model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SeanceMySqlDao implements SeanceDao {
-    private static final String CREATE_SEANCE_QUERY = "INSERT INTO seances(start_time, duration, price, money_collected, " +
-            "film_id, hall_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final Connection connection;
+    private Logger logger = Logger.getLogger(SeanceMySqlDao.class);
 
     public SeanceMySqlDao(Connection connection) {
         this.connection = connection;
@@ -21,16 +23,16 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public void createSeance(Seance seance) {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_SEANCE_QUERY)) {
+        String query = BundlePool.getBundle().getString("create.seance.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setTimestamp(1, seance.getStartTime());
             statement.setInt(2, 120);
             statement.setInt(3, seance.getPrice());
-            statement.setInt(4, 0);
-            statement.setInt(5, seance.getFilm().getId());
-            statement.setInt(6, 1);
+            statement.setInt(4, seance.getFilm().getId());
+            statement.setInt(5, 1);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException("Cannot create seance", e);
         }
     }
 
@@ -50,7 +52,7 @@ public class SeanceMySqlDao implements SeanceDao {
                 list.add(seance);
             }
         } catch (SQLException e) {
-            throw new DaoException("Cannot find seances");
+            throw new DaoException("Cannot execute query", e);
         }
         return list;
     }
@@ -58,7 +60,6 @@ public class SeanceMySqlDao implements SeanceDao {
     @Override
     public List<SeanceDto> getSeancesByDate(Date date) {
         String getSeancesByDate = BundlePool.getBundle().getString("select.seances.by.date.query");
-        System.out.println(getSeancesByDate);
         List<SeanceDto> seances = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
             statement.setDate(1, date);
@@ -72,24 +73,23 @@ public class SeanceMySqlDao implements SeanceDao {
                 seanceDto.setName(resultSet.getString(5));
                 seanceDto.setColumns(resultSet.getInt(6));
                 seanceDto.setRows(resultSet.getInt(7));
-
                 seances.add(seanceDto);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException("Cannot find seances by date", e);
         }
         return seances;
     }
 
-
     @Override
-    public SeanceDto getSeanceById(int seanceId) {
+    public SeanceDto getSeanceDtoById(int seanceId) {
         String getSeancesByDate = BundlePool.getBundle().getString("select.seance.by.id.query");
         SeanceDto seanceDto = new SeanceDto();
         try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
             statement.setInt(1, seanceId);
             ResultSet resultSet = statement.executeQuery();
-
+            List<Ticket> tickets = new ArrayList<>();
+            seanceDto.setTickets(tickets);
             if (resultSet.next()) {
                 seanceDto.setId(resultSet.getInt(1));
                 seanceDto.setStartTime(resultSet.getTimestamp(2));
@@ -98,11 +98,37 @@ public class SeanceMySqlDao implements SeanceDao {
                 seanceDto.setName(resultSet.getString(5));
                 seanceDto.setColumns(resultSet.getInt(6));
                 seanceDto.setRows(resultSet.getInt(7));
+                Ticket ticket = new Ticket();
+                logger.debug("8 column: " + resultSet.getInt(8));
+                if (resultSet.getInt(8) != 0) {
+                    tickets.add(ticket);
+                    ticket.setRow(resultSet.getInt(8));
+                    ticket.setSeat(resultSet.getInt(9));
+                    User user = new User();
+                    Seance seance = new Seance();
+                    user.setId(resultSet.getInt(10));
+                    seance.setId(resultSet.getInt(11));
+                    ticket.setUser(user);
+                    ticket.setSeance(seance);
+                }
             } else {
-                throw new RuntimeException();
+                logger.debug("Seance id: " + seanceId);
+                throw new DaoException("There is no seance with this id");
+            }
+            while (resultSet.next()) {
+                Ticket ticket = new Ticket();
+                tickets.add(ticket);
+                ticket.setRow(resultSet.getInt(8));
+                ticket.setSeat(resultSet.getInt(9));
+                User user = new User();
+                Seance seance = new Seance();
+                user.setId(resultSet.getInt(10));
+                seance.setId(resultSet.getInt(11));
+                ticket.setUser(user);
+                ticket.setSeance(seance);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException("Cannot execute query", e);
         }
         return seanceDto;
     }

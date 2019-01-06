@@ -2,9 +2,9 @@ package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
-import ua.training.model.dao.DaoFactory;
 import ua.training.model.dao.FilmDao;
 import ua.training.model.dao.exceptions.DaoException;
+import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.Film;
 
@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmMySqlDao implements FilmDao {
-    public static final String CREATE_FILM = "INSERT INTO films(name, name_en, genre, genre_en, director, " +
-            "director_en, rate, description, description_en, image_link, image_link_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     private final Connection connection;
     private final Logger logger = Logger.getLogger(FilmMySqlDao.class);
@@ -38,8 +36,11 @@ public class FilmMySqlDao implements FilmDao {
                 film.setDescription(resultSet.getString(6));
                 film.setImageLink(resultSet.getString(7));
             }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            logger.error("Not unique value", e);
+            throw new NotUniqueValueException(e);
         } catch (SQLException e) {
-            logger.error("SQLException", e);
+            throw new DaoException("Cannot execute query", e);
         }
         return film;
     }
@@ -62,14 +63,15 @@ public class FilmMySqlDao implements FilmDao {
                 films.add(film);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException("Cannot execute query", e);
         }
         return films;
     }
 
     @Override
     public void createFilm(FilmDto film) {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_FILM)) {
+        String query = BundlePool.getBundle().getString("create.film.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, film.getName());
             statement.setString(2, film.getNameEN());
             statement.setString(3, film.getGenre());
@@ -83,7 +85,7 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
     }
 

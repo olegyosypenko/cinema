@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.exceptions.DaoException;
+import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
@@ -48,15 +49,26 @@ public class UserMySqlDao implements UserDao {
             logger.error("SQL exception", e);
         }
     }
+    @Override
+    public void withdrawMoney(int id, int money) {
+        String query = BundlePool.getBundle().getString("withdraw.money.query");
+        try {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, money);
+                statement.setInt(2, id);
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            logger.error("SQL exception", e);
+        }
+    }
 
-    public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
-        logger.info("Thread name in UserDAO" + Thread.currentThread().getName());
+    public User getUserByUsernameAndPassword(String username, String password) {
         String query = BundlePool.getBundle().getString("select.user.by.username.password.query");
-        String hashedPassword = hashPassword(password);
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
-            statement.setString(2, hashedPassword);
+            statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 user.setId(rs.getInt(1));
@@ -68,6 +80,8 @@ public class UserMySqlDao implements UserDao {
             } else {
                 throw new DaoException("User not found");
             }
+        } catch (SQLException e) {
+            throw new DaoException("Cannot execute query", e);
         }
         return user;
     }
@@ -93,13 +107,31 @@ public class UserMySqlDao implements UserDao {
     }
 
     @Override
+    public int getMoneyAmountById(int id) {
+        int result;
+        String query = BundlePool.getBundle().getString("select.money.amount.by.id.query");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getInt(1);
+            } else {
+                throw new DaoException("User does not exists");
+            }
+        } catch (SQLException e) {
+            logger.error("Cannot execute query");
+            throw new DaoException("Cannot execute query", e);
+        }
+        return result;
+    }
+
+    @Override
     public void createUser(UserDto user) {
 
-        String hashedPassword = hashPassword(user.getPassword());
         try {
             try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
                 statement.setString(1, user.getUsername());
-                statement.setString(2, hashedPassword);
+                statement.setString(2, user.getPassword());
                 statement.setString(3, Role.USER.name());
                 statement.setLong(4, 0);
                 statement.setString(5, user.getFirstName());
@@ -110,27 +142,9 @@ public class UserMySqlDao implements UserDao {
             }
         } catch (SQLIntegrityConstraintViolationException e) {
             logger.error("Not unique value", e);
-            throw new DaoException("Username is taken", e);
+            throw new NotUniqueValueException(e);
         } catch (SQLException e) {
             logger.error("SQL exception", e);
-        }
-    }
-
-    private String hashPassword(String password) {
-        String salt = "1234";
-        int iterations = 10000;
-        int keyLength = 512;
-        char[] passwordChars = password.toCharArray();
-        byte[] saltBytes = salt.getBytes();
-        try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            PBEKeySpec spec = new PBEKeySpec( passwordChars, saltBytes, iterations, keyLength );
-            SecretKey key = skf.generateSecret( spec );
-            byte[] res = key.getEncoded( );
-            return Hex.encodeHexString(res);
-        } catch ( NoSuchAlgorithmException | InvalidKeySpecException e ) {
-            logger.error("Hash algorithm does not work");
-            throw new RuntimeException(e);
         }
     }
 }

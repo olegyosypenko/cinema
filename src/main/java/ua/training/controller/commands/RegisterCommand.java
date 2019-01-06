@@ -1,6 +1,7 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
+import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.UserDto;
 import ua.training.model.service.UserService;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RegisterCommand extends Command {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(RegisterCommand.class);
+    private UserService userService = new UserService();
 
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
@@ -18,6 +20,12 @@ public class RegisterCommand extends Command {
         String lastNameEN = request.getParameter("last-name-en");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        if (username == null || password == null || username.length() < 4 || password.length() < 4 ||
+                username.length() > 14 || password.length() > 14) {
+            sendRedirect("guest/register-page?error=incorrect-login-input");
+            return;
+        }
+
         UserDto user = new UserDto();
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -25,13 +33,13 @@ public class RegisterCommand extends Command {
         user.setLastNameEN(lastNameEN);
         user.setUsername(username);
         user.setPassword(password);
-        try (UserService userService = new UserService()){
+        try {
             userService.createUser(user);
-        } catch (Exception e) {
+        } catch (NotUniqueValueException e) {
             logger.error("Username is taken exception", e);
-            sendRedirect("register-page");
+            sendRedirect("guest/register-page?error=username-taken");
             return;
         }
-        forward("/servlet/login");
+        forward("/servlet/guest/login");
     }
 }

@@ -8,15 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteSeanceCommand extends Command {
     private Logger logger = Logger.getLogger(DeleteSeanceCommand.class);
+    private SeanceService seanceService = new SeanceService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         logger.info("DeleteSeanceCommand start");
-        try (SeanceService seanceService = new SeanceService()) {
-            int id = Integer.parseInt(request.getParameter("seance-id"));
-            logger.info("Seance id: " + id);
-            seanceService.deleteSeanceById(id);
-            sendRedirect("free/home");
-            logger.info("DeleteSeanceCommand end");
-        }
+        int id = Integer.parseInt(request.getParameter("seance-id"));
+        logger.info("Seance id: " + id);
+        seanceService.deleteSeanceById(id);
+        sendRedirect("free/home?success=seance-deleted");
+        logger.info("DeleteSeanceCommand end");
     }
 }

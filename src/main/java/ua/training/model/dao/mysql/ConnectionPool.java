@@ -1,9 +1,8 @@
 package ua.training.model.dao.mysql;
+
 import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectionPool {
@@ -19,7 +18,7 @@ public class ConnectionPool {
         USERNAME = bundle.getString("username");
         PASSWORD = bundle.getString("password");
     }
-    public static DataSource getDataSource(){
+    static DataSource getDataSource(){
 
         if(dataSource == null) {
             synchronized (ConnectionPool.class) {

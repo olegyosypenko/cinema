@@ -1,6 +1,7 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
+import ua.training.controller.util.CalendarUtil;
 import ua.training.model.service.SeanceService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ShowSeancesByDateCommand extends Command {
     private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
+    private SeanceService seanceService = new SeanceService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         Date date;
@@ -25,19 +27,10 @@ public class ShowSeancesByDateCommand extends Command {
             date = new Date(System.currentTimeMillis());
             logger.error("Incorrect input error: " + dateString, e);
         }
-        request.setAttribute("days", getAvailableDays());
-        try (SeanceService seanceService = new SeanceService()) {
-            request.setAttribute("seances", seanceService.getSeancesByDate(date));
-            forward("/WEB-INF/pages/schedule.jsp");
-        }
+        request.setAttribute("days", CalendarUtil.getAvailableDays());
+        request.setAttribute("seances", seanceService.getSeancesByDate(date));
+        forward("/WEB-INF/pages/schedule.jsp");
     }
 
-    public List<Date> getAvailableDays() {
-        List<Date> list = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            list.add(new Date(System.currentTimeMillis() + i * 24 * 60 * 60 * 1000));
-        }
-        return list;
-    }
 }
 

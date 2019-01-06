@@ -10,15 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteFilmCommand extends Command {
     private Logger logger = Logger.getLogger(DeleteFilmCommand.class);
+    private FilmService filmService = new FilmService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         int id = UriParser.getIndexFromUri(request.getRequestURI());
-        try (FilmService filmService = new FilmService()) {
+        try {
             filmService.deleteFilmById(id);
-            sendRedirect("free/films/1");
+            sendRedirect("free/films/1?success=film-deleted");
         } catch (ServiceException e) {
             logger.error("Cannot delete film", e);
-            sendRedirect("free/film/" + id );
+            sendRedirect("free/film/" + id + "?error=cannot-delete-film");
         }
     }
 }

@@ -1,0 +1,38 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: oleg7
+  Date: 05.01.2019
+  Time: 18:08
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:if test="${error != null}">
+    <div class="warning-msg">
+        <i class="fa fa-warning"></i>
+        <fmt:message key="${error}" bundle="${language}"/>
+    </div>
+</c:if>
+<c:if test="${success != null}">
+    <div class="success-msg">
+        <i class="fa fa-check"></i>
+        <fmt:message key="${error}" bundle="${language}"/>
+    </div>
+</c:if>
+<c:if test="${param.error != null}">
+    <div class="warning-msg">
+        <i class="fa fa-warning"></i>
+        <fmt:message key="${param.error}" bundle="${language}"/>
+    </div>
+</c:if>
+<c:if test="${param.success != null}">
+    <div class="success-msg">
+        <i class="fa fa-check"></i>
+        <fmt:message key="${param.success}" bundle="${language}"/>
+    </div>
+</c:if>
+<c:if test="${param.login != null}">
+    <div class="welcome"></div>
+</c:if>
+<c:if test="${param.logout != null}">
+    <div class="goodbye"></div>
+</c:if>

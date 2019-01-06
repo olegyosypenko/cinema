@@ -24,12 +24,13 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        logger.info("sessionDestroyed");
         HttpSession session = httpSessionEvent.getSession();
         User user = (User) session.getAttribute("user");
         ServletContext context = session.getServletContext();
-        List<User> users = (List<User>) context.getAttribute("logged-users");
-        users.remove(user);
+        List<String> users = (List<String>) context.getAttribute("logged-users"); //Todo add supress warning
+
+        users.remove(user.getUsername());
+        logger.debug("Users left: " + users);
         logger.info("Session destroyed: " + session.getId());
     }
 

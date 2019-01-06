@@ -8,7 +8,6 @@ public class BundlePool {
     private static Map<String, ResourceBundle> bundles = new HashMap<>();
     private BundlePool() {}
     public static ResourceBundle getBundle() {
-
         return bundles.get(Thread.currentThread().getName());
     }
     public static void putBundle(ResourceBundle bundle) {

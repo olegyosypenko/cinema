@@ -42,7 +42,6 @@ public class Paginator<E> {
         }
         this.currentIndex = index;
         int i = index - 1;
-        int numberOfItems = 5;
         int numberOfItemsOnLastPage = items.size() % numberOfItems;
         if (numberOfItemsOnLastPage == 0) {
             numberOfItemsOnLastPage = numberOfItems;

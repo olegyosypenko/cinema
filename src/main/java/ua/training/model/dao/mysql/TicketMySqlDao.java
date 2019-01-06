@@ -17,12 +17,6 @@ public class TicketMySqlDao implements TicketDao {
         this.connection = connection;
     }
 
-
-    @Override
-    public void createTicket(Ticket ticket) {
-
-    }
-
     @Override
     public void deleteTicketsBySeanceId(int id) {
         String query = BundlePool.getBundle().getString("delete.tickets.by.seance.id.query");
@@ -30,7 +24,7 @@ public class TicketMySqlDao implements TicketDao {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException("Cannot delete tickets", e);
         }
     }
     @Override
@@ -52,7 +46,6 @@ public class TicketMySqlDao implements TicketDao {
                 ticket.setSeance(seance);
                 ticket.setUser(user);
                 tickets.add(ticket);
-
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -69,7 +62,6 @@ public class TicketMySqlDao implements TicketDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 Ticket ticket = new Ticket();
                 if (seances.get(resultSet.getInt(1)) == null) {
@@ -100,49 +92,45 @@ public class TicketMySqlDao implements TicketDao {
         }
         return tickets;
     }
+//    @Override
+//    private List<Ticket> getTicketsByTickets(List<Ticket> tickets) {
+//        List<Ticket> result = new ArrayList<>();
+//        String query = createQuery(tickets);
+//        logger.debug("Get tickets by tickets query: " + query);
+//        try (Statement statement = connection.createStatement()) {
+//            ResultSet resultSet = statement.executeQuery(query);
+//            while (resultSet.next()) {
+//                Ticket ticket = new Ticket();
+//                Seance seance = new Seance();
+//                seance.setId(resultSet.getInt(2));
+//                ticket.setSeance(seance);
+//                ticket.setRow(resultSet.getInt(2));
+//                ticket.setSeat(resultSet.getInt(3));
+//                result.add(ticket);
+//            }
+//        } catch (SQLException e) {
+//            throw new DaoException("Cannot execute query", e);
+//        }
+//        return result;
+//    }
+//    private String createQuery(List<Ticket> tickets) {
+//        String query = "SELECT seance_id, tickets.row, seat FROM tickets WHERE";
+//        for (int i = 0; i < tickets.size(); i++) {
+//            Ticket ticket = tickets.get(i);
+//            if (i == 0) {
+//                query += " seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
+//                        + " AND tickets.row = " + ticket.getRow();
+//            }
+//            else {
+//                query += " OR seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
+//                        + " AND tickets.row = " + ticket.getRow();
+//            }
+//        }
+//        return query;
+//    }
 
     @Override
-    public void createTickets(List<Ticket> tickets) { // ToDo refactor method into serveral DAO methods all the logic put in service
-        try {
-
-            connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-
-            String checkIfEnoughMoney = "SELECT * FROM users WHERE id = ? AND money >= (SELECT price FROM seances WHERE id = ?) * ?;"; //Todo put in bundle
-            try (PreparedStatement preparedStatement = connection.prepareStatement(checkIfEnoughMoney)) {
-                preparedStatement.setInt(1, tickets.get(0).getUser().getId());
-                preparedStatement.setInt(2, tickets.get(0).getSeance().getId());
-                preparedStatement.setInt(3, tickets.size());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (!resultSet.next()) {
-                    throw new RuntimeException("Not enough money");
-                }
-            }
-
-            String query = "SELECT * FROM tickets WHERE";
-            for (int i = 0; i < tickets.size(); i++) {
-                Ticket ticket = tickets.get(i);
-                if (i == 0) {
-                    query += " seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
-                            + " AND tickets.row = " + ticket.getRow();
-                }
-                else {
-                    query += " OR seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
-                            + " AND tickets.row = " + ticket.getRow();
-                }
-            }
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            logger.debug("Query to check if place is taken: " + query);
-            if (resultSet.next()) {
-                logger.debug("Place is taken");
-                throw new DaoException("The place is taken");
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+    public void createTickets(List<Ticket> tickets) {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_TICKETS)) {
             for (Ticket ticket : tickets) {
                 statement.setInt(1, ticket.getUser().getId());
@@ -154,20 +142,7 @@ public class TicketMySqlDao implements TicketDao {
             }
             statement.executeBatch();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET money = money - ? WHERE id = ?")) {
-            statement.setInt(1, tickets.size() * tickets.get(0).getSeance().getPrice());
-            statement.setInt(2, tickets.get(0).getUser().getId());
-            statement.execute();
-            connection.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+            throw new DaoException("Cannot create tickets");
         }
     }
 }

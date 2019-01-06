@@ -11,18 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ShowFilmCommand extends Command {
     private Logger logger = Logger.getLogger(ShowFilmCommand.class);
+    private FilmService filmService = new FilmService();
+    private SeanceService seanceService = new SeanceService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         int filmId = UriParser.getIndexFromUri(request.getRequestURI());
-        try (FilmService filmService = new FilmService();
-             SeanceService seanceService = new SeanceService()) {
-            logger.trace("process start");
-            Film film = filmService.getFilmById(filmId);
-            film.setSeances(seanceService.getSeancesByFilmId(filmId));
-            logger.debug("Number of seances: " + film.getSeances());
-            request.setAttribute("film", film);
-            request.setAttribute("seances", film.getSeances());
-            forward("/WEB-INF/pages/film.jsp");
-        }
+        logger.trace("process start");
+        Film film = filmService.getFilmById(filmId);
+        film.setSeances(seanceService.getSeancesByFilmId(filmId)); // ToDo refactor into one service instead of two!!!!
+        logger.debug("Number of seances: " + film.getSeances());
+        request.setAttribute("film", film);
+        request.setAttribute("seances", film.getSeances());
+        forward("/WEB-INF/pages/film.jsp");
     }
 }

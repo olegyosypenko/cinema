@@ -1,8 +1,9 @@
 package ua.training.model.entity;
 
 import lombok.Data;
+
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.List;
 
 
 public @Data class Seance {
@@ -12,6 +13,5 @@ public @Data class Seance {
     private Hall hall;
     private Film film;
     private int price;
-    private int moneyCollected;
-    private ArrayList<Ticket> tickets;
+    private List<Ticket> tickets;
 }

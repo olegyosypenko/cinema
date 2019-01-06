@@ -10,8 +10,8 @@ public class LogoutCommand extends Command {
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession httpSession = request.getSession();
-        httpSession.invalidate();
         logger.info("Invalidate session invoked!");
-        sendRedirect("guest/goodbye");
+        httpSession.invalidate();
+        sendRedirect("free/home?logout=true");
     }
 }

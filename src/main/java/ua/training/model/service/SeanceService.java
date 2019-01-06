@@ -13,48 +13,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SeanceService implements AutoCloseable {
-    private DaoFactory daoFactory = DaoFactory.getInstance();
-
+public class SeanceService {
     public void createSeance(Seance seance) {
-        SeanceDao seanceDao = daoFactory.createSeanceDao();
-        seanceDao.createSeance(seance);
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        try (Transaction ignored = daoFactory.getTransaction()) {
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
+            seanceDao.createSeance(seance);
+        }
     }
-    public List<ua.training.model.dto.SeanceDto> getSeancesByDate(Date date) {
-        SeanceDao seanceDao = daoFactory.createSeanceDao();
+    public List<SeanceDto> getSeancesByDate(Date date) {
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        try (Transaction ignored = daoFactory.getTransaction()) {
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
             return seanceDao.getSeancesByDate(date);
+        }
     }
     public List<Seance> getSeancesByFilmId(int id) {
-        SeanceDao seanceDao = daoFactory.createSeanceDao();
-        return seanceDao.getSeancesByFilmId(id);
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        try (Transaction ignored = daoFactory.getTransaction()) {
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
+            return seanceDao.getSeancesByFilmId(id);
+        }
     }
 
     public void deleteSeanceById(int seanceId) {
-        TicketDao ticketDao = daoFactory.createTicketDao();
-        SeanceDao seanceDao = daoFactory.createSeanceDao();
-        UserDao userDao = daoFactory.createUserDao();
-        Transaction transaction = daoFactory.getTransaction();
-        transaction.startTransaction();
-        transaction.setSerializable();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        try (Transaction transaction = daoFactory.getTransaction()) {
+            TicketDao ticketDao = daoFactory.createTicketDao();
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
+            UserDao userDao = daoFactory.createUserDao();
+            transaction.startTransaction();
+            transaction.setSerializable();
 
-        List<Ticket> tickets = ticketDao.getTicketsBySeanceId(seanceId);
-        if (tickets.isEmpty()) {
-            seanceDao.deleteSeanceById(seanceId);
-        } else {
-            int price = tickets.get(0).getSeance().getPrice();
-            Map<User, Integer> numberOfTicketsForEachUser = getNumberOfTicketsForEachUser(tickets);
-            List<User> users = new ArrayList<>();
-            List<Integer> money = new ArrayList<>();
-            numberOfTicketsForEachUser.entrySet().forEach((entry) -> {
-                users.add(entry.getKey());
-                money.add(price * entry.getValue());
-            });
-            userDao.addMoneyToUsers(users, money);
-            ticketDao.deleteTicketsBySeanceId(seanceId);
-            seanceDao.deleteSeanceById(seanceId);
+            List<Ticket> tickets = ticketDao.getTicketsBySeanceId(seanceId);
+            if (tickets.isEmpty()) {
+                seanceDao.deleteSeanceById(seanceId);
+            } else {
+                int price = tickets.get(0).getSeance().getPrice();
+                Map<User, Integer> numberOfTicketsForEachUser = getNumberOfTicketsForEachUser(tickets);
+                List<User> users = new ArrayList<>();
+                List<Integer> money = new ArrayList<>();
+                numberOfTicketsForEachUser.forEach((key, value) -> {
+                    users.add(key);
+                    money.add(price * value);
+                });
+                userDao.addMoneyToUsers(users, money);
+                ticketDao.deleteTicketsBySeanceId(seanceId);
+                seanceDao.deleteSeanceById(seanceId);
+            }
+            transaction.commit();
         }
-        transaction.commit();
-        transaction.close();
     }
 
     private Map<User, Integer> getNumberOfTicketsForEachUser(List<Ticket> tickets) {
@@ -70,13 +78,17 @@ public class SeanceService implements AutoCloseable {
     }
 
     public SeanceDto getSeanceDtoById(int seanceId) {
-        SeanceDao seanceDao = daoFactory.createSeanceDao();
-        return seanceDao.getSeanceById(seanceId);
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        try (Transaction ignored = daoFactory.getTransaction()) {
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
+            return seanceDao.getSeanceDtoById(seanceId);
+        }
     }
 
     public Seance getSeanceById(int seanceId) {
         Seance seance = new Seance();
         SeanceDto seanceDto = getSeanceDtoById(seanceId);
+        seance.setTickets(seanceDto.getTickets());
         Hall hall = new Hall();
         hall.setColumns(seanceDto.getColumns());
         hall.setRows(seanceDto.getRows());
@@ -87,9 +99,4 @@ public class SeanceService implements AutoCloseable {
         seance.setHall(hall);
         return seance;
     }
-
-    public void close() {
-        daoFactory.getTransaction().close();
-    }
-
 }

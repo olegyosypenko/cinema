@@ -1,7 +1,9 @@
 package ua.training.model.dao.mysql;
 
+import org.apache.log4j.Logger;
 import ua.training.model.BundlePool;
 import ua.training.model.dao.HallDao;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.Hall;
 
 import java.sql.*;
@@ -9,8 +11,9 @@ import java.sql.*;
 public class HallMySqlDao implements HallDao {
 
     private final Connection connection;
+    private Logger logger = Logger.getLogger(HallMySqlDao.class);
 
-    public HallMySqlDao(Connection connection) {
+    HallMySqlDao(Connection connection) {
         this.connection = connection;
     }
 
@@ -26,10 +29,11 @@ public class HallMySqlDao implements HallDao {
                 hall.setRows(rs.getInt(2));
                 hall.setColumns(rs.getInt(3));
             } else {
-                throw new RuntimeException("Incorrect id");
+                logger.debug("Log not found for id: " + id);
+                throw new DaoException("Hall not found");
             }
         } catch (SQLException e) {
-
+            throw new DaoException("Cannot execute query", e);
         }
         return hall;
     }

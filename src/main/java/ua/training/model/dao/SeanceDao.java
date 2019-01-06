@@ -15,5 +15,5 @@ public interface SeanceDao {
 
     void deleteSeanceById(int id);
 
-    SeanceDto getSeanceById(int seanceId);
+    SeanceDto getSeanceDtoById(int seanceId);
 }

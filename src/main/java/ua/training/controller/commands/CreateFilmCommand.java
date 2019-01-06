@@ -1,6 +1,7 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
+import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.service.FilmService;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CreateFilmCommand extends Command {
     Logger logger = Logger.getLogger(CreateFilmCommand.class);
+    private FilmService filmService = new FilmService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");
@@ -25,15 +27,15 @@ public class CreateFilmCommand extends Command {
                 || director == null || directorEN == null || description == null
                 || descriptionEN == null || imageLink == null || imageLinkEN == null ||
                 request.getParameter("rate") == null) {
-            sendRedirect("admin/create-film-page?error=1");
+            sendRedirect("admin/create-film-page?error=incorrect-input");
             return;
         }
-        float rate = 0.0f;
+        float rate;
         try {
             rate = Float.parseFloat(request.getParameter("rate"));
         } catch (NumberFormatException e) {
             logger.error("Incorrect rate input", e);
-            sendRedirect("admin/create-film-page?error=2");
+            sendRedirect("admin/create-film-page?error=incorrect-input");
             return;
         }
 
@@ -49,9 +51,11 @@ public class CreateFilmCommand extends Command {
         film.setDescriptionEN(descriptionEN);
         film.setImageLink(imageLink);
         film.setImageLinkEN(imageLinkEN);
-        try (FilmService filmService = new FilmService()) {
+        try {
             filmService.createFilm(film);
-            sendRedirect("admin/create-film-page?error-code=1");
+            sendRedirect("admin/create-film-page?success=film-created");
+        } catch (NotUniqueValueException e) {
+            sendRedirect("admin/create-film-page?error=not-unique-film-value");
         }
     }
 }

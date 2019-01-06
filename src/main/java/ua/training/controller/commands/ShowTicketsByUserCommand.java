@@ -12,15 +12,14 @@ import java.util.List;
 
 public class ShowTicketsByUserCommand extends Command {
     private Logger logger = Logger.getLogger(ShowTicketsByUserCommand.class);
+    private TicketService ticketService = new TicketService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
-        try (TicketService ticketService = new TicketService()) {
-            HttpSession httpSession = request.getSession();
-            User user = (User) httpSession.getAttribute("user");
-            List<Ticket> tickets = ticketService.getTicketsByUserId(user.getId());
-            logger.info("Number of tickets: " + tickets.size());
-            request.setAttribute("tickets", tickets);
-            forward("/WEB-INF/pages/your-tickets.jsp");
-        }
+        HttpSession httpSession = request.getSession();
+        User user = (User) httpSession.getAttribute("user");
+        List<Ticket> tickets = ticketService.getTicketsByUserId(user.getId());
+        logger.info("Number of tickets: " + tickets.size());
+        request.setAttribute("tickets", tickets);
+        forward("/WEB-INF/pages/your-tickets.jsp");
     }
 }

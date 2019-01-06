@@ -40,12 +40,15 @@
 
 
 addListeners();
-if (getCookie("new-user") === "1") {
-    alert("dsf")
+
+function disableButton() {
+    document.querySelector("button").disabled = true;
+    document.querySelector("button").classList.add("disabled");
+    document.forms["main-form"].submit();
 }
 
-
 function addListeners() {
+
     var seats = document.getElementsByClassName("free");
     for (var i = 0; i < seats.length; i++) {
         seats[i].addEventListener("mouseover", function() {
@@ -80,19 +83,4 @@ function addListeners() {
             this.classList.toggle("orange");
         })
     }
-}
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }

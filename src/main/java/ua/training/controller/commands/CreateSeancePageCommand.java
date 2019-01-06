@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class CreateSeancePageCommand extends Command {
+    FilmService filmService = new FilmService();
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) {
-        try (FilmService filmService = new FilmService()) {
-            List<Film> films = filmService.getAllFilms();
-            request.setAttribute("films", films);
-            forward("/WEB-INF/pages/create-seance.jsp");
-        }
+        List<Film> films = filmService.getAllFilms();
+        request.setAttribute("films", films);
+        forward("/WEB-INF/pages/create-seance.jsp");
     }
 }
