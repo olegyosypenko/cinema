@@ -3,7 +3,6 @@ package ua.training.controller.commands;
 import org.apache.log4j.Logger;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.UserDto;
-import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ public class RegisterCommand extends Command {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-        if (isInputCorrect(request)) {
+        if (!isInputCorrect(request)) {
             logger.info("Incorrect input");
             return "redirect:guest/register-page?error=incorrect-login-input";
         }
@@ -34,23 +33,23 @@ public class RegisterCommand extends Command {
         String lastNameEN = request.getParameter("last-name-en");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if (username == null || password == null || username.length() < 4 || password.length() < 4 ||
-                username.length() > 14 || password.length() > 14) {
+        if (username == null || password == null
+                || username.length() < Constants.USERNAME_MIN_LENGTH
+                || password.length() < Constants.PASSWORD_MIN_LENGTH
+                || username.length() > Constants.USERNAME_MAX_LENGTH
+                || password.length() > Constants.PASSWORD_MAX_LENGTH) {
             return false;
         }
-        if (firstName != null && firstName.length() > 20) {
+        if (firstName != null && firstName.length() > Constants.FIRST_NAME_MAX_LENGTH) {
             return false;
         }
-        if (lastName != null && lastName.length() > 20) {
+        if (lastName != null && lastName.length() > Constants.FIRST_NAME_MAX_LENGTH) {
             return false;
         }
-        if (firstNameEN != null && firstNameEN.length() > 20) {
+        if (firstNameEN != null && firstNameEN.length() > Constants.LAST_NAME_MAX_LENGTH) {
             return false;
         }
-        if (lastNameEN != null && lastNameEN.length() > 20) {
-            return false;
-        }
-        return true;
+        return lastNameEN == null || lastNameEN.length() <= Constants.LAST_NAME_MAX_LENGTH;
     }
     private UserDto createUserFromInput(HttpServletRequest request) {
         String firstName = request.getParameter("first-name");

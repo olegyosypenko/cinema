@@ -1,7 +1,7 @@
 package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 import ua.training.model.dao.FilmDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
@@ -23,7 +23,7 @@ public class FilmMySqlDao implements FilmDao {
     }
     @Override
     public Film getFilmById(int id) {
-        String query = BundlePool.getBundle().getString("select.film.by.id");
+        String query = BundleHolder.getBundle().getString("select.film.by.id");
         Film film = new Film();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -67,7 +67,7 @@ public class FilmMySqlDao implements FilmDao {
 
     @Override
     public List<Film> getAllFilms() {
-        String getAllFilms = BundlePool.getBundle().getString("select.all-users.query");
+        String getAllFilms = BundleHolder.getBundle().getString("select.all-users.query");
         List<Film> films = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(getAllFilms);
@@ -90,7 +90,7 @@ public class FilmMySqlDao implements FilmDao {
 
     @Override
     public void createFilm(FilmDto film) {
-        String query = BundlePool.getBundle().getString("create.film.query");
+        String query = BundleHolder.getBundle().getString("create.film.query");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, film.getName());
             statement.setString(2, film.getNameEN());
@@ -105,13 +105,14 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
         } catch (SQLException e) {
-
+            logger.error("Cannot execute query: " + query, e);
+            throw new DaoException("Cannot execute query", e);
         }
     }
 
     @Override
     public void deleteFilmById(int id) {
-        String query = BundlePool.getBundle().getString("delete.film.query");
+        String query = BundleHolder.getBundle().getString("delete.film.query");
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -123,7 +124,7 @@ public class FilmMySqlDao implements FilmDao {
     @Override
     public List<Film> getMostPopularFilms() {
         logger.trace("getMostPopularFilms start");
-        String query = BundlePool.getBundle().getString("select.most.popular.films.query");
+        String query = BundleHolder.getBundle().getString("select.most.popular.films.query");
         List<Film> films = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, 5); //Todo put var into config!!!!!!!!!!

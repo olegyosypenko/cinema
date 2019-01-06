@@ -7,10 +7,6 @@ import ua.training.model.service.SeanceService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShowSeancesByDateCommand extends Command {
     private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
@@ -20,6 +16,7 @@ public class ShowSeancesByDateCommand extends Command {
         String[] requestParts = request.getRequestURI().split("/");
         String dateString = requestParts[requestParts.length - 1];
         Date date = CalendarUtil.getDateFromString(dateString);
+        logger.debug("Date: " + date);
         if (!CalendarUtil.isDateAvailable(date)) {
             date = new Date(System.currentTimeMillis());
         }

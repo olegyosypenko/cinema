@@ -1,7 +1,7 @@
 package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 import ua.training.model.dao.TicketDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.*;
@@ -10,7 +10,6 @@ import java.sql.*;
 import java.util.*;
 
 public class TicketMySqlDao implements TicketDao {
-    private static final String INSERT_TICKETS = "INSERT INTO tickets(user_id, seance_id, tickets.row, seat) VALUES (?, ?, ?, ?)";
     private final Connection connection;
     private Logger logger = Logger.getLogger(TicketMySqlDao.class);
     TicketMySqlDao(Connection connection) {
@@ -19,7 +18,7 @@ public class TicketMySqlDao implements TicketDao {
 
     @Override
     public void deleteTicketsBySeanceId(int id) {
-        String query = BundlePool.getBundle().getString("delete.tickets.by.seance.id.query");
+        String query = BundleHolder.getBundle().getString("delete.tickets.by.seance.id.query");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.execute();
@@ -29,7 +28,7 @@ public class TicketMySqlDao implements TicketDao {
     }
     @Override
     public List<Ticket> getTicketsBySeanceId(int id) {
-        String query = BundlePool.getBundle().getString("select.tickets.by.seance.id.query");
+        String query = BundleHolder.getBundle().getString("select.tickets.by.seance.id.query");
         ArrayList<Ticket> tickets = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -58,7 +57,7 @@ public class TicketMySqlDao implements TicketDao {
     @Override
     public List<Ticket> getTicketsByUserId(int userId) {
         List<Ticket> tickets = new ArrayList<>();
-        String query = BundlePool.getBundle().getString("select.tickets.by.user.id.query");
+        String query = BundleHolder.getBundle().getString("select.tickets.by.user.id.query");
         Map<Integer, Seance> seances = new HashMap<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userId);
@@ -132,7 +131,8 @@ public class TicketMySqlDao implements TicketDao {
 
     @Override
     public void createTickets(List<Ticket> tickets) {
-        try (PreparedStatement statement = connection.prepareStatement(INSERT_TICKETS)) {
+        String query = BundleHolder.getBundle().getString("insert.tickets.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Ticket ticket : tickets) {
                 statement.setInt(1, ticket.getUser().getId());
                 statement.setInt(2, ticket.getSeance().getId());

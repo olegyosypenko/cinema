@@ -1,8 +1,7 @@
 package ua.training.controller.filters;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.MainServlet;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,7 @@ public class LocalizationFilter implements Filter {
         }
         Locale locale = new Locale((String) session.getAttribute("lang"));
         ResourceBundle resourceBundle = ResourceBundle.getBundle("mysql_localized", locale);
-        BundlePool.putBundle(resourceBundle);
+        BundleHolder.putBundle(resourceBundle);
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

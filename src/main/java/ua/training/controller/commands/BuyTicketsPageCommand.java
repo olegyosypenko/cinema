@@ -31,7 +31,7 @@ public class BuyTicketsPageCommand extends Command {
         SeanceParametersDto seanceParameters = new SeanceParametersDto();
         seanceParameters.setColumns(hall.getColumns());
         seanceParameters.setRows(hall.getRows());
-        int[][] takenPlaces = new int[15][15];
+        int[][] takenPlaces = new int[hall.getColumns()][hall.getRows()];
         for (Ticket ticket : tickets) {
             takenPlaces[ticket.getRow() - 1][ticket.getSeat() - 1] = 1;
         }

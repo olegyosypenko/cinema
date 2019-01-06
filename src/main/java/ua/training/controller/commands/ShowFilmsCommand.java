@@ -9,6 +9,7 @@ import ua.training.model.service.Paginator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ShowFilmsCommand extends Command {
     private Logger logger = Logger.getLogger(ShowFilmsCommand.class);
@@ -16,7 +17,8 @@ public class ShowFilmsCommand extends Command {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         List<Film> films = filmService.getAllFilms();
-        int numberOfItems = 5;
+        ResourceBundle bundle = ResourceBundle.getBundle("config");
+        int numberOfItems = Integer.parseInt(bundle.getString("items.per.page"));
         Paginator<Film> paginator = new Paginator<>(films, numberOfItems);
         int index = 1;
         try {

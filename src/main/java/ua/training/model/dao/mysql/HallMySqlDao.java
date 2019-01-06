@@ -1,7 +1,7 @@
 package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 import ua.training.model.dao.HallDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.Hall;
@@ -19,7 +19,7 @@ public class HallMySqlDao implements HallDao {
 
     @Override
     public Hall getHallById(int id) {
-        String query = BundlePool.getBundle().getString("get.hall.query");
+        String query = BundleHolder.getBundle().getString("get.hall.query");
 
         Hall hall = new Hall();
         try (PreparedStatement statement = connection.prepareStatement(query)) {

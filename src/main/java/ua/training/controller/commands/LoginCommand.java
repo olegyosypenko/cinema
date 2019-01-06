@@ -17,8 +17,9 @@ public class LoginCommand extends Command {
     public String process(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        if (username == null || password == null || username.length() < 4 || password.length() < 4 ||
-                username.length() > 14 || password.length() > 14) {
+        if (! (username == null || password == null ||
+                (username.length() < Constants.USERNAME_MAX_LENGTH && username.length() > Constants.USERNAME_MIN_LENGTH)
+                || password.length() < Constants.PASSWORD_MAX_LENGTH  && password.length() > Constants.PASSWORD_MIN_LENGTH)) {
             return "redirect:guest/login-page?error=incorrect-login-input";
         }
         User user;
@@ -37,6 +38,11 @@ public class LoginCommand extends Command {
         return "redirect:free/home?login=true";
     }
 
+    /**
+     * This method adds user in List of users if such user was not yet in the system.
+     * @param request HttpServletRequest
+     * @return returns true if user was added.
+     */
     private boolean addUserIfNotExist(HttpServletRequest request) {
         ServletContext context = request.getServletContext();
         @SuppressWarnings("unchecked")

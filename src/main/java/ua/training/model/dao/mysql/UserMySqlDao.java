@@ -1,8 +1,7 @@
 package ua.training.model.dao.mysql;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
@@ -10,17 +9,11 @@ import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.List;
 
 public class UserMySqlDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserMySqlDao.class);
-    private static final String CREATE_USER = "INSERT INTO users(username, password, role, money, first_name, first_name_en, second_name, second_name_en) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final Connection connection;
 
     public UserMySqlDao(Connection connection) {
@@ -38,7 +31,7 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public void addMoneyToUser(int id, int money) {
-        String query = BundlePool.getBundle().getString("update.money.query");
+        String query = BundleHolder.getBundle().getString("update.money.query");
         try {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, money);
@@ -51,7 +44,7 @@ public class UserMySqlDao implements UserDao {
     }
     @Override
     public void withdrawMoney(int id, int money) {
-        String query = BundlePool.getBundle().getString("withdraw.money.query");
+        String query = BundleHolder.getBundle().getString("withdraw.money.query");
         try {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, money);
@@ -64,7 +57,7 @@ public class UserMySqlDao implements UserDao {
     }
 
     public User getUserByUsernameAndPassword(String username, String password) {
-        String query = BundlePool.getBundle().getString("select.user.by.username.password.query");
+        String query = BundleHolder.getBundle().getString("select.user.by.username.password.query");
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
@@ -90,7 +83,7 @@ public class UserMySqlDao implements UserDao {
     public void addMoneyToUsers(List<User> users, List<Integer> money) {
         logger.debug("Number of users: " + users.size());
         logger.debug("Number of money items: " + money.size());
-        String query = BundlePool.getBundle().getString("update.money.query");
+        String query = BundleHolder.getBundle().getString("update.money.query");
         try {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 for (int i = 0; i < users.size() && i < money.size(); i++) {
@@ -109,7 +102,7 @@ public class UserMySqlDao implements UserDao {
     @Override
     public int getMoneyAmountById(int id) {
         int result;
-        String query = BundlePool.getBundle().getString("select.money.amount.by.id.query");
+        String query = BundleHolder.getBundle().getString("select.money.amount.by.id.query");
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -127,9 +120,9 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public void createUser(UserDto user) {
-
+        String query = BundleHolder.getBundle().getString("create.user.query");
         try {
-            try (PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, user.getUsername());
                 statement.setString(2, user.getPassword());
                 statement.setString(3, Role.USER.name());

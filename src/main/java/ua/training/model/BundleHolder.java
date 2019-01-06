@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class BundlePool {
+public class BundleHolder {
     private static Map<String, ResourceBundle> bundles = new HashMap<>();
-    private BundlePool() {}
+    private BundleHolder() {}
     public static ResourceBundle getBundle() {
         return bundles.get(Thread.currentThread().getName());
     }

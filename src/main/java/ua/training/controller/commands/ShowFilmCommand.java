@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import ua.training.controller.util.UriParser;
 import ua.training.model.entity.Film;
 import ua.training.model.service.FilmService;
-import ua.training.model.service.SeanceService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

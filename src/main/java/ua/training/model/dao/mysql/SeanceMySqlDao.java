@@ -1,7 +1,7 @@
 package ua.training.model.dao.mysql;
 
 import org.apache.log4j.Logger;
-import ua.training.model.BundlePool;
+import ua.training.model.BundleHolder;
 import ua.training.model.dao.SeanceDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.SeanceDto;
@@ -23,7 +23,7 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public void createSeance(Seance seance) {
-        String query = BundlePool.getBundle().getString("create.seance.query");
+        String query = BundleHolder.getBundle().getString("create.seance.query");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setTimestamp(1, seance.getStartTime());
             statement.setInt(2, 120);
@@ -38,7 +38,7 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public List<Seance> getSeancesByFilmId(int id) {
-        String query = BundlePool.getBundle().getString("select.seances.by.film.id.query");
+        String query = BundleHolder.getBundle().getString("select.seances.by.film.id.query");
         List<Seance> list = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -59,7 +59,7 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public List<SeanceDto> getSeancesByDate(Date date) {
-        String getSeancesByDate = BundlePool.getBundle().getString("select.seances.by.date.query");
+        String getSeancesByDate = BundleHolder.getBundle().getString("select.seances.by.date.query");
         List<SeanceDto> seances = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
             statement.setDate(1, date);
@@ -83,7 +83,7 @@ public class SeanceMySqlDao implements SeanceDao {
 
     @Override
     public SeanceDto getSeanceDtoById(int seanceId) {
-        String getSeancesByDate = BundlePool.getBundle().getString("select.seance.by.id.query");
+        String getSeancesByDate = BundleHolder.getBundle().getString("select.seance.by.id.query");
         SeanceDto seanceDto = new SeanceDto();
         try (PreparedStatement statement = connection.prepareStatement(getSeancesByDate)) {
             statement.setInt(1, seanceId);
@@ -99,7 +99,6 @@ public class SeanceMySqlDao implements SeanceDao {
                 seanceDto.setColumns(resultSet.getInt(6));
                 seanceDto.setRows(resultSet.getInt(7));
                 Ticket ticket = new Ticket();
-                logger.debug("8 column: " + resultSet.getInt(8));
                 if (resultSet.getInt(8) != 0) {
                     tickets.add(ticket);
                     ticket.setRow(resultSet.getInt(8));
@@ -139,7 +138,7 @@ public class SeanceMySqlDao implements SeanceDao {
     @Override
     public void deleteSeanceById(int seanceId) {
 
-        String query = BundlePool.getBundle().getString("delete.seance.by.id.query");
+        String query = BundleHolder.getBundle().getString("delete.seance.by.id.query");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, seanceId);
             statement.execute();

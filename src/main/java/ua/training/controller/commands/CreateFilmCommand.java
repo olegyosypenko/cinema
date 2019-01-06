@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateFilmCommand extends Command {
     Logger logger = Logger.getLogger(CreateFilmCommand.class);
     private FilmService filmService = new FilmService();
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         if (!isCorrectInput(request)) {
@@ -42,9 +43,17 @@ public class CreateFilmCommand extends Command {
                 rateParam == null) {
             return false;
         }
+        if (name.length() > Constants.NAME_MAX_LENGTH || nameEN.length() > Constants.NAME_MAX_LENGTH ||
+                genre.length() > Constants.GENRE_MAX_LENGTH || genreEn.length() > Constants.GENRE_MAX_LENGTH ||
+                director.length() > Constants.DIRECTOR_MAX_LENGTH || directorEN.length() > Constants.DIRECTOR_MAX_LENGTH ||
+                imageLink.length() > Constants.LINK_MAX_LENGTH || imageLinkEN.length() > Constants.LINK_MAX_LENGTH ||
+                description.length() > Constants.DESCRIPTION_MAX_LENGTH ||
+                descriptionEN.length() > Constants.DESCRIPTION_MAX_LENGTH) {
+            return false;
+        }
         try {
             float rate = Float.parseFloat(rateParam);
-            if (rate > 10 || rate < 0) {
+            if (rate > Constants.MAX_RATE || rate < Constants.MIN_RATE) {
                 return false;
             }
         } catch (NumberFormatException e) {
