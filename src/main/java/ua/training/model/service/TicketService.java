@@ -14,13 +14,6 @@ import java.util.Set;
 
 public class TicketService {
     private Logger logger = Logger.getLogger(TicketService.class);
-    public List<Ticket> getTicketsBySeanceId(int id) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        try (Transaction ignored = daoFactory.getTransaction()) {
-            TicketDao ticketDao = daoFactory.createTicketDao();
-            return ticketDao.getTicketsBySeanceId(id);
-        }
-    }
     public List<Ticket> getTicketsByUserId(int id) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         try (Transaction ignored = daoFactory.getTransaction()) {
@@ -47,16 +40,16 @@ public class TicketService {
                 }
                 int fullPrice = priceOfTicket * tickets.size();
                 int moneyAmount = userDao.getMoneyAmountById(id);
+                logger.debug("Amount of money: " + moneyAmount);
+                logger.debug("Full price: " + fullPrice);
                 if (moneyAmount < fullPrice) {
-                    logger.debug("Amount of money: " + moneyAmount);
-                    logger.debug("Full price: " + fullPrice);
                     transaction.rollback();
                     throw new ServiceException("Not enough money");
                 }
                 List<Ticket> list = ticketDao.getTicketsBySeanceId(seanceId);
+                logger.debug("List of tickets by seances: " + list);
+                logger.debug("List of tickets that user wants to buy: " + ticketDao);
                 if (checkIntersect(list, tickets)) {
-                    logger.debug("List of tickets by seances: " + list);
-                    logger.debug("List of tickets that user wants to buy: " + ticketDao);
                     transaction.rollback();
                     throw new ServiceException("Ticket is taken");
                 }
@@ -72,8 +65,6 @@ public class TicketService {
 
     private boolean checkIntersect(List<Ticket> list, List<Ticket> tickets) {
         Set<Ticket> ticketSet = new HashSet<>(list);
-        System.out.println(list);
-        System.out.println(tickets);
         for (Ticket ticket : tickets) {
             if (ticketSet.contains(ticket)) {
                 return true;

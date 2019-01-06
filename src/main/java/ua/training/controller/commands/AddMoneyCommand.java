@@ -13,18 +13,33 @@ public class AddMoneyCommand extends Command {
     private UserService userService = new UserService();
 
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession httpSession = request.getSession();
         logger.trace("Parameter money: " + request.getParameter("money"));
-        try {
-            User user = (User) httpSession.getAttribute("user");
-            int money = Integer.parseInt(request.getParameter("money"));
-            userService.addMoneyByUserId(user.getId(), money);
-            user.setMoney(user.getMoney() + money);
-            sendRedirect("logged/profile?success=money-added");
-        } catch (NumberFormatException e) {
-            logger.debug("Not a number: " + request.getParameter("money"), e);
-            sendRedirect("user/add-money-page?error=incorrect-input");
+        if (!isCorrectInput(request)) {
+            return "redirect:user/add-money-page?error=incorrect-input";
         }
+        User user = (User) httpSession.getAttribute("user");
+        int money = Integer.parseInt(request.getParameter("money"));
+        userService.addMoneyByUserId(user.getId(), money);
+        user.setMoney(user.getMoney() + money);
+        return "redirect:logged/profile?success=money-added";
+    }
+
+    private boolean isCorrectInput(HttpServletRequest request) {
+        String moneyParam = request.getParameter("money");
+        if (moneyParam == null) {
+            return false;
+        }
+        try {
+            int money = Integer.parseInt(moneyParam);
+            if (money < 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            logger.debug("Not a number: " + request.getParameter("money"), e);
+            return false;
+        }
+        return true;
     }
 }

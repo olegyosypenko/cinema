@@ -27,7 +27,9 @@
 
         // disables backspace on page except on input fields and textarea..
         document.body.onkeydown = function (e) {
+            // noinspection JSUnresolvedVariable
             var elm = e.target.nodeName.toLowerCase();
+            // noinspection JSDeprecatedSymbols
             if (e.which === 8 && (elm !== 'input' && elm  !== 'textarea')) {
                 e.preventDefault();
             }
@@ -53,11 +55,12 @@ function addListeners() {
     for (var i = 0; i < seats.length; i++) {
         seats[i].addEventListener("mouseover", function() {
             this.classList.toggle("darkblue");
-        })
+        });
         seats[i].addEventListener("mouseout", function() {
             this.classList.toggle("darkblue");
-        })
+        });
         seats[i].addEventListener("click", function() {
+            var price = parseInt(document.getElementById("whole-price").innerText, 10);
             var seat = this.getAttribute("data-seat");
             var row = this.getAttribute("data-row");
             var seancePrice = this.getAttribute("data-price");
@@ -66,17 +69,14 @@ function addListeners() {
                 var rowId = "row" + row;
                 document.getElementById(seatId).outerHTML = "";
                 document.getElementById(rowId).outerHTML = "";
-                var price = parseInt(document.getElementById("whole-price").innerText, 10);
                 price -= parseInt(seancePrice);
                 document.getElementById("whole-price").innerText = price.toString();
 
             } else {
                 var form = document.getElementById("buy-tickets-form");
-                var html1 = "<input type=\"hidden\" id='seat" + seat + "' name=\"seat\" value=" + seat + ">"
-                var html2 = "<input type=\"hidden\" id='row" + row + "' name=\"row\" value=" + row + ">"
-                console.log("seat: " + seat + "row: " + row);
+                var html1 = "<input type=\"hidden\" id='seat" + seat + "' name=\"seat\" value=" + seat + ">";
+                var html2 = "<input type=\"hidden\" id='row" + row + "' name=\"row\" value=" + row + ">";
                 form.innerHTML = html1 + html2 + form.innerHTML;
-                var price = parseInt(document.getElementById("whole-price").innerText, 10);
                 price += parseInt(seancePrice);
                 document.getElementById("whole-price").innerText = price.toString();
             }

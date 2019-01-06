@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import ua.training.controller.commands.*;
 import ua.training.controller.util.UriParser;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,15 +52,23 @@ public class MainServlet extends HttpServlet {
         process(request, response);
     }
 
-    protected void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String commandName = UriParser.getCommandNameFromUri(request.getRequestURI());
+        ServletContext context = request.getServletContext();
         logger.info("Command name: " + commandName);
         Command command = map.get(commandName);
         if (command == null) {
             response.sendError(404, "Page not found");
         } else {
-            command.init(request.getServletContext(), request, response);
-            command.process(request, response);
+            String url = command.process(request, response);
+            if (url.contains("redirect:")) {
+                url = url.replace("redirect:", "");
+                response.sendRedirect(context.getContextPath() + "/servlet/" + url);
+            }
+            else {
+                RequestDispatcher dispatcher = context.getRequestDispatcher(url);
+                dispatcher.forward(request, response);
+            }
         }
 }
 }

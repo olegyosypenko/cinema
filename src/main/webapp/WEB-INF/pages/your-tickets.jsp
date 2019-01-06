@@ -9,6 +9,10 @@
 <%@include file="../parts/header.jspf"%>
 <fmt:setLocale value="${sessionScope.lang}"/>
 
+<h2>
+    <fmt:message key="your.tickets" bundle="${language}"/>:
+</h2>
+
 <c:forEach items="${tickets}" var="ticket">
     <div class="item">
         <div><span><fmt:message key="film.name.label" bundle="${language}"/></span> : ${ticket.seance.film.name}</div>

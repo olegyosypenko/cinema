@@ -10,7 +10,16 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <div class="links">
     <c:forEach items="${days}" var="day">
-        <a href="${pageContext.request.contextPath}/servlet/free/schedule/<fmt:formatDate value="${day}"  pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${day}"  pattern="EEE"/></a>
+        <c:set var="dateThat">${day}</c:set>
+        <c:set var="dateThis">${date}</c:set>
+        <c:choose>
+            <c:when test="${dateThat.equals(dateThis)}">
+                <a class="chosen" href="${pageContext.request.contextPath}/servlet/free/schedule/<fmt:formatDate value="${day}"  pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${day}"  pattern="EEE"/></a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/servlet/free/schedule/<fmt:formatDate value="${day}"  pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${day}"  pattern="EEE"/></a>
+            </c:otherwise>
+        </c:choose>
     </c:forEach>
 
 </div>
@@ -24,11 +33,9 @@
             <div><fmt:message key="seance.price.label" bundle="${language}"/> : ${seance.price}</div>
             <a href="${pageContext.request.contextPath}/servlet/free/buy-tickets-page/${seance.id}"><fmt:message key="buy.tickets.label" bundle="${language}"/></a>
 
-            <c:choose>
-                <c:when test="${user.role=='ADMIN'}">
-                    <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
-                </c:when>
-            </c:choose>
+            <c:if test="${user.role=='ADMIN'}">
+                <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
+            </c:if>
         </div>
     </c:forEach>
 </div>

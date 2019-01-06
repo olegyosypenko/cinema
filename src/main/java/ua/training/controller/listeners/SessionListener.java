@@ -20,6 +20,9 @@ public class SessionListener implements HttpSessionListener {
         User unknownUser = new User();
         unknownUser.setRole(Role.UNKNOWN);
         session.setAttribute("user", unknownUser);
+        session.setAttribute("ADMIN", Role.ADMIN);
+        session.setAttribute("USER", Role.USER);
+        session.setAttribute("UNKNOWN", Role.UNKNOWN);
     }
 
     @Override

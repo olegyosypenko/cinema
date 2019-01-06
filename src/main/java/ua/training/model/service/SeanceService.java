@@ -1,6 +1,7 @@
 package ua.training.model.service;
 
 import ua.training.model.dao.*;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.SeanceDto;
 import ua.training.model.entity.Hall;
 import ua.training.model.entity.Seance;
@@ -28,13 +29,6 @@ public class SeanceService {
             return seanceDao.getSeancesByDate(date);
         }
     }
-    public List<Seance> getSeancesByFilmId(int id) {
-        DaoFactory daoFactory = DaoFactory.getInstance();
-        try (Transaction ignored = daoFactory.getTransaction()) {
-            SeanceDao seanceDao = daoFactory.createSeanceDao();
-            return seanceDao.getSeancesByFilmId(id);
-        }
-    }
 
     public void deleteSeanceById(int seanceId) {
         DaoFactory daoFactory = DaoFactory.getInstance();
@@ -57,9 +51,14 @@ public class SeanceService {
                     users.add(key);
                     money.add(price * value);
                 });
-                userDao.addMoneyToUsers(users, money);
-                ticketDao.deleteTicketsBySeanceId(seanceId);
-                seanceDao.deleteSeanceById(seanceId);
+                try {
+                    userDao.addMoneyToUsers(users, money);
+                    ticketDao.deleteTicketsBySeanceId(seanceId);
+                    seanceDao.deleteSeanceById(seanceId);
+                } catch (DaoException e) {
+                    transaction.rollback();
+                    throw new ServiceException("Cannot delete seance", e);
+                }
             }
             transaction.commit();
         }
@@ -83,20 +82,5 @@ public class SeanceService {
             SeanceDao seanceDao = daoFactory.createSeanceDao();
             return seanceDao.getSeanceDtoById(seanceId);
         }
-    }
-
-    public Seance getSeanceById(int seanceId) {
-        Seance seance = new Seance();
-        SeanceDto seanceDto = getSeanceDtoById(seanceId);
-        seance.setTickets(seanceDto.getTickets());
-        Hall hall = new Hall();
-        hall.setColumns(seanceDto.getColumns());
-        hall.setRows(seanceDto.getRows());
-        seance.setId(seanceId);
-        seance.setPrice(seanceDto.getPrice());
-        seance.setDuration(seanceDto.getDuration());
-        seance.setStartTime(seanceDto.getStartTime());
-        seance.setHall(hall);
-        return seance;
     }
 }

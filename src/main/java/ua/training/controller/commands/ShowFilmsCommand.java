@@ -14,7 +14,7 @@ public class ShowFilmsCommand extends Command {
     private Logger logger = Logger.getLogger(ShowFilmsCommand.class);
     private FilmService filmService = new FilmService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<Film> films = filmService.getAllFilms();
         int numberOfItems = 5;
         Paginator<Film> paginator = new Paginator<>(films, numberOfItems);
@@ -30,6 +30,6 @@ public class ShowFilmsCommand extends Command {
         request.setAttribute("currentIndex", paginator.getCurrentIndex());
         request.setAttribute("previousIndex", paginator.getPreviousIndex());
         request.setAttribute("nextIndex", paginator.getNextIndex());
-        forward("/WEB-INF/pages/display-films.jsp");
+        return "/WEB-INF/pages/display-films.jsp";
     }
 }

@@ -10,12 +10,13 @@ public class DeleteSeanceCommand extends Command {
     private Logger logger = Logger.getLogger(DeleteSeanceCommand.class);
     private SeanceService seanceService = new SeanceService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         logger.info("DeleteSeanceCommand start");
         int id = Integer.parseInt(request.getParameter("seance-id"));
         logger.info("Seance id: " + id);
         seanceService.deleteSeanceById(id);
-        sendRedirect("free/home?success=seance-deleted");
         logger.info("DeleteSeanceCommand end");
+        return "redirect:free/home?success=seance-deleted";
     }
+
 }

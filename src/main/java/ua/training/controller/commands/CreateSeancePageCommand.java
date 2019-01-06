@@ -10,9 +10,9 @@ import java.util.List;
 public class CreateSeancePageCommand extends Command {
     FilmService filmService = new FilmService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<Film> films = filmService.getAllFilms();
         request.setAttribute("films", films);
-        forward("/WEB-INF/pages/create-seance.jsp");
+        return "/WEB-INF/pages/create-seance.jsp";
     }
 }

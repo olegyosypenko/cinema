@@ -27,7 +27,7 @@
 
                     <c:when test="${seat == 0}">
                         <div class='free seat hint hint--top'
-                             data-hint='<fmt:message key="row.label" bundle="${language}"/>: ${outerLoop.index + 1} <fmt:message key="seat.label" bundle="${language}"/>: ${outerLoop.index + 1} <fmt:message key="seance.price.label" bundle="${language}"/>: ${seance.price} <fmt:message key="currency.label" bundle="${language}"/>'
+                             data-hint='<fmt:message key="row.label" bundle="${language}"/>: ${outerLoop.index + 1} <fmt:message key="seat.label" bundle="${language}"/>: ${innerLoop.index + 1} <fmt:message key="seance.price.label" bundle="${language}"/>: ${seance.price} <fmt:message key="currency.label" bundle="${language}"/>'
                              data-seat='${innerLoop.index + 1}' data-row='${outerLoop.index + 1}' data-price='${seance.price}'></div>
                     </c:when>
                     <c:otherwise>
@@ -43,11 +43,12 @@
 </h3>
 <form action="${pageContext.request.contextPath}/servlet/user/buy-tickets" id="buy-tickets-form">
     <input type="hidden" name="seance-id" value="${seance.id}">
+    <input type="hidden" name="price" value="${seance.price}">
     <input type="hidden" name="user-id" value="${user.id}">
-    <c:if test="${user.role == 'USER'}">
+    <c:if test="${user.role == USER}">
         <button class="button"><fmt:message key="buy.tickets.label" bundle="${language}"/></button>
     </c:if>
-    <c:if test="${user.role == 'ADMIN'}">
+    <c:if test="${user.role == ADMIN}">
         <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
     </c:if>
 </form>

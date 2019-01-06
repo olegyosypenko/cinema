@@ -11,7 +11,7 @@
     © 2018 Cinema. <fmt:message key="footer.rights.message" bundle="${language}"/>
 
     <c:choose>
-        <c:when test="${lang=='uk'}">
+        <c:when test="${lang.equals('uk')}">
             <div>
                 <strong>Українська</strong> -
                 <a href="?lang=en">English</a>

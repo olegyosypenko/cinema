@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AddMoneyPageCommand extends Command {
 
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        forward("/WEB-INF/pages/add-money-page.jsp");
+    public String process(HttpServletRequest request, HttpServletResponse response) {
+        return "/WEB-INF/pages/add-money-page.jsp";
     }
 }

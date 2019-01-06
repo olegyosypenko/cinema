@@ -49,7 +49,8 @@ public class TicketMySqlDao implements TicketDao {
             }
             resultSet.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Cannot execute query: " + query);
+            throw new DaoException("Cannot execute query", e);
         }
         return tickets;
     }

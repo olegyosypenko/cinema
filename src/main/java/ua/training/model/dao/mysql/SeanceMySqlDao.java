@@ -144,7 +144,8 @@ public class SeanceMySqlDao implements SeanceDao {
             statement.setInt(1, seanceId);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Cannot delete seance by id: " + seanceId, e);
+            throw new DaoException("Cannot delete seance", e);
         }
     }
 }

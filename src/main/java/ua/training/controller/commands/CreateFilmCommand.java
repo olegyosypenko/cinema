@@ -12,7 +12,19 @@ public class CreateFilmCommand extends Command {
     Logger logger = Logger.getLogger(CreateFilmCommand.class);
     private FilmService filmService = new FilmService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
+        if (!isCorrectInput(request)) {
+            return "redirect:admin/create-film-page?error=incorrect-input";
+        }
+        try {
+            filmService.createFilm(getFilmDtoFromInput(request));
+            return "redirect:admin/create-film-page?success=film-created";
+        } catch (NotUniqueValueException e) {
+            return "redirect:admin/create-film-page?error=not-unique-film-value";
+        }
+    }
+
+    private boolean isCorrectInput(HttpServletRequest request) {
         String name = request.getParameter("name");
         String nameEN = request.getParameter("name-en");
         String genre = request.getParameter("genre");
@@ -23,22 +35,37 @@ public class CreateFilmCommand extends Command {
         String descriptionEN = request.getParameter("description-en");
         String imageLink = request.getParameter("image-link");
         String imageLinkEN = request.getParameter("image-link-en");
+        String rateParam = request.getParameter("rate");
         if (name == null || nameEN == null || genre == null || genreEn == null
                 || director == null || directorEN == null || description == null
                 || descriptionEN == null || imageLink == null || imageLinkEN == null ||
-                request.getParameter("rate") == null) {
-            sendRedirect("admin/create-film-page?error=incorrect-input");
-            return;
+                rateParam == null) {
+            return false;
         }
-        float rate;
         try {
-            rate = Float.parseFloat(request.getParameter("rate"));
+            float rate = Float.parseFloat(rateParam);
+            if (rate > 10 || rate < 0) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             logger.error("Incorrect rate input", e);
-            sendRedirect("admin/create-film-page?error=incorrect-input");
-            return;
+            return false;
         }
+        return true;
+    }
 
+    private FilmDto getFilmDtoFromInput(HttpServletRequest request) {
+        String name = request.getParameter("name");
+        String nameEN = request.getParameter("name-en");
+        String genre = request.getParameter("genre");
+        String genreEn = request.getParameter("genre-en");
+        String director = request.getParameter("director");
+        String directorEN = request.getParameter("director-en");
+        String description = request.getParameter("description");
+        String descriptionEN = request.getParameter("description-en");
+        String imageLink = request.getParameter("image-link");
+        String imageLinkEN = request.getParameter("image-link-en");
+        float rate = Float.parseFloat(request.getParameter("rate"));
         FilmDto film = new FilmDto();
         film.setName(name);
         film.setNameEN(nameEN);
@@ -51,11 +78,6 @@ public class CreateFilmCommand extends Command {
         film.setDescriptionEN(descriptionEN);
         film.setImageLink(imageLink);
         film.setImageLinkEN(imageLinkEN);
-        try {
-            filmService.createFilm(film);
-            sendRedirect("admin/create-film-page?success=film-created");
-        } catch (NotUniqueValueException e) {
-            sendRedirect("admin/create-film-page?error=not-unique-film-value");
-        }
+        return film;
     }
 }

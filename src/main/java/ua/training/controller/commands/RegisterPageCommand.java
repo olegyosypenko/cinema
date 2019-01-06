@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RegisterPageCommand extends Command {
 
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        forward("/WEB-INF/pages/register-page.jsp");
+    public String process(HttpServletRequest request, HttpServletResponse response) {
+        return "/WEB-INF/pages/register-page.jsp";
     }
 }

@@ -16,20 +16,17 @@ public class ShowSeancesByDateCommand extends Command {
     private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
     private SeanceService seanceService = new SeanceService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        Date date;
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         String[] requestParts = request.getRequestURI().split("/");
         String dateString = requestParts[requestParts.length - 1];
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = new Date(formatter.parse(dateString).getTime());
-        } catch (Exception e) {
+        Date date = CalendarUtil.getDateFromString(dateString);
+        if (!CalendarUtil.isDateAvailable(date)) {
             date = new Date(System.currentTimeMillis());
-            logger.error("Incorrect input error: " + dateString, e);
         }
         request.setAttribute("days", CalendarUtil.getAvailableDays());
+        request.setAttribute("date", date);
         request.setAttribute("seances", seanceService.getSeancesByDate(date));
-        forward("/WEB-INF/pages/schedule.jsp");
+        return "/WEB-INF/pages/schedule.jsp";
     }
 
 }

@@ -19,10 +19,10 @@
 </head>
 <body>
 <c:choose>
-    <c:when test="${user.role=='UNKNOWN'}">
+    <c:when test="${user.role==UNKNOWN}">
         <%@include file="../parts/guest-navbar.jspf"%>
     </c:when>
-    <c:when test="${user.role=='USER'}">
+    <c:when test="${user.role==USER}">
         <%@include file="../parts/user-navbar.jspf"%>
     </c:when>
     <c:otherwise>

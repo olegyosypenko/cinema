@@ -1,3 +1,4 @@
+/*noinspection CssUnknownTarget*/
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
 
 html {
@@ -15,7 +16,7 @@ body {
     margin: 0 0 100px 0;
 }
 header {
-    background-color: #2d3a6d;
+    background-color: #4873b8;
     padding: 0 10%;
     font-size: 20px;
     height: 50px;
@@ -29,15 +30,15 @@ header {
     text-decoration: none;
 }
 .menu-item {
-    margin-left: 15px;
+    padding: 0 7px;
     border: none;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    transition: border .25s ease;
+    transition: background-color .25s ease;
 }
 .menu-item:hover {
-    border-bottom: white 2px solid;
+    background-color: #385186;
 }
 
 .right {
@@ -70,7 +71,6 @@ header {
     text-transform: uppercase;
     outline: 0;
     background: #4CAF50;
-    width: 100%;
     border: 0;
     padding: 15px;
     color: #FFFFFF;
@@ -160,7 +160,6 @@ a {
     position: absolute;
     background: transparent;
     border: 6px solid transparent;
-    position: absolute;
 }
 
 .hint:after {
@@ -292,4 +291,11 @@ button.disabled:hover {
 .warning-msg {
     color: #9F6000;
     background-color: #FEEFB3;
+}
+.chosen {
+    font-weight: bold;
+    font-size: 19px;
+}
+h1, h2 {
+    margin: 0 0 5px 0;
 }

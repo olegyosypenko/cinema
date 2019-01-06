@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ProfileCommand extends Command {
     private UserService userService = new UserService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
         int money = userService.getMoneyAmountById(user.getId());
         user.setMoney(money);
-        forward("/WEB-INF/pages/profile.jsp");
+        return "/WEB-INF/pages/profile.jsp";
     }
 }

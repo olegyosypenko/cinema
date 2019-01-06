@@ -33,9 +33,9 @@ public class AuthFilter implements Filter {
         String uri = request.getRequestURI();
         String accessLabel = UriParser.getAccessLabel(uri);
         List<Role> roles = map.get(accessLabel);
-        logger.info("URI: " + uri);
-        logger.info("accessLabel: " + accessLabel);
-        logger.info("user role: " + user.getRole());
+        logger.debug("URI: " + uri);
+        logger.debug("accessLabel: " + accessLabel);
+        logger.debug("user role: " + user.getRole());
         if (roles == null) {
             response.sendError(404, "Page not found");
         } else if (roles.contains(user.getRole())) {

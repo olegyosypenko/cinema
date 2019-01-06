@@ -20,7 +20,7 @@
 <c:forEach items="${seances}" var="seance">
     <div><a href="${pageContext.request.contextPath}/servlet/free/buy-tickets-page/${seance.id}"><fmt:formatDate value="${seance.startTime}"  pattern="dd-MM-yyyy HH:mm"/></a></div>
 </c:forEach>
-<c:if test="${user.role == 'ADMIN'}">
+<c:if test="${user.role == ADMIN}">
     <div>
         <a href="${pageContext.request.contextPath}/servlet/admin/delete-film/${film.id}"><fmt:message key="delete.film.label" bundle="${language}"/></a>
     </div>

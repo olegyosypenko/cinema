@@ -1,5 +1,6 @@
 package ua.training.controller.commands;
 
+import ua.training.controller.util.CalendarUtil;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.Film;
 import ua.training.model.entity.Seance;
@@ -15,33 +16,53 @@ import java.text.SimpleDateFormat;
 public class CreateSeanceCommand extends Command {
     private SeanceService seanceService = new SeanceService();
     @Override
-    public void process(HttpServletRequest request, HttpServletResponse response) {
-        String startTimeString = request.getParameter("start-time");
+    public String process(HttpServletRequest request, HttpServletResponse response) {
+        if (!isCorrectInput(request)) {
+            return "redirect:admin/create-seance-page?error=incorrect-input";
+        }
+        try {
+            seanceService.createSeance(getSeanceFromInput(request));
+        } catch (DaoException daoException) {
+            return "redirect:admin/create-seance-page?error=cannot-create-seance";
+        }
+        return "redirect:admin/create-seance-page?success=seance-created";
+    }
+
+    private boolean isCorrectInput(HttpServletRequest request) {
+        String priceParam = request.getParameter("price");
+        String idParam = request.getParameter("film-id");
+        String startTimeParam = request.getParameter("start-time");
+        if (priceParam == null || idParam == null || startTimeParam == null) {
+            return false;
+        }
+        int price;
+        int filmId;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        try {
+            price = Integer.parseInt(request.getParameter("price"));
+            filmId = Integer.parseInt(request.getParameter("film-id"));
+            if (price < 0 || filmId < 0) {
+                return false;
+            }
+            Timestamp startTime = new Timestamp(formatter.parse(startTimeParam).getTime());
+            if (startTime.before(new Timestamp(System.currentTimeMillis()))) {
+                return false;
+            }
+        } catch (NumberFormatException | ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private Seance getSeanceFromInput(HttpServletRequest request) {
         int price = Integer.parseInt(request.getParameter("price"));
         int filmId = Integer.parseInt(request.getParameter("film-id"));
         Film film = new Film();
         film.setId(filmId);
         Seance seance = new Seance();
         seance.setFilm(film);
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        try {
-            Timestamp startTime = new Timestamp(formatter.parse(startTimeString).getTime());
-            if (startTime.before(new Timestamp(System.currentTimeMillis()))) {
-                sendRedirect("admin/create-seance-page?error=incorrect-input");
-                return;
-            }
-            seance.setStartTime(startTime);
-        } catch (ParseException e) {
-            sendRedirect("admin/create-seance-page?error=incorrect-input");
-            return;
-        }
         seance.setPrice(price);
-        try {
-            seanceService.createSeance(seance);
-        } catch (DaoException daoException) {
-            sendRedirect("admin/create-seance-page?error=cannot-create-seance");
-            return;
-        }
-        sendRedirect("admin/create-seance-page?success=seance-created");
+        seance.setStartTime(CalendarUtil.getTimestampFromString(request.getParameter("start-time")));
+        return seance;
     }
 }
