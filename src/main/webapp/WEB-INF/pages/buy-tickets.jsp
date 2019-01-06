@@ -44,7 +44,12 @@
 <form action="${pageContext.request.contextPath}/servlet/user/buy-tickets" id="buy-tickets-form">
     <input type="hidden" name="seance-id" value="${seance.id}">
     <input type="hidden" name="user-id" value="${user.id}">
-    <button class="button"><fmt:message key="buy.tickets.label" bundle="${language}"/></button>
+    <c:if test="${user.role == 'USER'}">
+        <button class="button"><fmt:message key="buy.tickets.label" bundle="${language}"/></button>
+    </c:if>
+    <c:if test="${user.role == 'ADMIN'}">
+        <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
+    </c:if>
 </form>
 
 <%@include file="../parts/footer.jspf"%>

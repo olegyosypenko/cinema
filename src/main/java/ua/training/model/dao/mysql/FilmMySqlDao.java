@@ -7,6 +7,7 @@ import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.Film;
+import ua.training.model.entity.Seance;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,14 +36,33 @@ public class FilmMySqlDao implements FilmDao {
                 film.setRate(resultSet.getFloat(5));
                 film.setDescription(resultSet.getString(6));
                 film.setImageLink(resultSet.getString(7));
+                film.setSeances(getSeancesFromResultSet(resultSet));
             }
         } catch (SQLIntegrityConstraintViolationException e) {
             logger.error("Not unique value", e);
             throw new NotUniqueValueException(e);
         } catch (SQLException e) {
+            logger.debug("Cannot execute query: " + query);
             throw new DaoException("Cannot execute query", e);
         }
         return film;
+    }
+
+    private List<Seance> getSeancesFromResultSet(ResultSet resultSet) throws SQLException {
+        List<Seance> seances = new ArrayList<>();
+        if (resultSet.getInt(8) != 0) {
+            Seance seance = new Seance();
+            seance.setId(resultSet.getInt(8));
+            seance.setStartTime(resultSet.getTimestamp(9));
+            seances.add(seance);
+        }
+        while (resultSet.next()) {
+            Seance seance = new Seance();
+            seance.setId(resultSet.getInt(8));
+            seance.setStartTime(resultSet.getTimestamp(9));
+            seances.add(seance);
+        }
+        return seances;
     }
 
     @Override
@@ -98,5 +118,32 @@ public class FilmMySqlDao implements FilmDao {
         } catch (SQLException e) {
             throw new DaoException("Cannot execute query", e);
         }
+    }
+
+    @Override
+    public List<Film> getMostPopularFilms() {
+        logger.trace("getMostPopularFilms start");
+        String query = BundlePool.getBundle().getString("select.most.popular.films.query");
+        List<Film> films = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, 5); //Todo put var into config!!!!!!!!!!
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Film film = new Film();
+                film.setId(resultSet.getInt(1));
+                film.setName(resultSet.getString(2));
+                film.setGenre(resultSet.getString(3));
+                film.setDirector(resultSet.getString(4));
+                film.setRate(resultSet.getFloat(5));
+                film.setDescription(resultSet.getString(6));
+                film.setImageLink(resultSet.getString(7));
+                films.add(film);
+            }
+        } catch (SQLException e) {
+            logger.debug("Cannot execute query: " + query);
+            throw new DaoException("Cannot execute query", e);
+        }
+        logger.trace("getMostPopularFilms end");
+        return films;
     }
 }

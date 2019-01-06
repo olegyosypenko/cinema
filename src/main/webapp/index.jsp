@@ -7,7 +7,17 @@ To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="WEB-INF/parts/header.jspf"%>
-
-it's home page
-
+<h1><fmt:message key="home.page.label" bundle="${language}"/></h1>
+<h2><fmt:message key="most.popular.films" bundle="${language}"/></h2>
+<div class="films">
+    <c:forEach items="${films}" var="film">
+        <div class="item">
+            <div><span><fmt:message key="film.name.label" bundle="${language}"/></span> : ${film.name}</div>
+            <div><span><fmt:message key="film.genre.label" bundle="${language}"/></span> : ${film.genre}</div>
+            <div><span><fmt:message key="film.director.label" bundle="${language}"/></span> : ${film.director}</div>
+            <div><span><fmt:message key="film.rate.label" bundle="${language}"/></span> : ${film.rate}</div>
+            <a href="${pageContext.request.contextPath}/servlet/free/film/${film.id}"><fmt:message key="show.more.label" bundle="${language}"/></a>
+        </div>
+    </c:forEach>
+</div>
 <%@include file="WEB-INF/parts/footer.jspf"%>

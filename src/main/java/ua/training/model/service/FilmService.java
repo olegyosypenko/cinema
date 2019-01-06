@@ -6,13 +6,10 @@ import ua.training.model.dao.FilmDao;
 import ua.training.model.dao.SeanceDao;
 import ua.training.model.dao.Transaction;
 import ua.training.model.dao.exceptions.DaoException;
-import ua.training.model.dao.mysql.FilmMySqlDao;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.Film;
 import ua.training.model.entity.Seance;
 
-import javax.xml.ws.Service;
-import java.sql.SQLException;
 import java.util.List;
 
 public class FilmService {
@@ -64,5 +61,13 @@ public class FilmService {
             }
         }
 
+    }
+
+    public List<Film> getMostPopularFilms() {
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        FilmDao filmDao = daoFactory.createFilmDao();
+        try (Transaction ignored = daoFactory.getTransaction()) {
+            return filmDao.getMostPopularFilms();
+        }
     }
 }
