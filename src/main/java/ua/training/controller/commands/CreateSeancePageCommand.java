@@ -4,13 +4,12 @@ import ua.training.model.entity.Film;
 import ua.training.model.service.FilmService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class CreateSeancePageCommand extends Command {
-    FilmService filmService = new FilmService();
+    private FilmService filmService = new FilmService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         List<Film> films = filmService.getAllFilms();
         request.setAttribute("films", films);
         return "/WEB-INF/pages/create-seance.jsp";

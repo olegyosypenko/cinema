@@ -5,7 +5,6 @@ import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class AddMoneyCommand extends Command {
@@ -13,7 +12,7 @@ public class AddMoneyCommand extends Command {
     private UserService userService = new UserService();
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         logger.trace("Parameter money: " + request.getParameter("money"));
         if (!isCorrectInput(request)) {

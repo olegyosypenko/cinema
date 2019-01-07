@@ -5,14 +5,13 @@ import ua.training.controller.util.CalendarUtil;
 import ua.training.model.service.SeanceService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 
 public class ShowSeancesByDateCommand extends Command {
     private static final Logger logger = Logger.getLogger(ShowSeancesByDateCommand.class);
     private SeanceService seanceService = new SeanceService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         String[] requestParts = request.getRequestURI().split("/");
         String dateString = requestParts[requestParts.length - 1];
         Date date = CalendarUtil.getDateFromString(dateString);

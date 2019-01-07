@@ -6,13 +6,12 @@ import ua.training.model.service.FilmService;
 import ua.training.model.service.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class DeleteFilmCommand extends Command {
     private Logger logger = Logger.getLogger(DeleteFilmCommand.class);
     private FilmService filmService = new FilmService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         int id = UriParser.getIndexFromUri(request.getRequestURI());
         try {
             filmService.deleteFilmById(id);

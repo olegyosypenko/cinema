@@ -8,13 +8,12 @@ import ua.training.model.entity.Ticket;
 import ua.training.model.service.SeanceService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class BuyTicketsPageCommand extends Command {
     private SeanceService seanceService = new SeanceService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         int seanceId = UriParser.getIndexFromUri(request.getRequestURI());
         SeanceDto seanceDto = seanceService.getSeanceDtoById(seanceId);
         List<Ticket> tickets = seanceDto.getTickets();

@@ -6,13 +6,12 @@ import ua.training.model.entity.Film;
 import ua.training.model.service.FilmService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class ShowFilmCommand extends Command {
     private Logger logger = Logger.getLogger(ShowFilmCommand.class);
     private FilmService filmService = new FilmService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         int filmId = UriParser.getIndexFromUri(request.getRequestURI());
         logger.trace("process start");
         Film film = filmService.getFilmById(filmId);

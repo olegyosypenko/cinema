@@ -6,14 +6,13 @@ import ua.training.model.dto.FilmDto;
 import ua.training.model.service.FilmService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class CreateFilmCommand extends Command {
     Logger logger = Logger.getLogger(CreateFilmCommand.class);
     private FilmService filmService = new FilmService();
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         if (!isCorrectInput(request)) {
             return "redirect:admin/create-film-page?error=incorrect-input";
         }

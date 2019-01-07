@@ -7,7 +7,6 @@ import ua.training.model.service.FilmService;
 import ua.training.model.service.Paginator;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -15,7 +14,7 @@ public class ShowFilmsCommand extends Command {
     private Logger logger = Logger.getLogger(ShowFilmsCommand.class);
     private FilmService filmService = new FilmService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         List<Film> films = filmService.getAllFilms();
         ResourceBundle bundle = ResourceBundle.getBundle("config");
         int numberOfItems = Integer.parseInt(bundle.getString("items.per.page"));

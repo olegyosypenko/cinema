@@ -6,7 +6,6 @@ import ua.training.model.service.UserService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class LoginCommand extends Command {
     private static final Logger logger = Logger.getLogger(LoginCommand.class);
     private UserService userService = new UserService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (!isCorrectInput(request)) {

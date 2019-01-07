@@ -7,7 +7,6 @@ import ua.training.model.entity.Seance;
 import ua.training.model.service.SeanceService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
 public class CreateSeanceCommand extends Command {
     private SeanceService seanceService = new SeanceService();
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         if (!isCorrectInput(request)) {
             return "redirect:admin/create-seance-page?error=incorrect-input";
         }

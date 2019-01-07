@@ -6,14 +6,13 @@ import ua.training.model.dto.UserDto;
 import ua.training.model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class RegisterCommand extends Command {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(RegisterCommand.class);
     private UserService userService = new UserService();
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request) {
         if (!isInputCorrect(request)) {
             logger.info("Incorrect input");
             return "redirect:guest/register-page?error=incorrect-login-input";

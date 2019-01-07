@@ -61,7 +61,7 @@ public class MainServlet extends HttpServlet {
         if (command == null) {
             response.sendError(404, "Page not found");
         } else {
-            String url = command.process(request, response);
+            String url = command.process(request);
             if (url.contains("redirect:")) {
                 url = url.replace("redirect:", "");
                 response.sendRedirect(context.getContextPath() + "/servlet/" + url);
