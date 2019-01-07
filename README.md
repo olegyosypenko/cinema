@@ -10,7 +10,7 @@
 новый фильм, отменить фильм, просматривать посещаемость зала.
 
 Для установки данного проекта вам понадобятся следующие программы 
-git, maven, MySql Workbench, MySql Server запущенный на порту 3306.
+jdk, git, maven, MySql Workbench, MySql Server запущенный на порту 3306.
 1. Откройте командную строку в удобной для вас папке и введите команду
 
     git clone https://github.com/olegyosypenko/cinema.git
