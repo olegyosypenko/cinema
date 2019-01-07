@@ -36,7 +36,7 @@ public class TransactionMySql implements Transaction {
     @Override
     public void rollback() {
         try {
-            connection.setAutoCommit(false);
+            connection.rollback();
         } catch (SQLException e) {
             logger.error("Cannot rollback exception", e);
             throw new DaoException("Cannot rollback exception", e);
