@@ -14,7 +14,11 @@
 
 git clone https://github.com/olegyosypenko/cinema.git
 
-Потом запустите скрипт db_dump.sql Для доступа к базе даннных: 
+Потом запустите скрипт db_dump.sql спомощью программы mysql workbench. 
+Если скрипт не запустился возможно у вас старая версия 
+программы MySql Server. Попробуйте запустить скрипт db_dump2.sql 
+или обновить MySql Server.
+Для доступа к базе даннных: 
 Имя пользователя: cinema_admin Пароль: cinema_admin
 
 Для запуска приложения откройте командную строку в корневой папке 
@@ -24,6 +28,9 @@ mvn tomcat7:run
 
 Приложение будет доступно по ссылке
 http://localhost:8888/cinema/servlet/free/home
+
+Для того что бы зайти в приложение от имени админа 
+Имя пользователя: admin Пароль: admin
 
 Для остановки приложения воспользуйтесь инструкцией по этой ссылке 
 http://qaru.site/questions/148505/how-to-kill-a-currently-using-port-on-localhost-in-windows
