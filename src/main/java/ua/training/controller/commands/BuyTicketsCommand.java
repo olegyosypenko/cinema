@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuyTicketsCommand extends Command {
+    private TicketService ticketService = new TicketService();
     private Logger logger = Logger.getLogger(BuyTicketsCommand.class);
     @Override
     public String process(HttpServletRequest request) {
         logger.trace("process start");
-        TicketService ticketService = new TicketService();
         int seanceId = Integer.parseInt(request.getParameter("seance-id"));
         try {
             if (!isCorrectInput(request)) {
