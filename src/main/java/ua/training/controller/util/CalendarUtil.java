@@ -28,8 +28,7 @@ public class CalendarUtil {
     public static Timestamp getTimestampFromString(String input) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         try {
-            Timestamp startTime = new Timestamp(formatter.parse(input).getTime());
-            return startTime;
+            return new Timestamp(formatter.parse(input).getTime());
         } catch (ParseException e) {
             throw new RuntimeException();
         }

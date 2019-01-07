@@ -11,7 +11,7 @@ public class TransactionMySql implements Transaction {
     private Logger logger = Logger.getLogger(TransactionMySql.class);
     private Connection connection;
 
-    public TransactionMySql(Connection connection) {
+    TransactionMySql(Connection connection) {
         this.connection = connection;
     }
 

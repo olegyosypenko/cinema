@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "MainServlet", urlPatterns = {"/servlet/*"})
 public class MainServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(MainServlet.class);
-    Map<String, Command> map = new HashMap<>();
+    private Map<String, Command> map = new HashMap<>();
 
     @Override
     public void init() {

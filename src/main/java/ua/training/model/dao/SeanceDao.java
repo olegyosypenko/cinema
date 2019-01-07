@@ -10,10 +10,6 @@ public interface SeanceDao {
     void createSeance(Seance seance);
     List<Seance> getSeancesByFilmId(int id);
     List<SeanceDto> getSeancesByDate(Date date);
-
-    void getSeanceParametersById(int id);
-
     void deleteSeanceById(int id);
-
     SeanceDto getSeanceDtoById(int seanceId);
 }

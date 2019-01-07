@@ -6,9 +6,9 @@ import javax.sql.DataSource;
 import java.util.ResourceBundle;
 
 class ConnectionPool {
-    private static volatile DataSource dataSource; //TODO check if volatile is needed
+    private static volatile DataSource dataSource;
 
-    private static final String URL; //TODO field is nullable. need to check for exceptional situations
+    private static final String URL;
     private static final String USERNAME;
     private static final String PASSWORD;
     private static final int MAX_IDLE_CONNECTIONS;

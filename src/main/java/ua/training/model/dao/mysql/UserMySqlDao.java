@@ -19,15 +19,6 @@ public class UserMySqlDao implements UserDao {
     public UserMySqlDao(Connection connection) {
         this.connection = connection;
     }
-    @Override
-    public User getUserById(int id) {
-        return null;
-    }
-
-    @Override
-    public List<User> getUsersBySeanceId(int id) {
-        return null;
-    }
 
     @Override
     public void addMoneyToUser(int id, int money) {

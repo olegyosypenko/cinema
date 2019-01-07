@@ -17,7 +17,7 @@ public class Paginator<E> {
 
 
 
-    public int getAmountOfPages() {
+    private int getAmountOfPages() {
         if (items.size() % numberOfItems != 0) {
             return items.size() / numberOfItems + 1;
         } else {

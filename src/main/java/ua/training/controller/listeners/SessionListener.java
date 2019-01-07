@@ -30,7 +30,8 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = httpSessionEvent.getSession();
         User user = (User) session.getAttribute("user");
         ServletContext context = session.getServletContext();
-        List<String> users = (List<String>) context.getAttribute("logged-users"); //Todo add supress warning
+        @SuppressWarnings("unchecked")
+        List<String> users = (List<String>) context.getAttribute("logged-users");
 
         users.remove(user.getUsername());
         logger.debug("Users left: " + users);

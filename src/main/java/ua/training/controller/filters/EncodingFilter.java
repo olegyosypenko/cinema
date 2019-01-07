@@ -1,7 +1,7 @@
 package ua.training.controller.filters;
 
 import org.apache.log4j.Logger;
-import ua.training.controller.MainServlet;
+
 import javax.servlet.*;
 import java.io.IOException;
 

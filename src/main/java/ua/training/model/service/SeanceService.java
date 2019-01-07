@@ -3,7 +3,6 @@ package ua.training.model.service;
 import ua.training.model.dao.*;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dto.SeanceDto;
-import ua.training.model.entity.Hall;
 import ua.training.model.entity.Seance;
 import ua.training.model.entity.Ticket;
 import ua.training.model.entity.User;

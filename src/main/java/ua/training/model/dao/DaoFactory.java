@@ -4,7 +4,6 @@ import ua.training.model.dao.mysql.MySqlDaoFactory;
 
 public abstract class DaoFactory {
 
-    public abstract HallDao createHallDao();
     public abstract FilmDao createFilmDao();
     public abstract SeanceDao createSeanceDao();
     public abstract TicketDao createTicketDao();

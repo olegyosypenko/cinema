@@ -15,7 +15,7 @@ public class ShowFilmCommand extends Command {
     public String process(HttpServletRequest request, HttpServletResponse response) {
         int filmId = UriParser.getIndexFromUri(request.getRequestURI());
         logger.trace("process start");
-        Film film = filmService.getFilmById(filmId); // ToDo refactor into one service instead of two!!!! done
+        Film film = filmService.getFilmById(filmId);
         logger.debug("Number of seances: " + film.getSeances());
         request.setAttribute("film", film);
         request.setAttribute("seances", film.getSeances());

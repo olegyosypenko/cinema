@@ -132,7 +132,7 @@ public class FilmMySqlDao implements FilmDao {
         int topFilmsNumber = Integer.parseInt(bundle.getString("top.films.number"));
         List<Film> films = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, 5); //Todo put var into config!!!!!!!!!!
+            statement.setInt(1, topFilmsNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Film film = new Film();

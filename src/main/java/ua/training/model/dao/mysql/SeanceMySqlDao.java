@@ -132,10 +132,6 @@ public class SeanceMySqlDao implements SeanceDao {
         return seanceDto;
     }
     @Override
-    public void getSeanceParametersById(int seanceId) {
-
-    }
-    @Override
     public void deleteSeanceById(int seanceId) {
 
         String query = BundleHolder.getBundle().getString("delete.seance.by.id.query");

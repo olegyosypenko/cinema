@@ -1,7 +1,7 @@
 package ua.training.model.dao.mysql;
 
 import ua.training.model.dao.*;
-import ua.training.model.dao.exceptions.DaoException;
+import ua.training.model.dao.exceptions.CannotGetConnectionException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -38,10 +38,6 @@ public class MySqlDaoFactory extends DaoFactory {
     public TicketDao createTicketDao() {
         return new TicketMySqlDao(connection);
     }
-    @Override
-    public HallDao createHallDao() {
-        return new HallMySqlDao(connection);
-    }
 
 
 
@@ -50,7 +46,7 @@ public class MySqlDaoFactory extends DaoFactory {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DaoException("Cannot get connection", e);
+            throw new CannotGetConnectionException(e);
         }
     }
 }
