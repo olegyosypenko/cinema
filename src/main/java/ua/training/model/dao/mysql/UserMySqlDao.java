@@ -91,22 +91,27 @@ public class UserMySqlDao implements UserDao {
     }
 
     @Override
-    public int getMoneyAmountById(int id) {
-        int result;
-        String query = BundleHolder.getBundle().getString("select.money.amount.by.id.query");
+    public User getUserById(int id) {
+        User user = new User();
+        String query = BundleHolder.getBundle().getString("select.user.by.id");
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                result = resultSet.getInt(1);
+                user.setId(resultSet.getInt(1));
+                user.setUsername(resultSet.getString(2));
+                user.setRole(Role.valueOf(resultSet.getString(3)));
+                user.setMoney(resultSet.getInt(4));
+                user.setFirstName(resultSet.getString(5));
+                user.setLastName(resultSet.getString(6));
             } else {
-                throw new DaoException("User does not exists");
+                throw new DaoException("User not found");
             }
         } catch (SQLException e) {
             logger.error("Cannot execute query");
             throw new DaoException("Cannot execute query", e);
         }
-        return result;
+        return user;
     }
 
     @Override

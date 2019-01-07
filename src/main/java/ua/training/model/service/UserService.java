@@ -42,11 +42,11 @@ public class UserService {
         }
     }
 
-    public int getMoneyAmountById(int id) {
+    public User getUserById(int id) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         try (Transaction ignored = daoFactory.getTransaction()) {
             UserDao userDao = daoFactory.createUserDao();
-            return userDao.getMoneyAmountById(id);
+            return userDao.getUserById(id);
         }
     }
     private String hashPassword(String password) {

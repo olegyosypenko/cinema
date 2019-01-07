@@ -10,8 +10,7 @@ public class ProfileCommand extends Command {
     @Override
     public String process(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        int money = userService.getMoneyAmountById(user.getId());
-        user.setMoney(money);
+        request.getSession().setAttribute("user", userService.getUserById(user.getId()));
         return "/WEB-INF/pages/profile.jsp";
     }
 }

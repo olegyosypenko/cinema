@@ -7,6 +7,7 @@ import ua.training.model.dao.Transaction;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.Ticket;
+import ua.training.model.entity.User;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +40,8 @@ public class TicketService {
                     priceOfTicket = tickets.get(0).getSeance().getPrice();
                 }
                 int fullPrice = priceOfTicket * tickets.size();
-                int moneyAmount = userDao.getMoneyAmountById(id);
+                User user = userDao.getUserById(id);
+                int moneyAmount = user.getMoney();
                 logger.debug("Amount of money: " + moneyAmount);
                 logger.debug("Full price: " + fullPrice);
                 if (moneyAmount < fullPrice) {

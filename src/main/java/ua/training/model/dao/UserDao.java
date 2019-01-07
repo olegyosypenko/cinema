@@ -10,6 +10,6 @@ public interface UserDao {
     void createUser(UserDto user);
     User getUserByUsernameAndPassword(String username, String password);
     void addMoneyToUsers(List<User> users, List<Integer> money);
-    int getMoneyAmountById(int id);
+    User getUserById(int id);
     void withdrawMoney(int id, int fullPrice);
 }
