@@ -12,6 +12,7 @@ import ua.training.model.entity.Seance;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class FilmMySqlDao implements FilmDao {
 
@@ -67,10 +68,10 @@ public class FilmMySqlDao implements FilmDao {
 
     @Override
     public List<Film> getAllFilms() {
-        String getAllFilms = BundleHolder.getBundle().getString("select.all-users.query");
+        String query = BundleHolder.getBundle().getString("select.all-users.query");
         List<Film> films = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(getAllFilms);
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 Film film = new Film();
                 film.setId(resultSet.getInt(1));
@@ -83,6 +84,7 @@ public class FilmMySqlDao implements FilmDao {
                 films.add(film);
             }
         } catch (SQLException e) {
+            logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
         return films;
@@ -117,6 +119,7 @@ public class FilmMySqlDao implements FilmDao {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
+            logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
     }
@@ -125,6 +128,8 @@ public class FilmMySqlDao implements FilmDao {
     public List<Film> getMostPopularFilms() {
         logger.trace("getMostPopularFilms start");
         String query = BundleHolder.getBundle().getString("select.most.popular.films.query");
+        ResourceBundle bundle = ResourceBundle.getBundle("config");
+        int topFilmsNumber = Integer.parseInt(bundle.getString("top.films.number"));
         List<Film> films = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, 5); //Todo put var into config!!!!!!!!!!
