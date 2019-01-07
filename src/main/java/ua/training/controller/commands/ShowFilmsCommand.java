@@ -26,7 +26,7 @@ public class ShowFilmsCommand extends Command {
         } catch(NumberFormatException number) {
             logger.debug("Incorrect number");
         }
-        request.setAttribute("films", paginator.getFilmsPart(index));
+        request.setAttribute("films", paginator.getItemsPart(index));
         request.setAttribute("indexes", paginator.getIndexes());
         request.setAttribute("currentIndex", paginator.getCurrentIndex());
         request.setAttribute("previousIndex", paginator.getPreviousIndex());

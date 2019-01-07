@@ -34,7 +34,7 @@ public class Paginator<E> {
         return list;
     }
 
-    public List<E> getFilmsPart(int index) {
+    public List<E> getItemsPart(int index) {
         if (index < 1){
             index = 1;
         } else if (index > getAmountOfPages()) {
@@ -42,16 +42,9 @@ public class Paginator<E> {
         }
         this.currentIndex = index;
         int i = index - 1;
-        int numberOfItemsOnLastPage = items.size() % numberOfItems;
-        if (numberOfItemsOnLastPage == 0) {
-            numberOfItemsOnLastPage = numberOfItems;
-        }
         int numberOfPages = items.size() / numberOfItems;
-        if (i < 0) {
-            i = 0;
-        }
-        if (i >= numberOfPages) {
-            return items.subList(i * numberOfItems, i * numberOfItems + numberOfItemsOnLastPage);
+        if (i == numberOfPages) {
+            return items.subList(i * numberOfItems, items.size());
         }
         return items.subList(i * numberOfItems, i * numberOfItems + numberOfItems);
     }
