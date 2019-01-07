@@ -1,11 +1,11 @@
 
-GRANT ALL PRIVILEGES ON *.* TO 'cinema_admin'@'localhost' IDENTIFIED BY 'cinema_admin';
+CREATE USER 'cinema_admin'@'localhost' IDENTIFIED BY 'cinema_admin';
 CREATE DATABASE  IF NOT EXISTS `db_cinema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `db_cinema`;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_cinema
--- ------------------------------------------------------
+-- --------------------------------------------/----------
 -- Server version	8.0.13
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -183,3 +183,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-01-07 12:46:29
+GRANT ALL PRIVILEGES ON db_cinema.* TO 'cinema_admin'@'localhost';
