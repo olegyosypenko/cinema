@@ -136,4 +136,14 @@ public class UserMySqlDao implements UserDao {
             logger.error("SQL exception", e);
         }
     }
+
+    public void deleteUserByUsername(String username) {
+        String query = BundleHolder.getBundle().getString("delete.user.query");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException("Cannot execute query", e);
+        }
+    }
 }

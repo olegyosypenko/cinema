@@ -12,6 +12,7 @@ import java.util.*;
 public class TicketMySqlDao implements TicketDao {
     private final Connection connection;
     private Logger logger = Logger.getLogger(TicketMySqlDao.class);
+
     TicketMySqlDao(Connection connection) {
         this.connection = connection;
     }
@@ -92,42 +93,6 @@ public class TicketMySqlDao implements TicketDao {
         }
         return tickets;
     }
-//    @Override
-//    private List<Ticket> getTicketsByTickets(List<Ticket> tickets) {
-//        List<Ticket> result = new ArrayList<>();
-//        String query = createQuery(tickets);
-//        logger.debug("Get tickets by tickets query: " + query);
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery(query);
-//            while (resultSet.next()) {
-//                Ticket ticket = new Ticket();
-//                Seance seance = new Seance();
-//                seance.setId(resultSet.getInt(2));
-//                ticket.setSeance(seance);
-//                ticket.setRow(resultSet.getInt(2));
-//                ticket.setSeat(resultSet.getInt(3));
-//                result.add(ticket);
-//            }
-//        } catch (SQLException e) {
-//            throw new DaoException("Cannot execute query", e);
-//        }
-//        return result;
-//    }
-//    private String createQuery(List<Ticket> tickets) {
-//        String query = "SELECT seance_id, tickets.row, seat FROM tickets WHERE";
-//        for (int i = 0; i < tickets.size(); i++) {
-//            Ticket ticket = tickets.get(i);
-//            if (i == 0) {
-//                query += " seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
-//                        + " AND tickets.row = " + ticket.getRow();
-//            }
-//            else {
-//                query += " OR seance_id = " + ticket.getSeance().getId() + " AND seat = " + ticket.getSeat()
-//                        + " AND tickets.row = " + ticket.getRow();
-//            }
-//        }
-//        return query;
-//    }
 
     @Override
     public void createTickets(List<Ticket> tickets) {

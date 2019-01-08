@@ -1,5 +1,6 @@
 package ua.training.controller.commands;
 
+import org.apache.log4j.Logger;
 import ua.training.controller.util.CalendarUtil;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.Film;
@@ -13,9 +14,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class CreateSeanceCommand extends Command {
+    private Logger logger = Logger.getLogger(CreateSeanceCommand.class);
     private SeanceService seanceService = new SeanceService();
     @Override
     public String process(HttpServletRequest request) {
+        logger.trace("process");
         if (!isCorrectInput(request)) {
             return "redirect:admin/create-seance-page?error=incorrect-input";
         }
@@ -41,13 +44,16 @@ public class CreateSeanceCommand extends Command {
             price = Integer.parseInt(request.getParameter("price"));
             filmId = Integer.parseInt(request.getParameter("film-id"));
             if (price < 0 || filmId < 0) {
+                logger.debug("price and filmId should not be less than zero");
                 return false;
             }
             Timestamp startTime = new Timestamp(formatter.parse(startTimeParam).getTime());
             if (startTime.before(new Timestamp(System.currentTimeMillis()))) {
+                logger.debug("startTime is in past!");
                 return false;
             }
         } catch (NumberFormatException | ParseException e) {
+            logger.error("Parse exception!", e);
             return false;
         }
         return true;

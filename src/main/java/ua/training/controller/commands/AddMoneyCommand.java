@@ -22,7 +22,7 @@ public class AddMoneyCommand extends Command {
         int money = Integer.parseInt(request.getParameter("money"));
         userService.addMoneyByUserId(user.getId(), money);
         user.setMoney(user.getMoney() + money);
-        return "redirect:logged/profile?success=money-added";
+        return "redirect:user/profile?success=money-added";
     }
 
     private boolean isCorrectInput(HttpServletRequest request) {

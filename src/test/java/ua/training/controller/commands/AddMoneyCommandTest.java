@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 import static org.junit.Assert.*;
 
 public class AddMoneyCommandTest {
-    AddMoneyCommand addMoneyCommand = new AddMoneyCommand();
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    User user = new User();
-    HttpSession session = Mockito.mock(HttpSession.class);
+    private AddMoneyCommand addMoneyCommand = new AddMoneyCommand();
+    private HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    private User user = new User();
+    private HttpSession session = Mockito.mock(HttpSession.class);
 
     @Before
     public void setUp() {
@@ -25,6 +25,6 @@ public class AddMoneyCommandTest {
     }
     @Test
     public void process() {
-        assertEquals(addMoneyCommand.process(request), "redirect:user/add-money-page?error=incorrect-input");
+        assertEquals("redirect:user/add-money-page?error=incorrect-input", addMoneyCommand.process(request));
     }
 }

@@ -13,8 +13,17 @@ public class TransactionMySql implements Transaction {
 
     TransactionMySql(Connection connection) {
         this.connection = connection;
+        try {
+            logger.debug("Isolation level: " + connection.getTransactionIsolation());
+        } catch (SQLException e) {
+            logger.error("Cannot get isolation level", e);
+        }
     }
 
+
+    /**
+     * Commits all changes since the last commit.
+     */
     @Override
     public void commit() {
         try {
@@ -24,6 +33,10 @@ public class TransactionMySql implements Transaction {
             throw new DaoException("Cannot commit exception", e);
         }
     }
+
+    /**
+     * Sets autoCommit to false
+     */
     @Override
     public void startTransaction() {
         try {
@@ -33,6 +46,9 @@ public class TransactionMySql implements Transaction {
             throw new DaoException("Cannot startTransaction exception", e);
         }
     }
+    /**
+     * Undoes all the changes since last commit.
+     */
     @Override
     public void rollback() {
         try {
@@ -42,6 +58,10 @@ public class TransactionMySql implements Transaction {
             throw new DaoException("Cannot rollback exception", e);
         }
     }
+
+    /**
+     * Sets isolation level to serializable.
+     */
     @Override
     public void setSerializable() {
         try {
@@ -52,6 +72,9 @@ public class TransactionMySql implements Transaction {
         }
     }
 
+    /**
+     * Closes the connection.
+     */
     @Override
     public void close() {
         try {

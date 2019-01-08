@@ -1,6 +1,7 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
+import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.entity.User;
 import ua.training.model.service.UserService;
 
@@ -22,7 +23,7 @@ public class LoginCommand extends Command {
         User user;
         try {
             user = userService.getUserByUsernameAndPassword(username, password);
-        } catch (Exception e) {
+        } catch (DaoException e) {
             logger.error("Incorrect password or username", e);
             return "redirect:guest/login-page?error=incorrect-username-password";
         }
@@ -35,11 +36,6 @@ public class LoginCommand extends Command {
         return "redirect:free/home?login=true";
     }
 
-    /**
-     * This method adds user in List of users if such user was not yet in the system.
-     * @param request HttpServletRequest
-     * @return returns true if user was added.
-     */
     private boolean isCorrectInput(HttpServletRequest request) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");

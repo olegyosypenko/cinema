@@ -23,7 +23,7 @@ public class TicketService {
         }
     }
 
-    public void createTickets(List<Ticket> tickets) {
+    public void buyTickets(List<Ticket> tickets) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         try (Transaction transaction = daoFactory.getTransaction()) {
             TicketDao ticketDao = daoFactory.createTicketDao();

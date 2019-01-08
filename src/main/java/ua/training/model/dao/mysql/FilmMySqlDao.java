@@ -106,7 +106,11 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(10, film.getImageLink());
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
-        } catch (SQLException e) {
+        }  catch (SQLIntegrityConstraintViolationException e) {
+            logger.error("Not unique value", e);
+            throw new NotUniqueValueException(e);
+        }
+        catch (SQLException e) {
             logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }

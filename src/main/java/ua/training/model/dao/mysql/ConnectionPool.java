@@ -5,7 +5,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import javax.sql.DataSource;
 import java.util.ResourceBundle;
 
-class ConnectionPool {
+public class ConnectionPool {
     private static volatile DataSource dataSource;
 
     private static final String URL;
@@ -22,7 +22,7 @@ class ConnectionPool {
         MAX_IDLE_CONNECTIONS = Integer.parseInt(bundle.getString("max.idle.connections"));
         MIN_IDLE_CONNECTIONS = Integer.parseInt(bundle.getString("min.idle.connections"));
     }
-    static DataSource getDataSource(){
+    public static DataSource getDataSource(){
 
         if(dataSource == null) {
             synchronized (ConnectionPool.class) {

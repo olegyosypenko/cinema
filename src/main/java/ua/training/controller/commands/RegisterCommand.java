@@ -15,7 +15,7 @@ public class RegisterCommand extends Command {
     public String process(HttpServletRequest request) {
         if (!isInputCorrect(request)) {
             logger.info("Incorrect input");
-            return "redirect:guest/register-page?error=incorrect-login-input";
+            return "redirect:guest/register-page?error=incorrect-register-input";
         }
         try {
             userService.createUser(createUserFromInput(request));
@@ -25,6 +25,7 @@ public class RegisterCommand extends Command {
         }
         return "/servlet/guest/login";
     }
+
     private boolean isInputCorrect(HttpServletRequest request) {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
@@ -50,6 +51,7 @@ public class RegisterCommand extends Command {
         }
         return lastNameEN == null || lastNameEN.length() <= Constants.LAST_NAME_MAX_LENGTH;
     }
+
     private UserDto createUserFromInput(HttpServletRequest request) {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");

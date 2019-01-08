@@ -23,7 +23,7 @@ public class BuyTicketsCommand extends Command {
             if (!isCorrectInput(request)) {
                 return "redirect:free/buy-tickets-page/" + seanceId + "?error=no-tickets-chosen";
             }
-            ticketService.createTickets(getTicketsFromParameters(request));
+            ticketService.buyTickets(getTicketsFromParameters(request));
             return "redirect:free/buy-tickets-page/" + seanceId + "?success=tickets-bought";
         } catch (DaoException e) {
             logger.error("Cannot create tickets", e);

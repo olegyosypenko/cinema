@@ -34,7 +34,7 @@ public class MainServlet extends HttpServlet {
         map.put("admin/create-seance", new CreateSeanceCommand());
         map.put("free/films", new ShowFilmsCommand());
         map.put("free/schedule", new ShowSeancesByDateCommand());
-        map.put("logged/profile", new ProfileCommand());
+        map.put("user/profile", new ProfileCommand());
         map.put("user/add-money", new AddMoneyCommand());
         map.put("free/buy-tickets-page", new BuyTicketsPageCommand());
         map.put("user/buy-tickets", new BuyTicketsCommand());

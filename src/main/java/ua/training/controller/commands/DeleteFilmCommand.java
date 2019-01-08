@@ -15,6 +15,7 @@ public class DeleteFilmCommand extends Command {
         int id = UriParser.getIndexFromUri(request.getRequestURI());
         try {
             filmService.deleteFilmById(id);
+            logger.info("Film deleted!");
             return "redirect:free/films/1?success=film-deleted";
         } catch (ServiceException e) {
             logger.error("Cannot delete film", e);
