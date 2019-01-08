@@ -1,14 +1,46 @@
 package ua.training.model.entity;
 
-import lombok.Data;
 
-public @Data class Ticket {
+public class Ticket {
     private Seance seance;
     private User user;
     private int row;
     private int seat;
 
+    public Seance getSeance() {
+        return seance;
+    }
 
+    public void setSeance(Seance seance) {
+        this.seance = seance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
+    }
+
+
+    @Override
     public boolean equals(Object that) {
         if (that == this) {
             return true;
