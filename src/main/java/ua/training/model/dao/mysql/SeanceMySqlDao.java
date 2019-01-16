@@ -103,9 +103,8 @@ public class SeanceMySqlDao implements SeanceDao {
                     tickets.add(ticket);
                     ticket.setRow(resultSet.getInt(8));
                     ticket.setSeat(resultSet.getInt(9));
-                    User user = new User();
+                    User user = new User.Builder().setId(resultSet.getInt(10)).build();
                     Seance seance = new Seance();
-                    user.setId(resultSet.getInt(10));
                     seance.setId(resultSet.getInt(11));
                     ticket.setUser(user);
                     ticket.setSeance(seance);
@@ -119,9 +118,8 @@ public class SeanceMySqlDao implements SeanceDao {
                 tickets.add(ticket);
                 ticket.setRow(resultSet.getInt(8));
                 ticket.setSeat(resultSet.getInt(9));
-                User user = new User();
+                User user = new User.Builder().setId(resultSet.getInt(10)).build();
                 Seance seance = new Seance();
-                user.setId(resultSet.getInt(10));
                 seance.setId(resultSet.getInt(11));
                 ticket.setUser(user);
                 ticket.setSeance(seance);

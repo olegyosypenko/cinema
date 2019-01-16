@@ -49,18 +49,20 @@ public class UserMySqlDao implements UserDao {
 
     public User getUserByUsernameAndPassword(String username, String password) {
         String query = BundleHolder.getBundle().getString("select.user.by.username.password.query");
-        User user = new User();
+        User user;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                user.setId(rs.getInt(1));
-                user.setUsername(rs.getString(2));
-                user.setRole(Role.valueOf(rs.getString(3)));
-                user.setMoney(rs.getInt(4));
-                user.setFirstName(rs.getString(5));
-                user.setLastName(rs.getString(6));
+                User.Builder builder = new User.Builder();
+                builder.setId(rs.getInt(1))
+                        .setUsername(rs.getString(2))
+                        .setRole(Role.valueOf(rs.getString(3)))
+                        .setMoney(rs.getInt(4))
+                        .setFirstName(rs.getString(5))
+                        .setLastName(rs.getString(6));
+                user = builder.build();
             } else {
                 throw new DaoException("User not found");
             }
@@ -92,18 +94,20 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        User user = new User();
+        User user;
         String query = BundleHolder.getBundle().getString("select.user.by.id");
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user.setId(resultSet.getInt(1));
-                user.setUsername(resultSet.getString(2));
-                user.setRole(Role.valueOf(resultSet.getString(3)));
-                user.setMoney(resultSet.getInt(4));
-                user.setFirstName(resultSet.getString(5));
-                user.setLastName(resultSet.getString(6));
+                User.Builder builder = new User.Builder();
+                builder.setId(resultSet.getInt(1))
+                        .setUsername(resultSet.getString(2))
+                        .setRole(Role.valueOf(resultSet.getString(3)))
+                        .setMoney(resultSet.getInt(4))
+                        .setFirstName(resultSet.getString(5))
+                        .setLastName(resultSet.getString(6));
+                user = builder.build();
             } else {
                 throw new DaoException("User not found");
             }

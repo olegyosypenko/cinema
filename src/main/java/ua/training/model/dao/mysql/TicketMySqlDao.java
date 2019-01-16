@@ -37,12 +37,11 @@ public class TicketMySqlDao implements TicketDao {
             while (resultSet.next()) {
                 Ticket ticket = new Ticket();
                 Seance seance = new Seance();
-                User user = new User();
+                User user = new User.Builder().setId(resultSet.getInt(4)).build();
                 seance.setId(id);
                 seance.setPrice(resultSet.getInt(1));
                 ticket.setRow(resultSet.getInt(2));
                 ticket.setSeat(resultSet.getInt(3));
-                user.setId(resultSet.getInt(4));
                 ticket.setSeance(seance);
                 ticket.setUser(user);
                 tickets.add(ticket);
@@ -67,13 +66,12 @@ public class TicketMySqlDao implements TicketDao {
                 Ticket ticket = new Ticket();
                 if (seances.get(resultSet.getInt(1)) == null) {
                     Seance seance = new Seance();
-                    Film film = new Film();
+                    Film film = new Film.Builder().setName(resultSet.getString(5)).buildFilm();
                     Hall hall = new Hall();
                     seance.setId(resultSet.getInt(1));
                     seance.setStartTime(resultSet.getTimestamp(2));
                     seance.setDuration(resultSet.getInt(3));
                     seance.setPrice(resultSet.getInt(4));
-                    film.setName(resultSet.getString(5));
                     hall.setId(resultSet.getInt(6));
                     hall.setRows(resultSet.getInt(7));
                     hall.setRows(resultSet.getInt(8));

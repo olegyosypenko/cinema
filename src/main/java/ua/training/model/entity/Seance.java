@@ -68,4 +68,6 @@ public class Seance {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+
 }

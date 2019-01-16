@@ -17,8 +17,7 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = httpSessionEvent.getSession();
         logger.info("Session created: " + session.getId());
         session.setAttribute("lang", "uk");
-        User unknownUser = new User();
-        unknownUser.setRole(Role.UNKNOWN);
+        User unknownUser = new User.Builder().setRole(Role.UNKNOWN).build();
         session.setAttribute("user", unknownUser);
         session.setAttribute("ADMIN", Role.ADMIN);
         session.setAttribute("USER", Role.USER);

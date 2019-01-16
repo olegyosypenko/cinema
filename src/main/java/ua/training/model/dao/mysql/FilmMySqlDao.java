@@ -25,19 +25,21 @@ public class FilmMySqlDao implements FilmDao {
     @Override
     public Film getFilmById(int id) {
         String query = BundleHolder.getBundle().getString("select.film.by.id");
-        Film film = new Film();
+        Film film = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                film.setId(resultSet.getInt(1));
-                film.setName(resultSet.getString(2));
-                film.setGenre(resultSet.getString(3));
-                film.setDirector(resultSet.getString(4));
-                film.setRate(resultSet.getFloat(5));
-                film.setDescription(resultSet.getString(6));
-                film.setImageLink(resultSet.getString(7));
-                film.setSeances(getSeancesFromResultSet(resultSet));
+                film = new Film.Builder()
+                        .setId(resultSet.getInt(1))
+                        .setName(resultSet.getString(2))
+                        .setGenre(resultSet.getString(3))
+                        .setDirector(resultSet.getString(4))
+                        .setRate(resultSet.getFloat(5))
+                        .setDescription(resultSet.getString(6))
+                        .setImageLink(resultSet.getString(7))
+                        .setSeances(getSeancesFromResultSet(resultSet))
+                        .buildFilm();
             }
         } catch (SQLIntegrityConstraintViolationException e) {
             logger.error("Not unique value", e);
@@ -73,14 +75,15 @@ public class FilmMySqlDao implements FilmDao {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                Film film = new Film();
-                film.setId(resultSet.getInt(1));
-                film.setName(resultSet.getString(2));
-                film.setGenre(resultSet.getString(3));
-                film.setDirector(resultSet.getString(4));
-                film.setRate(resultSet.getFloat(5));
-                film.setDescription(resultSet.getString(6));
-                film.setImageLink(resultSet.getString(7));
+                Film film = new Film.Builder()
+                        .setId(resultSet.getInt(1))
+                        .setName(resultSet.getString(2))
+                        .setGenre(resultSet.getString(3))
+                        .setDirector(resultSet.getString(4))
+                        .setRate(resultSet.getFloat(5))
+                        .setDescription(resultSet.getString(6))
+                        .setImageLink(resultSet.getString(7))
+                        .buildFilm();
                 films.add(film);
             }
         } catch (SQLException e) {
@@ -139,14 +142,15 @@ public class FilmMySqlDao implements FilmDao {
             statement.setInt(1, topFilmsNumber);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Film film = new Film();
-                film.setId(resultSet.getInt(1));
-                film.setName(resultSet.getString(2));
-                film.setGenre(resultSet.getString(3));
-                film.setDirector(resultSet.getString(4));
-                film.setRate(resultSet.getFloat(5));
-                film.setDescription(resultSet.getString(6));
-                film.setImageLink(resultSet.getString(7));
+                Film film = new Film.Builder()
+                        .setId(resultSet.getInt(1))
+                        .setName(resultSet.getString(2))
+                        .setGenre(resultSet.getString(3))
+                        .setDirector(resultSet.getString(4))
+                        .setRate(resultSet.getFloat(5))
+                        .setDescription(resultSet.getString(6))
+                        .setImageLink(resultSet.getString(7))
+                        .buildFilm();
                 films.add(film);
             }
         } catch (SQLException e) {

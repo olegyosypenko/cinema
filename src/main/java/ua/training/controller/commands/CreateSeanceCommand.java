@@ -62,8 +62,7 @@ public class CreateSeanceCommand extends Command {
     private Seance getSeanceFromInput(HttpServletRequest request) {
         int price = Integer.parseInt(request.getParameter("price"));
         int filmId = Integer.parseInt(request.getParameter("film-id"));
-        Film film = new Film();
-        film.setId(filmId);
+        Film film = new Film.Builder().setId(filmId).buildFilm();
         Seance seance = new Seance();
         seance.setFilm(film);
         seance.setPrice(price);
