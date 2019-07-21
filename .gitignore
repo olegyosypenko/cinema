@@ -1,10 +1,11 @@
 *.iml
 *.ipr
 *.iws
-*/target/*
+*/target/**
 target/*
-.idea/*
+.idea/**
 */out/*
+src/main/webapp/resources/angular.js
 
 *.classpath
 *.project
