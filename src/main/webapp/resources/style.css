@@ -299,3 +299,9 @@ button.disabled:hover {
 h1, h2 {
     margin: 0 0 5px 0;
 }
+.header {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+}

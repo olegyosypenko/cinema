@@ -1,5 +1,6 @@
 package ua.training;
 
+import lombok.Data;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -12,6 +13,10 @@ import ua.training.controller.filters.EncodingFilter;
 import ua.training.controller.filters.LocalizationFilter;
 import ua.training.controller.listeners.ContextListener;
 import ua.training.controller.listeners.SessionListener;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @SpringBootApplication
 public class Application {
@@ -59,5 +64,22 @@ public class Application {
     public ServletListenerRegistrationBean sessionListener() {
         ServletListenerRegistrationBean listenerReg = new ServletListenerRegistrationBean(new SessionListener());
         return listenerReg;
+    }
+
+    @Data
+    @Entity
+    class Hall {
+        @Id @GeneratedValue int id;
+        int rows;
+        int columns;
+
+        private Hall() {
+
+        }
+
+        public Hall(int rows, int columns) {
+            this.rows = rows;
+            this.columns = columns;
+        }
     }
 }

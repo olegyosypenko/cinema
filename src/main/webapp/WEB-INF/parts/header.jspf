@@ -9,13 +9,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 
-<html>
+<html ng-app="cinema">
 <head>
     <title>Cinema</title>
     <fmt:setLocale value="${sessionScope.lang}"/>
     <fmt:setBundle basename="labels" var="language"/>
     <fmt:requestEncoding value="UTF-8" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style.css">
+    <script src="${pageContext.request.contextPath}/resources/angular.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/app.js"></script>
 </head>
 <body>
 <c:choose>
