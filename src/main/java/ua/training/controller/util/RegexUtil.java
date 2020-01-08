@@ -9,7 +9,7 @@ public class RegexUtil {
     private static final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
     /**
-     * Method is retrieves regex by regexCode and checks if input matches the regex.
+     * Method retrieves regex by regexCode and checks if input matches the regex.
      *
      * @param regexCode code of regex
      * @param input input to be checked
