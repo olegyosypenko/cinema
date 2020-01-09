@@ -5,37 +5,39 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CalendarUtil {
+    private static final int DAY = 24 * 60 * 60 * 1000;
+    private static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
+    private static final String DAY_FORMAT = "yyyy-MM-dd";
+
     public static List<Date> getAvailableDays() {
-        List<Date> list = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            list.add(new Date(System.currentTimeMillis() + i * 24 * 60 * 60 * 1000));
-        }
-        return list;
+        return IntStream.range(0, 6)
+                .mapToObj(dayNumber -> new Date(System.currentTimeMillis() + dayNumber * DAY))
+                .collect(Collectors.toList());
     }
+
     public static boolean isDateAvailable(Date date) {
-        for (Date day : getAvailableDays()) {
-            if (date.toString().equals(day.toString())) {
-                return true;
-            }
-        }
-        return false;
+        return getAvailableDays()
+                .stream()
+                .map(Date::toString)
+                .anyMatch((availableDate -> availableDate.equals(date.toString())));
     }
 
     public static Timestamp getTimestampFromString(String input) {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        DateFormat formatter = new SimpleDateFormat(TIME_FORMAT);
         try {
             return new Timestamp(formatter.parse(input).getTime());
         } catch (ParseException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not parse input: " + input, e);
         }
     }
 
     public static Date getDateFromString(String input) {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formatter = new SimpleDateFormat(DAY_FORMAT);
         Date date;
         try {
             date = new Date(formatter.parse(input).getTime());
@@ -43,7 +45,6 @@ public class CalendarUtil {
             date = new Date(System.currentTimeMillis());
         }
         return date;
-
     }
 
 }
