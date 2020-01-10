@@ -1,7 +1,8 @@
 package ua.training.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Paginator<E> {
 
@@ -28,20 +29,17 @@ public class Paginator<E> {
      * Creates list of indexes that can be applied
      */
     public List<Integer> getIndexes() {
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < getNumberOfPages(); i++) {
-            list.add(i + 1);
-        }
-        return list;
+        return IntStream.rangeClosed(1, getNumberOfPages()).boxed().collect(Collectors.toList());
     }
 
     /**
      * This method returns part of items specified by index.
      * and sets index to currentIndex.
+     *
      * @return required part of list
      */
     public List<E> getItemsPart(int index) {
-        if (index < 1){
+        if (index < 1) {
             index = 1;
         } else if (index > getNumberOfPages()) {
             index = getNumberOfPages();
@@ -65,6 +63,7 @@ public class Paginator<E> {
             return currentIndex - 1;
         }
     }
+
     /**
      * Returns next index or last index if currentIndex is last index
      */
