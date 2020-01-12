@@ -5,6 +5,7 @@ import ua.training.model.BundleHolder;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
+import ua.training.model.dao.mysql.mappers.UserMapper;
 import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
@@ -33,6 +34,7 @@ public class UserMySqlDao implements UserDao {
             logger.error("SQL exception", e);
         }
     }
+
     @Override
     public void withdrawMoney(int id, int money) {
         String query = BundleHolder.getBundle().getString("withdraw.money.query");
@@ -49,27 +51,14 @@ public class UserMySqlDao implements UserDao {
 
     public User getUserByUsernameAndPassword(String username, String password) {
         String query = BundleHolder.getBundle().getString("select.user.by.username.password.query");
-        User user;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                User.Builder builder = new User.Builder();
-                builder.setId(rs.getInt(1))
-                        .setUsername(rs.getString(2))
-                        .setRole(Role.valueOf(rs.getString(3)))
-                        .setMoney(rs.getInt(4))
-                        .setFirstName(rs.getString(5))
-                        .setLastName(rs.getString(6));
-                user = builder.build();
-            } else {
-                throw new DaoException("User not found");
-            }
+            ResultSet resultSet = statement.executeQuery();
+            return UserMapper.mapUser(resultSet);
         } catch (SQLException e) {
             throw new DaoException("Cannot execute query", e);
         }
-        return user;
     }
 
     @Override
@@ -94,28 +83,15 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        User user;
         String query = BundleHolder.getBundle().getString("select.user.by.id");
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                User.Builder builder = new User.Builder();
-                builder.setId(resultSet.getInt(1))
-                        .setUsername(resultSet.getString(2))
-                        .setRole(Role.valueOf(resultSet.getString(3)))
-                        .setMoney(resultSet.getInt(4))
-                        .setFirstName(resultSet.getString(5))
-                        .setLastName(resultSet.getString(6));
-                user = builder.build();
-            } else {
-                throw new DaoException("User not found");
-            }
+            return UserMapper.mapUser(resultSet);
         } catch (SQLException e) {
             logger.error("Cannot execute query");
             throw new DaoException("Cannot execute query", e);
         }
-        return user;
     }
 
     @Override
