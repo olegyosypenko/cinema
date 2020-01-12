@@ -50,10 +50,10 @@ public class TicketService {
                     transaction.rollback();
                     throw new ServiceException("Not enough money");
                 }
-                List<Ticket> list = ticketDao.getTicketsBySeanceId(seanceId);
-                logger.debug("List of tickets by seances: " + list);
+                List<Ticket> bookedTickets = ticketDao.getTicketsBySeanceId(seanceId);
+                logger.debug("List of tickets by seances: " + bookedTickets);
                 logger.debug("List of tickets that user wants to buy: " + ticketDao);
-                if (checkIntersect(list, tickets)) {
+                if (checkIntersect(bookedTickets, tickets)) {
                     transaction.rollback();
                     throw new ServiceException("Ticket is taken");
                 }
@@ -67,13 +67,8 @@ public class TicketService {
         }
     }
 
-    private boolean checkIntersect(List<Ticket> list, List<Ticket> tickets) {
-        Set<Ticket> ticketSet = new HashSet<>(list);
-        for (Ticket ticket : tickets) {
-            if (ticketSet.contains(ticket)) {
-                return true;
-            }
-        }
-        return false;
+    private boolean checkIntersect(List<Ticket> bookedTickets, List<Ticket> tickets) {
+        Set<Ticket> bookedTicketsSet = new HashSet<>(bookedTickets);
+        return tickets.stream().anyMatch(bookedTicketsSet::contains);
     }
 }
