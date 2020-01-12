@@ -15,6 +15,7 @@ import java.util.List;
 public class BuyTicketsCommand extends Command {
     private TicketService ticketService = new TicketService();
     private Logger logger = Logger.getLogger(BuyTicketsCommand.class);
+
     @Override
     public String process(HttpServletRequest request) {
         logger.trace("process start");
@@ -23,7 +24,7 @@ public class BuyTicketsCommand extends Command {
             if (!isCorrectInput(request)) {
                 return "redirect:free/buy-tickets-page/" + seanceId + "?error=no-tickets-chosen";
             }
-            ticketService.buyTickets(getTicketsFromParameters(request));
+            buyTickets(request);
             return "redirect:free/buy-tickets-page/" + seanceId + "?success=tickets-bought";
         } catch (DaoException e) {
             logger.error("Cannot create tickets", e);
@@ -31,6 +32,13 @@ public class BuyTicketsCommand extends Command {
         } catch (ServiceException e) {
             logger.error("Cannot create tickets", e);
             return "redirect:free/buy-tickets-page/" + seanceId + "?error=cannot-buy-tickets";
+        }
+    }
+
+    private void buyTickets(HttpServletRequest request) {
+        List<Ticket> tickets = getTicketsFromParameters(request);
+        if (!tickets.isEmpty()) {
+            ticketService.buyTickets(tickets);
         }
     }
 
@@ -60,7 +68,6 @@ public class BuyTicketsCommand extends Command {
 
     private List<Ticket> getTicketsFromParameters(HttpServletRequest request) {
         int seanceId = Integer.parseInt(request.getParameter("seance-id"));
-        int price = Integer.parseInt(request.getParameter("price"));
         List<Ticket> tickets = new ArrayList<>();
         String[] seatParameters = request.getParameterValues("seat");
         String[] rowParameters = request.getParameterValues("row");
@@ -68,7 +75,6 @@ public class BuyTicketsCommand extends Command {
         for (int i = 0; i < seatParameters.length; i++) {
             Ticket ticket = new Ticket();
             Seance seance = new Seance();
-            seance.setPrice(price);
             seance.setId(seanceId);
             int seat = Integer.parseInt(seatParameters[i]);
             int row = Integer.parseInt(rowParameters[i]);

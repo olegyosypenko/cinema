@@ -2,10 +2,13 @@ package ua.training.model.service;
 
 import org.apache.log4j.Logger;
 import ua.training.model.dao.DaoFactory;
+import ua.training.model.dao.SeanceDao;
 import ua.training.model.dao.TicketDao;
 import ua.training.model.dao.Transaction;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.exceptions.DaoException;
+import ua.training.model.dto.SeanceDto;
+import ua.training.model.entity.Seance;
 import ua.training.model.entity.Ticket;
 import ua.training.model.entity.User;
 
@@ -14,7 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 public class TicketService {
+    private static final int NON_EXISTING_ID = -1;
     private Logger logger = Logger.getLogger(TicketService.class);
+
     public List<Ticket> getTicketsByUserId(int id) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         try (Transaction ignored = daoFactory.getTransaction()) {
@@ -28,17 +33,14 @@ public class TicketService {
         try (Transaction transaction = daoFactory.getTransaction()) {
             TicketDao ticketDao = daoFactory.createTicketDao();
             UserDao userDao = daoFactory.createUserDao();
+            SeanceDao seanceDao = daoFactory.createSeanceDao();
             transaction.startTransaction();
             transaction.setSerializable();
             try {
-                int id = -1;
-                int seanceId = -1;
-                int priceOfTicket = 0;
-                if (tickets.size() > 0) {
-                    id = tickets.get(0).getUser().getId();
-                    seanceId = tickets.get(0).getSeance().getId();
-                    priceOfTicket = tickets.get(0).getSeance().getPrice();
-                }
+                int id = tickets.stream().findAny().map(Ticket::getUser).map(User::getId).orElse(NON_EXISTING_ID);
+                int seanceId = tickets.stream().findAny().map(Ticket::getSeance).map(Seance::getId).orElse(NON_EXISTING_ID);
+                SeanceDto seanceDto = seanceDao.getSeanceDtoById(id);
+                int priceOfTicket = seanceDto.getPrice();
                 int fullPrice = priceOfTicket * tickets.size();
                 User user = userDao.getUserById(id);
                 int moneyAmount = user.getMoney();
@@ -59,7 +61,7 @@ public class TicketService {
                 userDao.withdrawMoney(id, fullPrice);
             } catch (DaoException e) {
                 transaction.rollback();
-                throw new DaoException();
+                throw new DaoException("Could not complete transaction", e);
             }
             transaction.commit();
         }
