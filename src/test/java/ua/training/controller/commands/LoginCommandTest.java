@@ -8,10 +8,10 @@ import ua.training.model.entity.User;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LoginCommandTest {
     private LoginCommand loginCommand = new LoginCommand();
@@ -29,6 +29,7 @@ public class LoginCommandTest {
         Mockito.when(request.getParameter("username")).thenReturn("asdf");
         Mockito.when(request.getParameter("password")).thenReturn("asdf");
     }
+
     @Test
     public void process() {
         String uri = loginCommand.process(request);
