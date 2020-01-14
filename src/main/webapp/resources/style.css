@@ -344,3 +344,33 @@ h1, h2 {
     text-align: center;
     font-size: 32px;
 }
+
+.ticket {
+    width: calc(50% - 10px);
+    float: left;
+    display: inline-block;
+    border: 1px solid #4873b8;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 20px;
+    -webkit-transition: background-color .3s ease;
+    -moz-transition: background-color .3s ease;
+    -ms-transition: background-color .3s ease;
+    -o-transition: background-color .3s ease;
+    transition: background-color .3s ease;
+}
+
+.ticket:nth-child(even) {
+    margin-left: 20px;
+}
+
+.ticket:hover {
+    background-color: #f2f8fbf2;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}

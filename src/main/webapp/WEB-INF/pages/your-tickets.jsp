@@ -13,14 +13,16 @@
     <fmt:message key="your.tickets" bundle="${language}"/>:
 </h2>
 
-<c:forEach items="${tickets}" var="ticket">
-    <div class="item">
-        <div><span><fmt:message key="film.name.label" bundle="${language}"/></span> : ${ticket.seance.film.name}</div>
-        <div><span><fmt:message key="row.label" bundle="${language}"/></span> : ${ticket.row}</div>
-        <div><span><fmt:message key="seat.label" bundle="${language}"/></span> : ${ticket.seat}</div>
-        <div><span><fmt:message key="seance.start.label" bundle="${language}"/></span> : <fmt:formatDate value="${ticket.seance.startTime}"  pattern="dd-MM-yyyy HH:mm"/></div>
-    </div>
-</c:forEach>
+<div class="clearfix">
+    <c:forEach items="${tickets}" var="ticket">
+        <div class="ticket">
+            <div><span><fmt:message key="film.name.label" bundle="${language}"/></span> : ${ticket.seance.film.name}</div>
+            <div><span><fmt:message key="row.label" bundle="${language}"/></span> : ${ticket.row}</div>
+            <div><span><fmt:message key="seat.label" bundle="${language}"/></span> : ${ticket.seat}</div>
+            <div><span><fmt:message key="seance.start.label" bundle="${language}"/></span> : <fmt:formatDate value="${ticket.seance.startTime}"  pattern="dd-MM-yyyy HH:mm"/></div>
+        </div>
+    </c:forEach>
+</div>
 
 
 <%@include file="../parts/footer.jspf"%>
