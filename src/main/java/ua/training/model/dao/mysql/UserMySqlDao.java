@@ -10,8 +10,12 @@ import ua.training.model.dto.UserDto;
 import ua.training.model.entity.Role;
 import ua.training.model.entity.User;
 
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Map;
 
 public class UserMySqlDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserMySqlDao.class);
@@ -62,20 +66,20 @@ public class UserMySqlDao implements UserDao {
     }
 
     @Override
-    public void addMoneyToUsers(List<User> users, List<Integer> money) {
-        logger.debug("Number of users: " + users.size());
-        logger.debug("Number of money items: " + money.size());
+    public void addMoneyToUsers(Map<User, Integer> moneyForEachUser) {
         String query = BundleHolder.getBundle().getString("update.money.query");
-        try {
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                for (int i = 0; i < users.size() && i < money.size(); i++) {
-                    statement.setInt(1, money.get(i));
-                    statement.setInt(2, users.get(i).getId());
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            moneyForEachUser.forEach((user, money) -> {
+                try {
+                    statement.setInt(1, money);
+                    statement.setInt(2, user.getId());
                     statement.addBatch();
                     statement.clearParameters();
+                } catch (SQLException e) {
+                    logger.error("SQL exception", e);
                 }
-                statement.executeBatch();
-            }
+            });
+            statement.executeBatch();
         } catch (SQLException e) {
             logger.error("SQL exception", e);
         }

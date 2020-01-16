@@ -9,9 +9,9 @@ import ua.training.model.entity.User;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SeanceService {
     public void createSeance(Seance seance) {
@@ -43,15 +43,9 @@ public class SeanceService {
                 seanceDao.deleteSeanceById(seanceId);
             } else {
                 int price = tickets.get(0).getSeance().getPrice();
-                Map<User, Integer> numberOfTicketsForEachUser = getNumberOfTicketsForEachUser(tickets);
-                List<User> users = new ArrayList<>();
-                List<Integer> money = new ArrayList<>();
-                numberOfTicketsForEachUser.forEach((key, value) -> {
-                    users.add(key);
-                    money.add(price * value);
-                });
+                Map<User, Integer> refundForEachUser = calculateRefundForEachUser(tickets, price);
                 try {
-                    userDao.addMoneyToUsers(users, money);
+                    userDao.addMoneyToUsers(refundForEachUser);
                     ticketDao.deleteTicketsBySeanceId(seanceId);
                     seanceDao.deleteSeanceById(seanceId);
                 } catch (DaoException e) {
@@ -63,16 +57,10 @@ public class SeanceService {
         }
     }
 
-    private Map<User, Integer> getNumberOfTicketsForEachUser(List<Ticket> tickets) {
-        Map<User, Integer> uniqueUsers = new HashMap<>();
-        tickets.forEach((ticket) -> {
-            if (uniqueUsers.containsKey(ticket.getUser())) {
-                uniqueUsers.put(ticket.getUser(), uniqueUsers.get(ticket.getUser()) + 1);
-            } else {
-                uniqueUsers.put(ticket.getUser(), 1);
-            }
-        });
-        return uniqueUsers;
+    private Map<User, Integer> calculateRefundForEachUser(List<Ticket> tickets, int price) {
+        Map<User, List<Ticket>> userTickets = tickets.stream().collect(Collectors.groupingBy(Ticket::getUser));
+        return userTickets.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> (entry.getValue().size() + 1) * price));
     }
 
     public SeanceDto getSeanceDtoById(int seanceId) {
