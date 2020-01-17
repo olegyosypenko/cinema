@@ -1,6 +1,7 @@
 package ua.training.controller.commands;
 
 import org.apache.log4j.Logger;
+import ua.training.controller.util.RegexUtil;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
 import ua.training.model.dto.UserDto;
 import ua.training.model.service.UserService;
@@ -13,12 +14,13 @@ public class RegisterCommand extends Command {
 
     @Override
     public String process(HttpServletRequest request) {
-        if (!isInputCorrect(request)) {
+        UserDto userFromInput = createUserFromInput(request);
+        if (!validateUser(userFromInput)) {
             logger.info("Incorrect input");
             return "redirect:guest/register-page?error=incorrect-register-input";
         }
         try {
-            userService.createUser(createUserFromInput(request));
+            userService.createUser(userFromInput);
         } catch (NotUniqueValueException e) {
             logger.error("Username is taken exception", e);
             return "redirect:guest/register-page?error=username-taken";
@@ -26,30 +28,13 @@ public class RegisterCommand extends Command {
         return "/servlet/guest/login";
     }
 
-    private boolean isInputCorrect(HttpServletRequest request) {
-        String firstName = request.getParameter("first-name");
-        String lastName = request.getParameter("last-name");
-        String firstNameEN = request.getParameter("first-name-en");
-        String lastNameEN = request.getParameter("last-name-en");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        if (username == null || password == null
-                || username.length() < Constants.USERNAME_MIN_LENGTH
-                || password.length() < Constants.PASSWORD_MIN_LENGTH
-                || username.length() > Constants.USERNAME_MAX_LENGTH
-                || password.length() > Constants.PASSWORD_MAX_LENGTH) {
-            return false;
-        }
-        if (firstName != null && firstName.length() > Constants.FIRST_NAME_MAX_LENGTH) {
-            return false;
-        }
-        if (lastName != null && lastName.length() > Constants.FIRST_NAME_MAX_LENGTH) {
-            return false;
-        }
-        if (firstNameEN != null && firstNameEN.length() > Constants.LAST_NAME_MAX_LENGTH) {
-            return false;
-        }
-        return lastNameEN == null || lastNameEN.length() <= Constants.LAST_NAME_MAX_LENGTH;
+    private boolean validateUser(UserDto userDto) {
+        return RegexUtil.matches("first.name.regex", userDto.getFirstName())
+                && RegexUtil.matches("last.name.regex", userDto.getLastName())
+                && RegexUtil.matches("first.name.en.regex", userDto.getFirstNameEN())
+                && RegexUtil.matches("last.name.en.regex", userDto.getLastNameEN())
+                && RegexUtil.matches("login.regex", userDto.getUsername())
+                && RegexUtil.matches("password.regex", userDto.getPassword());
     }
 
     private UserDto createUserFromInput(HttpServletRequest request) {

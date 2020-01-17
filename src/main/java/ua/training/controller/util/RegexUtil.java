@@ -20,7 +20,6 @@ public class RegexUtil {
             return false;
         }
         String regex = bundle.getString(regexCode);
-        Matcher matcher = Pattern.compile(regex).matcher(input);
-        return matcher.matches();
+        return input.matches(regex);
     }
 }
