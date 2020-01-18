@@ -26,7 +26,7 @@ public class Application {
 
     @Bean
     public ServletRegistrationBean servletRegistrationBean() {
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new MainServlet(), "/servlet/*");
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new MainServlet(), "/cinema/*");
         return servletRegistrationBean;
     }
 
@@ -50,7 +50,7 @@ public class Application {
     public FilterRegistrationBean authFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new AuthFilter());
         filterRegistrationBean.setOrder(3);
-        filterRegistrationBean.addUrlPatterns("/servlet/*");
+        filterRegistrationBean.addUrlPatterns("/cinema/*");
         return filterRegistrationBean;
     }
 

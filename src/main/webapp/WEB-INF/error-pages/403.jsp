@@ -12,6 +12,6 @@
 
 <div class='error-message'>403</div>
 <div><fmt:message key="access.forbidden.label" bundle="${language}"/></div>
-<a href='${pageContext.request.contextPath}/servlet/free/home'><fmt:message key="home.page.label" bundle="${language}"/></a>
+<a href='${pageContext.request.contextPath}/cinema/free/home'><fmt:message key="home.page.label" bundle="${language}"/></a>
 
 <%@include file="../parts/footer.jspf"%>

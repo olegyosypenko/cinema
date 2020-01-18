@@ -18,7 +18,7 @@ public class UriParserTest {
     @Test
     public void shouldReturnCommandName() {
         String expected = "user/command";
-        String uri = "cinema/servlet/user/command/32";
+        String uri = "cinema/cinema/user/command/32";
 
         String actual = UriParser.getCommandNameFromUri(uri);
 
@@ -28,7 +28,7 @@ public class UriParserTest {
     @Test
     public void shouldReturnAccessLabel() {
         String expected = "user";
-        String uri = "cinema/servlet/user/command/32";
+        String uri = "cinema/cinema/user/command/32";
 
         String actual = UriParser.getAccessLabel(uri);
 

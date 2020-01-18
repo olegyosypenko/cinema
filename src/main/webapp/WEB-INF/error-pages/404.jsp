@@ -7,12 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isErrorPage="true" %>
-<%@include file="../parts/header.jspf"%>
-
+<%@include file="../parts/header.jspf" %>
 
 
 <div class='error-message'>404</div>
 <div><fmt:message key="page.not.found.label" bundle="${language}"/></div>
-<a href='${pageContext.request.contextPath}/servlet/free/home'><fmt:message key="home.page.label" bundle="${language}"/></a>
+<a href='${pageContext.request.contextPath}/cinema/free/home'><fmt:message key="home.page.label"
+                                                                           bundle="${language}"/></a>
 
-<%@include file="../parts/footer.jspf"%>
+<%@include file="../parts/footer.jspf" %>

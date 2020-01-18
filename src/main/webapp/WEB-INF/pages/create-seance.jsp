@@ -8,7 +8,7 @@
 
 <%@include file="../parts/header.jspf"%>
 <div class="form">
-    <form id="main-form" class="login-form" method="post" id="seance-form" action="${pageContext.request.contextPath}/servlet/admin/create-seance">
+    <form id="main-form" class="login-form" method="post" id="seance-form" action="${pageContext.request.contextPath}/cinema/admin/create-seance">
         <input name="start-time" type="datetime-local" placeholder="<fmt:message key="seance.start.time.query" bundle="${language}"/>"/>
         <input name="price" type="number" placeholder="<fmt:message key="seance.price.query" bundle="${language}"/>"/>
         <select name="film-id" form="main-form">

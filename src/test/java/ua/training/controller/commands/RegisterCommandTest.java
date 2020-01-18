@@ -43,7 +43,7 @@ public class RegisterCommandTest {
     @Test
     public void process() {
         String uri = registerCommand.process(request);
-        assertEquals("/servlet/guest/login", uri);
+        assertEquals("/cinema/guest/login", uri);
         String loginUri = loginCommand.process(request);
         assertEquals("redirect:free/home?login=true", loginUri);
     }

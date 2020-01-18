@@ -25,7 +25,7 @@ public class RegisterCommand extends Command {
             logger.error("Username is taken exception", e);
             return "redirect:guest/register-page?error=username-taken";
         }
-        return "/servlet/guest/login";
+        return "/cinema/guest/login";
     }
 
     private boolean validateUser(UserDto userDto) {

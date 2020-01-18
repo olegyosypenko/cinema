@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "MainServlet", urlPatterns = {"/servlet/*"})
+@WebServlet(name = "MainServlet", urlPatterns = {"/cinema/*"})
 public class MainServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(MainServlet.class);
     private Map<String, Command> map = new HashMap<>();
@@ -64,7 +64,7 @@ public class MainServlet extends HttpServlet {
             String url = command.process(request);
             if (url.contains("redirect:")) {
                 url = url.replace("redirect:", "");
-                response.sendRedirect(context.getContextPath() + "/servlet/" + url);
+                response.sendRedirect(context.getContextPath() + "/cinema/" + url);
             }
             else {
                 RequestDispatcher dispatcher = context.getRequestDispatcher(url);

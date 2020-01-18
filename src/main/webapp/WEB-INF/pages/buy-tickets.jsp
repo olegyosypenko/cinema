@@ -41,7 +41,7 @@
 <h3>
     <fmt:message key="whole.price.label" bundle="${language}"/> <span id="whole-price">0</span> <fmt:message key="currency.label" bundle="${language}"/>
 </h3>
-<form action="${pageContext.request.contextPath}/servlet/user/buy-tickets" id="buy-tickets-form">
+<form action="${pageContext.request.contextPath}/cinema/user/buy-tickets" id="buy-tickets-form">
     <input type="hidden" name="seance-id" value="${seance.id}">
     <input type="hidden" name="price" value="${seance.price}">
     <input type="hidden" name="user-id" value="${user.id}">
@@ -49,7 +49,7 @@
         <button class="button"><fmt:message key="buy.tickets.label" bundle="${language}"/></button>
     </c:if>
     <c:if test="${user.role == ADMIN}">
-        <a href="${pageContext.request.contextPath}/servlet/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
+        <a href="${pageContext.request.contextPath}/cinema/admin/delete-seance?seance-id=${seance.id}"><fmt:message key="delete.seance.label" bundle="${language}"/></a>
     </c:if>
 </form>
 

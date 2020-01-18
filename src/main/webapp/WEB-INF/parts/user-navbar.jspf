@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <header>
-    <a href="${pageContext.request.contextPath}/servlet/free/home" class="logo">Cinema</a>
+    <a href="${pageContext.request.contextPath}/cinema/free/home" class="logo">Cinema</a>
     <nav class="main-menu right">
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/free/schedule"><fmt:message key="menu.schedule" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/free/films"><fmt:message key="menu.all.films" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/user/your-tickets"><fmt:message key="your.tickets" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/user/profile"><fmt:message key="menu.profile" bundle="${language}"/></a>
-        <a class="menu-item" href="${pageContext.request.contextPath}/servlet/logged/logout"><fmt:message key="menu.logout.label" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/cinema/free/schedule"><fmt:message key="menu.schedule" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/cinema/free/films"><fmt:message key="menu.all.films" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/cinema/user/your-tickets"><fmt:message key="your.tickets" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/cinema/user/profile"><fmt:message key="menu.profile" bundle="${language}"/></a>
+        <a class="menu-item" href="${pageContext.request.contextPath}/cinema/logged/logout"><fmt:message key="menu.logout.label" bundle="${language}"/></a>
     </nav>
 </header>

@@ -9,7 +9,7 @@
 <%@include file="../parts/header.jspf"%>
 
 <div class="form">
-    <form id="main-form" class="login-form" method="post" id="film" action="${pageContext.request.contextPath}/servlet/admin/create-film">
+    <form id="main-form" class="login-form" method="post" id="film" action="${pageContext.request.contextPath}/cinema/admin/create-film">
         <input name="name" type="text" placeholder="<fmt:message key="film.name.query" bundle="${language}"/>"/>
         <input name="name-en" type="text" placeholder="<fmt:message key="film.nameEN.query" bundle="${language}"/>"/>
         <input name="genre" type="text" placeholder="<fmt:message key="film.genre.query" bundle="${language}"/>"/>
