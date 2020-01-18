@@ -5,11 +5,17 @@ import ua.training.model.BundleHolder;
 import ua.training.model.dao.FilmDao;
 import ua.training.model.dao.exceptions.DaoException;
 import ua.training.model.dao.exceptions.NotUniqueValueException;
+import ua.training.model.dao.mysql.mappers.FilmMapper;
 import ua.training.model.dto.FilmDto;
 import ua.training.model.entity.Film;
 import ua.training.model.entity.Seance;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +28,7 @@ public class FilmMySqlDao implements FilmDao {
     public FilmMySqlDao(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public Film getFilmById(int id) {
         String query = BundleHolder.getBundle().getString("select.film.by.id");
@@ -71,26 +78,12 @@ public class FilmMySqlDao implements FilmDao {
     @Override
     public List<Film> getAllFilms() {
         String query = BundleHolder.getBundle().getString("select.all-users.query");
-        List<Film> films = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                Film film = new Film.Builder()
-                        .setId(resultSet.getInt(1))
-                        .setName(resultSet.getString(2))
-                        .setGenre(resultSet.getString(3))
-                        .setDirector(resultSet.getString(4))
-                        .setRate(resultSet.getFloat(5))
-                        .setDescription(resultSet.getString(6))
-                        .setImageLink(resultSet.getString(7))
-                        .buildFilm();
-                films.add(film);
-            }
+            return extractFilmsFromResultSet(resultSet);
         } catch (SQLException e) {
-            logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
-        return films;
     }
 
     @Override
@@ -109,11 +102,10 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(10, film.getImageLink());
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
-        }  catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException e) {
             logger.error("Not unique value", e);
             throw new NotUniqueValueException(e);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
@@ -137,27 +129,21 @@ public class FilmMySqlDao implements FilmDao {
         String query = BundleHolder.getBundle().getString("select.most.popular.films.query");
         ResourceBundle bundle = ResourceBundle.getBundle("config");
         int topFilmsNumber = Integer.parseInt(bundle.getString("top.films.number"));
-        List<Film> films = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, topFilmsNumber);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Film film = new Film.Builder()
-                        .setId(resultSet.getInt(1))
-                        .setName(resultSet.getString(2))
-                        .setGenre(resultSet.getString(3))
-                        .setDirector(resultSet.getString(4))
-                        .setRate(resultSet.getFloat(5))
-                        .setDescription(resultSet.getString(6))
-                        .setImageLink(resultSet.getString(7))
-                        .buildFilm();
-                films.add(film);
-            }
+            return extractFilmsFromResultSet(resultSet);
         } catch (SQLException e) {
-            logger.debug("Cannot execute query: " + query);
             throw new DaoException("Cannot execute query", e);
         }
-        logger.trace("getMostPopularFilms end");
+    }
+
+    private List<Film> extractFilmsFromResultSet(ResultSet resultSet) throws SQLException {
+        List<Film> films = new ArrayList<>();
+        while (resultSet.next()) {
+            Film film = FilmMapper.mapFilm(resultSet);
+            films.add(film);
+        }
         return films;
     }
 }
