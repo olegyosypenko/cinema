@@ -26,6 +26,16 @@ public class UriParserTest {
     }
 
     @Test
+    public void shouldReturnCommandNameWhenThereIsNoIndex() {
+        String expected = "user/command";
+        String uri = "cinema/cinema/user/command";
+
+        String actual = UriParser.getCommandNameFromUri(uri);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void shouldReturnAccessLabel() {
         String expected = "user";
         String uri = "cinema/cinema/user/command/32";
