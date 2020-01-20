@@ -7,8 +7,7 @@ public class UriParser {
     private static Logger logger = Logger.getLogger(UriParser.class);
 
     public static int getIndexFromUri(String uri) {
-        String[] uriParts = uri.split("/");
-        String indexPart = uriParts[uriParts.length - 1];
+        String indexPart = uri.replaceAll(".*/(\\d*)$", "$1");
         logger.info("index: " + indexPart);
         return Integer.parseInt(indexPart);
     }
