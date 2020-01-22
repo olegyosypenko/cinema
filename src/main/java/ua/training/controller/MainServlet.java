@@ -23,12 +23,12 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init() {
         map.put("free/home", new HomeCommand());
-        map.put("guest/login-page", new LoginPageCommand());
-        map.put("guest/register-page", new RegisterPageCommand());
+        map.put("guest/login-page", new CommonPageCommand(Constants.LOGIN_PAGE));
+        map.put("guest/register-page", new CommonPageCommand(Constants.REGISTER_PAGE));
         map.put("guest/login", new LoginCommand());
         map.put("guest/register", new RegisterCommand());
         map.put("logged/logout", new LogoutCommand());
-        map.put("admin/create-film-page", new CreateFilmPageCommand());
+        map.put("admin/create-film-page", new CommonPageCommand(Constants.CREATE_FILM_PAGE));
         map.put("admin/create-film", new CreateFilmCommand());
         map.put("admin/create-seance-page", new CreateSeancePageCommand());
         map.put("admin/create-seance", new CreateSeanceCommand());
@@ -42,7 +42,7 @@ public class MainServlet extends HttpServlet {
         map.put("free/film", new ShowFilmCommand());
         map.put("admin/delete-seance", new DeleteSeanceCommand());
         map.put("admin/delete-film", new DeleteFilmCommand());
-        map.put("user/add-money-page", new AddMoneyPageCommand());
+        map.put("user/add-money-page", new CommonPageCommand(Constants.ADD_MONEY_PAGE));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
