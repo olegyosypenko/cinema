@@ -22,8 +22,9 @@ import java.util.ResourceBundle;
 
 public class FilmMySqlDao implements FilmDao {
 
+    private static final Logger logger = Logger.getLogger(FilmMySqlDao.class);
+    private static final int SEANCE_ID_INDEX = 8;
     private final Connection connection;
-    private final Logger logger = Logger.getLogger(FilmMySqlDao.class);
 
     public FilmMySqlDao(Connection connection) {
         this.connection = connection;
@@ -49,10 +50,8 @@ public class FilmMySqlDao implements FilmDao {
                         .buildFilm();
             }
         } catch (SQLIntegrityConstraintViolationException e) {
-            logger.error("Not unique value", e);
             throw new NotUniqueValueException(e);
         } catch (SQLException e) {
-            logger.debug("Cannot execute query: " + query);
             throw new DaoException("Cannot execute query", e);
         }
         return film;
@@ -60,19 +59,23 @@ public class FilmMySqlDao implements FilmDao {
 
     private List<Seance> getSeancesFromResultSet(ResultSet resultSet) throws SQLException {
         List<Seance> seances = new ArrayList<>();
-        if (resultSet.getInt(8) != 0) {
-            Seance seance = new Seance();
-            seance.setId(resultSet.getInt(8));
-            seance.setStartTime(resultSet.getTimestamp(9));
-            seances.add(seance);
-        }
-        while (resultSet.next()) {
-            Seance seance = new Seance();
-            seance.setId(resultSet.getInt(8));
-            seance.setStartTime(resultSet.getTimestamp(9));
-            seances.add(seance);
+        if (isSeanceFound(resultSet)) {
+            do {
+                seances.add(createSeanceFromResultSet(resultSet));
+            } while (resultSet.next());
         }
         return seances;
+    }
+
+    private boolean isSeanceFound(ResultSet resultSet) throws SQLException {
+        return resultSet.getInt(SEANCE_ID_INDEX) != 0;
+    }
+
+    private Seance createSeanceFromResultSet(ResultSet resultSet) throws SQLException {
+        Seance seance = new Seance();
+        seance.setId(resultSet.getInt(SEANCE_ID_INDEX));
+        seance.setStartTime(resultSet.getTimestamp(9));
+        return seance;
     }
 
     @Override
@@ -103,10 +106,8 @@ public class FilmMySqlDao implements FilmDao {
             statement.setString(11, film.getImageLinkEN());
             statement.execute();
         } catch (SQLIntegrityConstraintViolationException e) {
-            logger.error("Not unique value", e);
             throw new NotUniqueValueException(e);
         } catch (SQLException e) {
-            logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
     }
@@ -118,7 +119,6 @@ public class FilmMySqlDao implements FilmDao {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
-            logger.error("Cannot execute query: " + query, e);
             throw new DaoException("Cannot execute query", e);
         }
     }
