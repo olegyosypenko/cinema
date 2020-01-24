@@ -30,41 +30,49 @@ public class TicketService {
 
     public void buyTickets(List<Ticket> tickets) {
         DaoFactory daoFactory = DaoFactory.getInstance();
-        try (Transaction transaction = daoFactory.getTransaction()) {
+        Transaction transaction = daoFactory.getTransaction();
+        try {
             TicketDao ticketDao = daoFactory.createTicketDao();
             UserDao userDao = daoFactory.createUserDao();
             SeanceDao seanceDao = daoFactory.createSeanceDao();
             transaction.startTransaction();
             transaction.setSerializable();
-            try {
-                int id = tickets.stream().findAny().map(Ticket::getUser).map(User::getId).orElse(NON_EXISTING_ID);
-                int seanceId = tickets.stream().findAny().map(Ticket::getSeance).map(Seance::getId).orElse(NON_EXISTING_ID);
-                SeanceDto seanceDto = seanceDao.getSeanceDtoById(id);
-                int priceOfTicket = seanceDto.getPrice();
-                int fullPrice = priceOfTicket * tickets.size();
-                User user = userDao.getUserById(id);
-                int moneyAmount = user.getMoney();
-                logger.debug("Amount of money: " + moneyAmount);
-                logger.debug("Full price: " + fullPrice);
-                if (moneyAmount < fullPrice) {
-                    transaction.rollback();
-                    throw new ServiceException("Not enough money");
-                }
-                List<Ticket> bookedTickets = ticketDao.getTicketsBySeanceId(seanceId);
-                logger.debug("List of tickets by seances: " + bookedTickets);
-                logger.debug("List of tickets that user wants to buy: " + ticketDao);
-                if (checkIntersect(bookedTickets, tickets)) {
-                    transaction.rollback();
-                    throw new ServiceException("Ticket is taken");
-                }
-                ticketDao.createTickets(tickets);
-                userDao.withdrawMoney(id, fullPrice);
-            } catch (DaoException e) {
+            int userId = getUserId(tickets);
+            int seanceId = getSeanceId(tickets);
+            SeanceDto seanceDto = seanceDao.getSeanceDtoById(seanceId);
+            User user = userDao.getUserById(userId);
+            int fullPrice = seanceDto.getPrice() * tickets.size();
+            int moneyAmount = user.getMoney();
+            logger.debug("Amount of money: " + moneyAmount);
+            logger.debug("Full price: " + fullPrice);
+            if (moneyAmount < fullPrice) {
                 transaction.rollback();
-                throw new DaoException("Could not complete transaction", e);
+                throw new ServiceException("Not enough money");
             }
+            List<Ticket> bookedTickets = ticketDao.getTicketsBySeanceId(seanceId);
+            logger.debug("List of tickets by seances: " + bookedTickets);
+            logger.debug("List of tickets that user wants to buy: " + tickets);
+            if (checkIntersect(bookedTickets, tickets)) {
+                transaction.rollback();
+                throw new ServiceException("Ticket is taken");
+            }
+            ticketDao.createTickets(tickets);
+            userDao.withdrawMoney(userId, fullPrice);
             transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            throw new DaoException("Could not complete transaction", e);
+        } finally {
+            transaction.close();
         }
+    }
+
+    private Integer getSeanceId(List<Ticket> tickets) {
+        return tickets.stream().findAny().map(Ticket::getSeance).map(Seance::getId).orElse(NON_EXISTING_ID);
+    }
+
+    private Integer getUserId(List<Ticket> tickets) {
+        return tickets.stream().findAny().map(Ticket::getUser).map(User::getId).orElse(NON_EXISTING_ID);
     }
 
     private boolean checkIntersect(List<Ticket> bookedTickets, List<Ticket> tickets) {
