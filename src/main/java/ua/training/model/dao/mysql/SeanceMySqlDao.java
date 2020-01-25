@@ -10,6 +10,7 @@ import ua.training.model.entity.Ticket;
 import ua.training.model.entity.User;
 
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class SeanceMySqlDao implements SeanceDao {
         List<Seance> list = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
+            preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Seance seance = new Seance();

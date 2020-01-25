@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,7 +36,8 @@ public class FilmMySqlDao implements FilmDao {
         String query = BundleHolder.getBundle().getString("select.film.by.id");
         Film film = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(2, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 film = new Film.Builder()
