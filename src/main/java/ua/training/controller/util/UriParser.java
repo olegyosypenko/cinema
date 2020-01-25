@@ -13,7 +13,7 @@ public class UriParser {
     }
 
     public static String getCommandNameFromUri(String uri) {
-        return uri.replaceAll(".*/cinema/([a-z]*(/[a-z]*)?)(/[0-9-]+)?", "$1");
+        return uri.replaceAll(".*/cinema/([a-z]*(/[a-z-]*)?)(/[0-9-]+)?", "$1");
     }
 
     public static String getAccessLabel(String uri) {

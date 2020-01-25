@@ -17,8 +17,8 @@ public class UriParserTest {
 
     @Test
     public void shouldReturnCommandName() {
-        String expected = "user/command";
-        String uri = "cinema/cinema/user/command/32";
+        String expected = "user/command-name";
+        String uri = "cinema/cinema/user/command-name/32";
 
         String actual = UriParser.getCommandNameFromUri(uri);
 
