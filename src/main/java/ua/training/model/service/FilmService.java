@@ -22,6 +22,7 @@ public class FilmService {
             return filmDao.getAllFilms();
         }
     }
+
     public void createFilm(FilmDto film) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         try (Transaction ignored = daoFactory.getTransaction()) {
@@ -40,27 +41,30 @@ public class FilmService {
 
     public void deleteFilmById(int id) {
         DaoFactory daoFactory = DaoFactory.getInstance();
-        try (Transaction transaction = daoFactory.getTransaction()) {
+        Transaction transaction = daoFactory.getTransaction();
+        try {
             SeanceDao seanceDao = daoFactory.createSeanceDao();
             FilmDao filmDao = daoFactory.createFilmDao();
             transaction.startTransaction();
             transaction.setSerializable();
             List<Seance> list = seanceDao.getSeancesByFilmId(id);
-            if (list.size() > 0) {
-                logger.info("List of seances is not empty!");
-                transaction.rollback();
-                throw new ServiceException("Try to delete film before seances");
-            } else {
-                try {
-                    filmDao.deleteFilmById(id);
-                    transaction.commit();
-                } catch(DaoException e) {
-                    transaction.rollback();
-                    throw new ServiceException("Cannot delete film", e);
-                }
-            }
+            checkIfFilmHasDependentSeances(transaction, list);
+            filmDao.deleteFilmById(id);
+            transaction.commit();
+        } catch (DaoException e) {
+            transaction.rollback();
+            throw new ServiceException("Cannot delete film", e);
+        } finally {
+            transaction.close();
         }
+    }
 
+    private void checkIfFilmHasDependentSeances(Transaction transaction, List<Seance> list) {
+        if (list.size() > 0) {
+            logger.info("List of seances is not empty!");
+            transaction.rollback();
+            throw new ServiceException("Try to delete film before seances");
+        }
     }
 
     public List<Film> getMostPopularFilms() {
