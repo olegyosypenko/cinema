@@ -61,16 +61,17 @@ public class FilmMySqlDao implements FilmDao {
 
     private List<Seance> getSeancesFromResultSet(ResultSet resultSet) throws SQLException {
         List<Seance> seances = new ArrayList<>();
-        if (isSeanceFound(resultSet)) {
-            do {
-                seances.add(createSeanceFromResultSet(resultSet));
-            } while (resultSet.next());
+        if (isSeanceNotFound(resultSet)) {
+            return seances;
         }
+        do {
+            seances.add(createSeanceFromResultSet(resultSet));
+        } while (resultSet.next());
         return seances;
     }
 
-    private boolean isSeanceFound(ResultSet resultSet) throws SQLException {
-        return resultSet.getInt(SEANCE_ID_INDEX) != 0;
+    private boolean isSeanceNotFound(ResultSet resultSet) throws SQLException {
+        return resultSet.getInt(SEANCE_ID_INDEX) == 0;
     }
 
     private Seance createSeanceFromResultSet(ResultSet resultSet) throws SQLException {
