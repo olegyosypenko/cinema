@@ -29,7 +29,6 @@ public class TransactionMySql implements Transaction {
         try {
             connection.commit();
         } catch (SQLException e) {
-            logger.error("Cannot commit exception", e);
             throw new DaoException("Cannot commit exception", e);
         }
     }
@@ -42,7 +41,6 @@ public class TransactionMySql implements Transaction {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            logger.error("Cannot startTransaction exception", e);
             throw new DaoException("Cannot startTransaction exception", e);
         }
     }
@@ -54,7 +52,6 @@ public class TransactionMySql implements Transaction {
         try {
             connection.rollback();
         } catch (SQLException e) {
-            logger.error("Cannot rollback exception", e);
             throw new DaoException("Cannot rollback exception", e);
         }
     }
@@ -67,7 +64,6 @@ public class TransactionMySql implements Transaction {
         try {
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         } catch (SQLException e) {
-            logger.error("Cannot setSerializable exception", e);
             throw new DaoException("Cannot setSerializable exception", e);
         }
     }
@@ -80,7 +76,6 @@ public class TransactionMySql implements Transaction {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.error("Cannot close exception", e);
             throw new DaoException("Cannot close exception", e);
         }
     }
