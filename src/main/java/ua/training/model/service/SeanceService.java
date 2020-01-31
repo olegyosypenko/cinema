@@ -65,9 +65,8 @@ public class SeanceService {
 
     private Map<User, Integer> calculateRefundForEachUser(List<Ticket> tickets) {
         int price = getPrice(tickets);
-        Map<User, List<Ticket>> userTickets = tickets.stream().collect(Collectors.groupingBy(Ticket::getUser));
-        return userTickets.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> (entry.getValue().size() + 1) * price));
+        return tickets.stream()
+                .collect(Collectors.groupingBy(Ticket::getUser, Collectors.summingInt(ticket -> price)));
     }
 
     private int getPrice(List<Ticket> tickets) {
